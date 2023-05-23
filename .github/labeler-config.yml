@@ -1,0 +1,44 @@
+filters:
+  - label: feat
+    regexs:
+      - /\bfeat(\(.*\))?:/i
+    events: [pull_request]
+  - label: fix
+    regexs:
+      - /\bfix(\(.*\))?:/i
+    events: [pull_request]
+  - label: refactor
+    regexs:
+      - /\brefactor(\(.*\))?:/i
+    events: [pull_request]
+  - label: test
+    regexs:
+      - /\btest(\(.*\))?:/i
+    events: [pull_request]
+  - label: ci
+    regexs:
+      - /\bci(\(.*\))?:/i
+    events: [pull_request]
+  - label: build
+    regexs:
+      - /\bbuild(\(.*\))?:/i
+    events: [pull_request]
+  - label: style
+    regexs:
+      - /\bstyle(\(.*\))?:/i
+    events: [pull_request]
+  - label: chore
+    regexs:
+      - /\bchore(\(.*\))?:/i
+    events: [pull_request]
+  - label: docs
+    regexs:
+      - /\bdocs(\(.*\))?:/i
+    events: [pull_request]
+
+  # PULL_REQUEST_TEMPLATE.md
+  - label: major
+    regexs:
+      - /Whether Braking Changes(\s)*Does this PR contain breaking changes\?(\s)*- \[(X|x)\] Yes/i
+    events: [pull_request]
+    targets: [comment]

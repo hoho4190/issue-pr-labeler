@@ -1,0 +1,83 @@
+name: Bug Report
+description: Create a report to help us improve
+title: "[Bug]"
+labels: ["bug"]
+assignees:
+  - hoho4190
+
+body:
+  - type: checkboxes
+    id: prerequisites
+    attributes:
+      label: Prerequisites
+      description: Please answer the following questions for yourself before submitting an issue.
+      options:
+        - label: I checked the documentation and found no answer
+          required: true
+        - label: I checked to make sure that this issue has not already been filed
+          required: true
+        - label: I'm reporting the issue to the correct repository (for multi-repository projects)
+          required: true
+
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version did that bug occur in?
+      options:
+        - v1.0.2
+        - v1.0.1
+        - v1.0.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Description
+    validations:
+      required: true
+      
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected Behavior
+      description: Please describe the behavior you are expecting.
+    validations:
+      required: false
+
+  - type: textarea
+    id: current-behavior
+    attributes:
+      label: Current Behavior
+      description: What is the current behavior?
+    validations:
+      required: false
+
+  - type: textarea
+    id: failure-information
+    attributes:
+      label: Failure Information
+      description: Please help provide information about the failure if this is a bug.
+    validations:
+      required: false
+
+  - type: textarea
+    id: steps-to-reproduce
+    attributes:
+      label: Steps to Reproduce
+      description: Please provide detailed steps for reproducing the issue.
+      placeholder: |
+        1. step 1 
+        2. step 2
+        3. you get it...
+    validations:
+      required: false
+
+  - type: textarea
+    id: failure-logs
+    attributes:
+      label: Failure Logs
+      description: Please include any relevant log snippets or files here.
+    validations:
+      required: false

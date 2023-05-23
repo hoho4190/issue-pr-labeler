@@ -1,0 +1,21 @@
+name: Issue PR Labeler
+description: |
+  Automatically add labels by filtering titles and content 
+  when issues and pull requests are opened.
+author: hoho4190
+inputs:
+  token:
+    description: "github token"
+    required: true
+  config-file-name:
+    description: |
+      Configuration file name.
+      This file should be located in `.github` path.
+    required: false
+    default: labeler-config.yml
+runs:
+  using: node16
+  main: dist/index.js
+branding:
+  color: purple
+  icon: tag

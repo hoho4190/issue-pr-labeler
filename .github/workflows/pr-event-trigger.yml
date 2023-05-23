@@ -1,0 +1,40 @@
+name: PR event trigger
+on:
+  pull_request:
+    types:
+      - opened
+      - closed
+
+jobs:
+  pr_opened:
+    name: PR opened
+    runs-on: ubuntu-latest
+    if: github.event.action == 'opened'
+  
+    permissions:
+      contents: read
+      issues: write
+      pull-requests: write
+
+    steps:
+      - name: Run Issue PR Labeler
+        uses: hoho4190/issue-pr-labeler@v1
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+  update_release_draft:
+    name: Update release draft
+    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true && github.base_ref == 'main'
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Update release draft
+        uses: release-drafter/release-drafter@v5.23.0
+        with:
+          config-name: release-drafter-config.yml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

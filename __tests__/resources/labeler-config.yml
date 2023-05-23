@@ -1,0 +1,21 @@
+# Filter using regular expressions.
+# Syntax: /pattern/modifier(s)
+# pattern: must be between / and /.
+# modifier: can be added at the end. ex) i, m, u, g, y
+# ex) /bug/, /bug/im, /\bFeat\b/i
+# see: https://www.w3schools.com/jsref/jsref_obj_regexp.asp
+filters:
+  - label: enhancement
+    regexs:
+      - /feat/i
+      - /refactor/
+    events: [issues, pull_request]
+    targets: [title, comment]
+  - label: bug
+    regexs:
+      - /\bfix\b|bug/
+    targets: [title]
+  - label: documentation
+    regexs:
+      - /docs/
+    events: [pull_request]
