@@ -1,9 +1,3 @@
-# Filter using regular expressions.
-# Syntax: /pattern/modifier(s)
-# pattern: must be between / and /.
-# modifier: can be added at the end. ex) i, m, u, g, y
-# ex) /bug/, /bug/im, /\bFeat\b/i
-# see: https://www.w3schools.com/jsref/jsref_obj_regexp.asp
 filters:
   - label: enhancement
     regexs:

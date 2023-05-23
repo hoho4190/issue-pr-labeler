@@ -1,6 +1,5 @@
 # GitHub Labeler
 # https://github.com/marketplace/actions/github-labeler
-
 name: Github Labeler
 
 on:
