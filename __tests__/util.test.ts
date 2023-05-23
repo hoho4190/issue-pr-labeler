@@ -1,8 +1,8 @@
 import {expect, test} from '@jest/globals'
-import {convertToConfigInfo, convertToRegExp} from '../src/util'
 import * as fs from 'fs'
 import {Filter, FilterTarget} from '../src/classes/config-info'
 import {EventName} from '../src/classes/context'
+import {convertToConfigInfo, convertToRegExp} from '../src/util'
 
 test('convertToConfigInfo() - Test', () => {
   // given
