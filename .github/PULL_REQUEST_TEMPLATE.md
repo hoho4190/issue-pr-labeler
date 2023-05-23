@@ -21,6 +21,7 @@ issues: #NUM, #NUM, ...
 - [ ] Build related changes
 - [ ] CI related changes
 - [ ] Documentation content changes
+- [ ] Release new version
 
 
 ## Whether Braking Changes
@@ -37,8 +38,8 @@ Does this PR contain breaking changes?
 
 #### Checklist before release branch merge
 **IF NOT RELEVANT, DELETE THIS SECTION**
-- [ ] Update version - package.json
-- [ ] Add version - bug templates
+- [ ] Update version - package.json, package-lock.json
+- [ ] Add version - issue templates
 
 
 ## Checklist after merge
