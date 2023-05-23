@@ -1,3 +1,5 @@
+# Issue PR Labeler
+
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)
 ![GitHub](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)
 [![build-test](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/test.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/test.yml)
