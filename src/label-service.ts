@@ -16,7 +16,6 @@ class LabelService {
   private constructor(context: Context) {
     this.context = context
     this.octokit = github.getOctokit(context.token)
-    this.printLog()
   }
 
   static getInstance(context: Context): LabelService {
@@ -38,8 +37,11 @@ class LabelService {
   }
 
   async addLabels(configInfo: ConfigInfo): Promise<string[]> {
+    // parseing event
+    const event = this.parseEvent()
+
     // get title, comment
-    const {title, comment} = this.getTitleComment()
+    const {title, comment} = this.getTitleComment(event)
 
     // get labels
     const labels = this.getLables(title, comment, configInfo.filters)
@@ -103,21 +105,31 @@ class LabelService {
     return result
   }
 
-  private getTitleComment(): {title: string; comment?: string} {
-    let title: string
-    let comment: string | undefined
-
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private parseEvent(): any {
     try {
       const ev = JSON.parse(
         fs.readFileSync(this.context.githubEventPath, 'utf-8')
       )
 
+      return ev
+    } catch (error) {
+      throw new Error('Failed to parse event.json')
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  private getTitleComment(event: any): {title: string; comment?: string} {
+    let title: string
+    let comment: string | undefined
+
+    try {
       if (this.context.eventName === EventName.ISSUES) {
-        title = ev.issue.title
+        title = event.issue.title
         // comment = ev.issue.body
         comment = github.context.payload.issue?.body
       } else {
-        title = ev.pull_request.title
+        title = event.pull_request.title
         // comment = ev.issue.body
         comment = github.context.payload.pull_request?.body
       }
@@ -125,7 +137,7 @@ class LabelService {
       core.debug(`title = ${title}`)
       core.debug(`comment = ${comment}`)
     } catch (error) {
-      throw new Error('Failed to parse event')
+      throw new Error('Failed to get title and content')
     }
 
     return {title, comment}
@@ -207,27 +219,6 @@ class LabelService {
     })
 
     core.info(`Added labels to PR: ${labels}`)
-  }
-
-  private printLog(): void {
-    core.debug(`context.eventName = ${github.context.eventName}`)
-    core.debug(`context.sha = ${github.context.sha}`)
-    core.debug(`context.ref = ${github.context.ref}`)
-    core.debug(`context.workflow = ${github.context.workflow}`)
-    core.debug(`context.action = ${github.context.action}`)
-    core.debug(`context.actor = ${github.context.actor}`)
-    core.debug(`context.job = ${github.context.job}`)
-    core.debug(`context.runNumber = ${github.context.runNumber}`)
-    core.debug(`context.runId = ${github.context.runId}`)
-    core.debug(`context.apiUrl = ${github.context.apiUrl}`)
-    core.debug(`context.serverUrl = ${github.context.serverUrl}`)
-    core.debug(`context.graphqlUrl = ${github.context.graphqlUrl}`)
-
-    core.debug(`payload.action = ${github.context.payload.action}`)
-    core.debug(`payload.issue.number = ${github.context.payload.issue?.number}`)
-    core.debug(
-      `payload.pull_request.number = ${github.context.payload.pull_request?.number}`
-    )
   }
 }
 

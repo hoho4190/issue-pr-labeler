@@ -5,8 +5,13 @@ description: |
 author: hoho4190
 inputs:
   token:
-    description: "github token"
+    description: github token
     required: true
+  disable-bot:
+    description: |
+      Whether to add labels to issues and pull requests opened by bots.
+    required: false
+    default: "true"
   config-file-name:
     description: |
       Configuration file name.
