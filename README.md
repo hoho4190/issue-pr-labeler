@@ -9,6 +9,8 @@
 
 Automatically add labels by filtering titles and content when **issues** and **pull requests** are **opened**.
 
+<br>
+
 ## Usage
 
 ### YAML configuration
@@ -113,6 +115,8 @@ jobs:
 If you want to customize the name of the configuration file, add the value of `config-file-name` to `with`.
 
 If `config-file-name` is not used, the default value is `labeler-config.yml`.
+
+<br>
 
 ## License
 
