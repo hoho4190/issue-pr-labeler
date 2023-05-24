@@ -39,34 +39,28 @@ filters:
       - /chore/
 ```
 
-#### `label`
+#### Properties
 
-- Required
-- Value: label name to be added
+| Key       | Type           | Value                       | Description                                                                                    |
+| --------- | -------------- | --------------------------- | ---------------------------------------------------------------------------------------------- |
+| `label`   | `String`       | label name                  | - Required<br>- Label name to be added                                                         |
+| `regexs`  | `List<String>` | regular expression          | - Required<br>- List of regular expressions to filter<br>- Syntax: `/pattern/modifier(s)`      |
+| `events`  | `List<Event>`  | `issues`<br> `pull_request` | - Optional<br>- List of events to filter on when opened<br>- Default: `[issues, pull_request]` |
+| `targets` | `List<Type>`   | `title`<br> `comment`       | - Optional<br>- target to filter<br>- Default: `[title, comment]`                              |
 
-#### `regexs`
-
-- Required
-- Values: List of regular expressions to filter
-- Syntax: `/pattern/modifier(s)`
-  - `pattern` must be written between `/` and `/`
-  - `modifier` Item is optional
-  - `modifier` values: `i`, `m`, `u`, `g`, `y`
-- ex) `/bug/`, `/bug/im`, `/\bFeat\b/i`
-
+> `regexs` property
+>
+> Syntax: `/pattern/modifier(s)`
+>
+> - `pattern` must be written between `/` and `/`
+> - `modifier` Item is optional
+> - `modifier` values: `i`, `m`, `u`, `g`, `y`
+>
+> ex) `/bug/`, `/bug/im`, `/\bFeat\b/i`
+>
 > see: https://www.w3schools.com/jsref/jsref_obj_regexp.asp
 
-#### `events`
-
-- Optional (if not used, all values apply)
-- Values: `issues`, `pull_request`
-- Filtering is triggered when the event is opened
-
-#### `targets`
-
-- Optional (if not used, all values apply)
-- Values: `title`, `comment`
-- Target to filter
+<br>
 
 ### Workflow
 
@@ -95,26 +89,22 @@ jobs:
         uses: hoho4190/issue-pr-labeler@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
+          disable-bot: true
+          config-file-name: labeler-config.yml
 ```
 
-- available events: issues, pull_request
-- available types: opened
+- Available events: issues, pull_request
+- Available types: opened
 
 > If it is not an available event and type, the workflow will display a warning message, but the result of the workflow is not 'Failure' status. The result is a `Success` status.
 
-#### Customize the config file name
+#### Input
 
-```yaml
-- name: Run Issue PR Labeler
-  uses: hoho4190/issue-pr-labeler@v1
-  with:
-    token: ${{ secrets.GITHUB_TOKEN }}
-    config-file-name: custom-labeler-config.yml # <- this line
-```
-
-If you want to customize the name of the configuration file, add the value of `config-file-name` to `with`.
-
-If `config-file-name` is not used, the default value is `labeler-config.yml`.
+| Key                | Type      | Description                                                                                                                                |
+| ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| `token`            | `String`  | - Required<br>- Use `secrets.GITHUB_TOKEN`                                                                                                 |
+| `disable-bot`      | `Boolean` | - Optional<br> - Whether to add labels to issues and pull requests opened by bots.<br>- Default: `true`                                    |
+| `config-file-name` | `String`  | - Optional<br> - Configuration file(`yaml`) name.<br>- This file should be located in `.github` path. <br> - Default: `labeler-config.yml` |
 
 <br>
 

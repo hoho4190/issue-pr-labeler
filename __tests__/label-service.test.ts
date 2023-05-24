@@ -11,6 +11,7 @@ describe('getLables() - Test', () => {
   beforeAll(() => {
     inputs = {
       token: 'mock-token',
+      'disable-bot': 'true',
       'config-file-name': 'labeler-config.yml'
     }
 
@@ -19,6 +20,9 @@ describe('getLables() - Test', () => {
 
     // Mock
     jest.spyOn(core, 'getInput').mockImplementation((name: string) => {
+      return inputs[name]
+    })
+    jest.spyOn(core, 'getBooleanInput').mockImplementation((name: string) => {
       return inputs[name]
     })
 
@@ -48,6 +52,15 @@ describe('getLables() - Test', () => {
     // github.context.eventName = 'pull_request'
     github.context.ref = 'refs/heads/mock-ref'
     github.context.sha = '1234567890123456789012345678901234567890'
+    github.context.payload.sender = {
+      key: 'key',
+      type: 'User'
+    }
+
+    // Mock LabelService
+    jest
+      .spyOn(LabelService.prototype as any, 'parseEvent')
+      .mockImplementation(jest.fn())
   })
 
   afterAll(() => {
