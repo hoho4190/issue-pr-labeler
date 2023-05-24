@@ -1,42 +1,56 @@
 filters:
+  # PULL_REQUEST_TEMPLATE.md
   - label: feat
     regexs:
-      - /\bfeat(\(.*\))?:/i
+      - /^- \[(X|x)\] New feature\b/m
     events: [pull_request]
+    targets: [comment]
   - label: fix
     regexs:
-      - /\bfix(\(.*\))?:/i
+      - /^- \[(X|x)\] Bug fix\b/m
     events: [pull_request]
+    targets: [comment]
   - label: refactor
     regexs:
-      - /\brefactor(\(.*\))?:/i
+      - /^- \[(X|x)\] Refactoring\b/m
     events: [pull_request]
+    targets: [comment]
   - label: test
     regexs:
-      - /\btest(\(.*\))?:/i
+      - /^- \[(X|x)\] Test\b/m
     events: [pull_request]
-  - label: ci
-    regexs:
-      - /\bci(\(.*\))?:/i
-    events: [pull_request]
-  - label: build
-    regexs:
-      - /\bbuild(\(.*\))?:/i
-    events: [pull_request]
+    targets: [comment]
   - label: style
     regexs:
-      - /\bstyle(\(.*\))?:/i
+      - /^- \[(X|x)\] Code style\b/m
     events: [pull_request]
+    targets: [comment]
+  - label: build
+    regexs:
+      - /^- \[(X|x)\] Build\b/m
+    events: [pull_request]
+    targets: [comment]
+  - label: ci
+    regexs:
+      - /^- \[(X|x)\] CI\b/m
+    events: [pull_request]
+    targets: [comment]
   - label: chore
     regexs:
-      - /\bchore(\(.*\))?:/i
+      - /^- \[(X|x)\] Chore\b/m
     events: [pull_request]
+    targets: [comment]
   - label: docs
     regexs:
-      - /\bdocs(\(.*\))?:/i
+      - /^- \[(X|x)\] Documentation\b/m
     events: [pull_request]
+    targets: [comment]
+  - label: release
+    regexs:
+      - /^- \[(X|x)\] Release\b/m
+    events: [pull_request]
+    targets: [comment]
 
-  # PULL_REQUEST_TEMPLATE.md
   - label: major
     regexs:
       - /Whether Braking Changes(\s)*Does this PR contain breaking changes\?(\s)*- \[(X|x)\] Yes/i

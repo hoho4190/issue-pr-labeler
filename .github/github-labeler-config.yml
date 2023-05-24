@@ -58,6 +58,9 @@
 - name: docs
   color: 0075ca
   description: "Git convention: docs"
+- name: release
+  color: 3C5085
+  description: "Git convention: release"
 
 # custom - Semantic versioning
 - name: major
