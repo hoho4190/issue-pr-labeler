@@ -4,8 +4,12 @@ updates:
     directory: /
     schedule:
       interval: daily
+    assignees:
+      - hoho4190
 
   - package-ecosystem: npm
     directory: /
     schedule:
       interval: daily
+    assignees:
+      - hoho4190
