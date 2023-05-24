@@ -4,7 +4,7 @@ import {Filter, FilterTarget} from '../src/classes/config-info'
 import {EventName} from '../src/classes/context'
 import {convertToConfigInfo, convertToRegExp} from '../src/util'
 
-test('convertToConfigInfo() - Test', () => {
+test('convertToConfigInfo() - Unit Test', () => {
   // given
   const settingFilePath = './__tests__/resources/labeler-config.yml'
   const fileStr: string = fs.readFileSync(settingFilePath, 'utf-8')
@@ -48,7 +48,7 @@ test('convertToConfigInfo() - Test', () => {
   }
 })
 
-test('convertToRegExp() - Test', () => {
+test('convertToRegExp() - Unit Test', () => {
   // given
   const pattern = '\\bstr\\b'
   const modifiers = 'im'

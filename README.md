@@ -54,7 +54,7 @@ filters:
 >
 > - `pattern` must be written between `/` and `/`
 > - `modifier` Item is optional
-> - `modifier` values: `i`, `m`, `u`, `g`, `y`
+> - `modifier` values: `i`, `m`, `u`, `y`
 >
 > ex) `/bug/`, `/bug/im`, `/\bFeat\b/i`
 >

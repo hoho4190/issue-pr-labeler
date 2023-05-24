@@ -21,7 +21,10 @@ class LabelService {
   static getInstance(context: Context): LabelService {
     if (!LabelService.instance) {
       LabelService.instance = new LabelService(context)
+    } else {
+      this.instance.context = context
     }
+
     return LabelService.instance
   }
 
@@ -126,18 +129,18 @@ class LabelService {
     try {
       if (this.context.eventName === EventName.ISSUES) {
         title = event.issue.title
-        // comment = ev.issue.body
+        // comment = event.issue.body
         comment = github.context.payload.issue?.body
       } else {
         title = event.pull_request.title
-        // comment = ev.issue.body
+        // comment = event.issue.body
         comment = github.context.payload.pull_request?.body
       }
 
       core.debug(`title = ${title}`)
       core.debug(`comment = ${comment}`)
     } catch (error) {
-      throw new Error('Failed to get title and content')
+      throw new Error('Failed to get title and comment')
     }
 
     return {title, comment}

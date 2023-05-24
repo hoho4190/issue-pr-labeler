@@ -1,5 +1,6 @@
 # GitHub Labeler
 # https://github.com/marketplace/actions/github-labeler
+
 name: Github Labeler
 
 on:
@@ -27,3 +28,4 @@ jobs:
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           yaml-file: .github/github-labeler-config.yml
+          skip-delete: true

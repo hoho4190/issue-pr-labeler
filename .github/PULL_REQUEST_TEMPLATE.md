@@ -20,6 +20,7 @@ issues: #NUM, #NUM, ...
 - [ ] Code style update (typo, formatting, local variables)
 - [ ] Build related changes
 - [ ] CI related changes
+- [ ] Chore (etc)
 - [ ] Documentation content changes
 - [ ] Release new version
 
@@ -33,7 +34,7 @@ Does this PR contain breaking changes?
 
 ## Checklist before merge
 
-- N/A
+- [ ] Updating the `dist` folder
 
 
 #### Checklist before release branch merge
