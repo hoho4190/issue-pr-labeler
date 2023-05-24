@@ -35,13 +35,16 @@ const core_1 = __nccwpck_require__(2186);
 const github = __importStar(__nccwpck_require__(5438));
 class Context {
     constructor() {
+        var _a;
         this.githubEventPath = process.env['GITHUB_EVENT_PATH'];
         this.token = (0, core_1.getInput)('token', { required: true });
         this.owner = github.context.repo.owner;
         this.repo = github.context.repo.repo;
         this.sha = github.context.sha;
         this.eventName = github.context.eventName;
+        this.isDisableBot = (0, core_1.getBooleanInput)('disable-bot');
         this.configFilePath = `.github/${(0, core_1.getInput)('config-file-name')}`;
+        this.senderType = (_a = github.context.payload.sender) === null || _a === void 0 ? void 0 : _a.type;
         if (github.context.payload.issue != null) {
             this.eventNumber = github.context.payload.issue.number;
         }
@@ -49,9 +52,43 @@ class Context {
             this.eventNumber = github.context.payload.pull_request.number;
         }
         this.eventType = github.context.payload.action;
+        printLog(this);
+        // printGithubLog()
     }
 }
 exports.Context = Context;
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+function printGithubLog() {
+    var _a, _b;
+    (0, core_1.debug)(`context.eventName = ${github.context.eventName}`);
+    // debug(`context.sha = ${github.context.sha}`)
+    (0, core_1.debug)(`context.ref = ${github.context.ref}`);
+    (0, core_1.debug)(`context.workflow = ${github.context.workflow}`);
+    (0, core_1.debug)(`context.action = ${github.context.action}`);
+    (0, core_1.debug)(`context.actor = ${github.context.actor}`);
+    (0, core_1.debug)(`context.job = ${github.context.job}`);
+    (0, core_1.debug)(`context.runNumber = ${github.context.runNumber}`);
+    (0, core_1.debug)(`context.runId = ${github.context.runId}`);
+    (0, core_1.debug)(`context.apiUrl = ${github.context.apiUrl}`);
+    (0, core_1.debug)(`context.serverUrl = ${github.context.serverUrl}`);
+    (0, core_1.debug)(`context.graphqlUrl = ${github.context.graphqlUrl}`);
+    (0, core_1.debug)(`payload.action = ${github.context.payload.action}`);
+    (0, core_1.debug)(`payload.issue.number = ${(_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.number}`);
+    (0, core_1.debug)(`payload.pull_request.number = ${(_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`);
+}
+function printLog(context) {
+    (0, core_1.debug)(`githubEventPath = ${context.githubEventPath}`);
+    (0, core_1.debug)(`token = ${context.token}`);
+    (0, core_1.debug)(`owner = ${context.owner}`);
+    (0, core_1.debug)(`repo = ${context.repo}`);
+    // debug(`sha = ${context.sha}`)
+    (0, core_1.debug)(`senderType = ${context.senderType}`);
+    (0, core_1.debug)(`eventName = ${context.eventName}`);
+    (0, core_1.debug)(`eventType = ${context.eventType}`);
+    (0, core_1.debug)(`eventNumber = ${context.eventNumber}`);
+    (0, core_1.debug)(`isDisableBot = ${context.isDisableBot}`);
+    (0, core_1.debug)(`configFilePath = ${context.configFilePath}`);
+}
 
 
 /***/ }),
@@ -104,7 +141,6 @@ class LabelService {
     constructor(context) {
         this.context = context;
         this.octokit = github.getOctokit(context.token);
-        this.printLog();
     }
     static getInstance(context) {
         if (!LabelService.instance) {
@@ -120,8 +156,10 @@ class LabelService {
     }
     addLabels(configInfo) {
         return __awaiter(this, void 0, void 0, function* () {
+            // parseing event
+            const event = this.parseEvent();
             // get title, comment
-            const { title, comment } = this.getTitleComment();
+            const { title, comment } = this.getTitleComment(event);
             // get labels
             const labels = this.getLables(title, comment, configInfo.filters);
             // add labels
@@ -168,19 +206,29 @@ class LabelService {
             return result;
         });
     }
-    getTitleComment() {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    parseEvent() {
+        try {
+            const ev = JSON.parse(fs.readFileSync(this.context.githubEventPath, 'utf-8'));
+            return ev;
+        }
+        catch (error) {
+            throw new Error('Failed to parse event.json');
+        }
+    }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getTitleComment(event) {
         var _a, _b;
         let title;
         let comment;
         try {
-            const ev = JSON.parse(fs.readFileSync(this.context.githubEventPath, 'utf-8'));
             if (this.context.eventName === "issues" /* EventName.ISSUES */) {
-                title = ev.issue.title;
+                title = event.issue.title;
                 // comment = ev.issue.body
                 comment = (_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.body;
             }
             else {
-                title = ev.pull_request.title;
+                title = event.pull_request.title;
                 // comment = ev.issue.body
                 comment = (_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.body;
             }
@@ -188,7 +236,7 @@ class LabelService {
             core.debug(`comment = ${comment}`);
         }
         catch (error) {
-            throw new Error('Failed to parse event');
+            throw new Error('Failed to get title and content');
         }
         return { title, comment };
     }
@@ -251,24 +299,6 @@ class LabelService {
             core.info(`Added labels to PR: ${labels}`);
         });
     }
-    printLog() {
-        var _a, _b;
-        core.debug(`context.eventName = ${github.context.eventName}`);
-        core.debug(`context.sha = ${github.context.sha}`);
-        core.debug(`context.ref = ${github.context.ref}`);
-        core.debug(`context.workflow = ${github.context.workflow}`);
-        core.debug(`context.action = ${github.context.action}`);
-        core.debug(`context.actor = ${github.context.actor}`);
-        core.debug(`context.job = ${github.context.job}`);
-        core.debug(`context.runNumber = ${github.context.runNumber}`);
-        core.debug(`context.runId = ${github.context.runId}`);
-        core.debug(`context.apiUrl = ${github.context.apiUrl}`);
-        core.debug(`context.serverUrl = ${github.context.serverUrl}`);
-        core.debug(`context.graphqlUrl = ${github.context.graphqlUrl}`);
-        core.debug(`payload.action = ${github.context.payload.action}`);
-        core.debug(`payload.issue.number = ${(_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.number}`);
-        core.debug(`payload.pull_request.number = ${(_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`);
-    }
 }
 exports.LabelService = LabelService;
 
@@ -313,6 +343,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.checkEventValues = void 0;
 const core = __importStar(__nccwpck_require__(2186));
 const context_1 = __nccwpck_require__(8717);
 const label_service_1 = __nccwpck_require__(392);
@@ -346,6 +377,14 @@ function checkEventValues(context) {
         core.warning(`Supports only "opened": current type = ${context.eventType}`);
         return false;
     }
+    if (context.senderType == null) {
+        throw new Error('"Sender type" not found');
+    }
+    else if (context.isDisableBot === true &&
+        context.senderType === "Bot" /* SenderType.BOT */) {
+        core.info('Passed - opened by Bot');
+        return false;
+    }
     if (context.eventType == null) {
         core.warning('"Event type" not found');
         return false;
@@ -356,6 +395,7 @@ function checkEventValues(context) {
     }
     return true;
 }
+exports.checkEventValues = checkEventValues;
 run();
 
 
