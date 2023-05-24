@@ -146,6 +146,9 @@ class LabelService {
         if (!LabelService.instance) {
             LabelService.instance = new LabelService(context);
         }
+        else {
+            this.instance.context = context;
+        }
         return LabelService.instance;
     }
     getConfigInfo() {
@@ -224,19 +227,19 @@ class LabelService {
         try {
             if (this.context.eventName === "issues" /* EventName.ISSUES */) {
                 title = event.issue.title;
-                // comment = ev.issue.body
+                // comment = event.issue.body
                 comment = (_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.body;
             }
             else {
                 title = event.pull_request.title;
-                // comment = ev.issue.body
+                // comment = event.issue.body
                 comment = (_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.body;
             }
             core.debug(`title = ${title}`);
             core.debug(`comment = ${comment}`);
         }
         catch (error) {
-            throw new Error('Failed to get title and content');
+            throw new Error('Failed to get title and comment');
         }
         return { title, comment };
     }
