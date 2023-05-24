@@ -2,7 +2,7 @@
 
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)
 ![GitHub](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)
-[![build-test](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/test.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/test.yml)
+[![npm Build](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhoho4190%2Fissue-pr-labeler&count_bg=%2333CA56&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://github.com/hoho4190/issue-pr-labeler)
 
 ## About
@@ -46,7 +46,7 @@ filters:
 | `label`   | `String`       | label name                  | - Required<br>- Label name to be added                                                         |
 | `regexs`  | `List<String>` | regular expression          | - Required<br>- List of regular expressions to filter<br>- Syntax: `/pattern/modifier(s)`      |
 | `events`  | `List<Event>`  | `issues`<br> `pull_request` | - Optional<br>- List of events to filter on when opened<br>- Default: `[issues, pull_request]` |
-| `targets` | `List<Type>`   | `title`<br> `comment`       | - Optional<br>- target to filter<br>- Default: `[title, comment]`                              |
+| `targets` | `List<Target>` | `title`<br> `comment`       | - Optional<br>- target to filter<br>- Default: `[title, comment]`                              |
 
 > `regexs` property
 >
@@ -96,7 +96,7 @@ jobs:
 - Available events: issues, pull_request
 - Available types: opened
 
-> If it is not an available event and type, the workflow will display a warning message, but the result of the workflow is not 'Failure' status. The result is a `Success` status.
+> If it is not an available event and type, the workflow will display a warning message, but will result in a `Success` status. Not a `Failure` state.
 
 #### Input
 
