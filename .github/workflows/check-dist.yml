@@ -37,6 +37,7 @@ jobs:
           npm run package
 
       - name: Compare the expected and actual dist/ directories
+        if: github.event.sender.type != 'Bot'
         run: |
           if [ "$(git diff --ignore-space-at-eol --text dist/ | wc -l)" -gt "0" ]; then
             echo "Detected uncommitted changes after build.  See status below:"
@@ -47,7 +48,9 @@ jobs:
 
       # If index.js was different than expected, upload the expected version as an artifact
       - uses: actions/upload-artifact@v3
-        if: ${{ failure() && steps.diff.conclusion == 'failure' }}
+        if: |
+          github.event.sender.type != 'Bot'
+          && ${{ failure() && steps.diff.conclusion == 'failure' }}
         with:
           name: dist
           path: dist/
