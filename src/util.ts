@@ -1,23 +1,25 @@
 import {parse} from 'yaml'
-import {ConfigInfo, FilterTarget} from './classes/config-info'
-import {EventName} from './classes/context'
+import {ConfigInfo, FilterEvent, FilterTarget} from './classes/config-info'
 
 export function convertToConfigInfo(data: string): ConfigInfo {
   const configInfo = parse(data) as ConfigInfo
 
   for (const filter of configInfo.filters) {
-    const filterEvents = new Set<EventName>()
+    const filterEvents = new Set<FilterEvent>()
     const filterTargets = new Set<FilterTarget>()
 
     if (filter.events !== undefined) {
       for (const event of new Set(filter.events)) {
-        if (event === EventName.ISSUES || event === EventName.PULL_REQUEST) {
+        if (
+          event === FilterEvent.ISSUES ||
+          event === FilterEvent.PULL_REQUEST
+        ) {
           filterEvents.add(event)
         }
       }
     }
     if (filterEvents.size === 0) {
-      filterEvents.add(EventName.ISSUES).add(EventName.PULL_REQUEST)
+      filterEvents.add(FilterEvent.ISSUES).add(FilterEvent.PULL_REQUEST)
     }
 
     if (filter.targets !== undefined) {

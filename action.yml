@@ -1,7 +1,6 @@
 name: Issue PR Labeler
 description: |
-  Automatically add labels by filtering titles and content 
-  when issues and pull requests are opened.
+  Automatically add labels by filtering the title and comment of issues and pull requests.
 author: hoho4190
 inputs:
   token:
@@ -9,7 +8,7 @@ inputs:
     required: true
   disable-bot:
     description: |
-      Whether to add labels to issues and pull requests opened by bots.
+      Whether to forbid filtering on issues and pull requests created by bots.
     required: false
     default: "true"
   config-file-name:

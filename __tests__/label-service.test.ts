@@ -1,6 +1,6 @@
 import * as github from '@actions/github'
 import {beforeEach, describe, expect, jest, test} from '@jest/globals'
-import {ConfigInfo, FilterTarget} from '../src/classes/config-info'
+import {ConfigInfo, FilterEvent, FilterTarget} from '../src/classes/config-info'
 import {Context, EventName} from '../src/classes/context'
 import {LabelService} from '../src/label-service'
 
@@ -19,7 +19,7 @@ describe('getLables() - Unit Test', () => {
         {
           label: 'documentation',
           regexs: ['/docs/'],
-          events: new Set([EventName.ISSUES]),
+          events: new Set([FilterEvent.ISSUES]),
           targets: new Set([FilterTarget.TITLE, FilterTarget.COMMENT])
         }
       ]
@@ -73,19 +73,80 @@ describe('getLables() - Unit Test', () => {
     expect(addPRLabelsFunc).toBeCalledTimes(0)
   })
 
-  test('성공: events가 일치하는 경우 - pr', async () => {
+  test('성공: events가 일치하는 경우 - pull_request', async () => {
     // then
     const configInfo = {
       filters: [
         {
           label: 'documentation',
           regexs: ['/docs/'],
-          events: new Set([EventName.PULL_REQUEST]),
+          events: new Set([FilterEvent.PULL_REQUEST]),
           targets: new Set([FilterTarget.TITLE, FilterTarget.COMMENT])
         }
       ]
     } as ConfigInfo
     const eventName = EventName.PULL_REQUEST
+    const title = 'title! - pr'
+    const comment = 'comment! -pr - docs'
+
+    const expectedLabels = ['documentation']
+
+    // ------------------------------------------------
+
+    const event = {
+      pull_request: {
+        title
+      }
+    } as any
+
+    // ------------------------------------------------
+
+    github.context.payload.pull_request = {
+      key: 'key',
+      number: 1,
+      body: comment
+    }
+
+    const service = LabelService.getInstance({
+      token: 'mock-token',
+      eventName
+    } as Context)
+
+    const parseEventFunc = jest
+      .spyOn(LabelService.prototype as any, 'parseEvent')
+      .mockImplementation(() => event)
+
+    const addIssueLabelsFunc = jest
+      .spyOn(LabelService.prototype as any, 'addIssueLabels')
+      .mockImplementation(jest.fn())
+
+    const addPRLabelsFunc = jest
+      .spyOn(LabelService.prototype as any, 'addPRLabels')
+      .mockImplementation(jest.fn())
+
+    // when
+    const result = await service.addLabels(configInfo)
+
+    // then
+    expect(result.sort()).toEqual(expectedLabels.sort())
+    expect(parseEventFunc).toBeCalledTimes(1)
+    expect(addIssueLabelsFunc).toBeCalledTimes(0)
+    expect(addPRLabelsFunc).toBeCalledTimes(1)
+  })
+
+  test('성공: events가 일치하는 경우 - pull_request_target', async () => {
+    // then
+    const configInfo = {
+      filters: [
+        {
+          label: 'documentation',
+          regexs: ['/docs/'],
+          events: new Set([FilterEvent.PULL_REQUEST]),
+          targets: new Set([FilterTarget.TITLE, FilterTarget.COMMENT])
+        }
+      ]
+    } as ConfigInfo
+    const eventName = EventName.PULL_REQUEST_TARGET
     const title = 'title! - pr'
     const comment = 'comment! -pr - docs'
 
@@ -141,7 +202,7 @@ describe('getLables() - Unit Test', () => {
         {
           label: 'documentation',
           regexs: ['/docs/'],
-          events: new Set([EventName.ISSUES]),
+          events: new Set([FilterEvent.ISSUES]),
           targets: new Set([FilterTarget.TITLE, FilterTarget.COMMENT])
         }
       ]
@@ -202,7 +263,7 @@ describe('getLables() - Unit Test', () => {
         {
           label: 'documentation',
           regexs: ['/docs/'],
-          events: new Set([EventName.ISSUES, EventName.PULL_REQUEST]),
+          events: new Set([FilterEvent.ISSUES, FilterEvent.PULL_REQUEST]),
           targets: new Set([FilterTarget.TITLE])
         }
       ]
@@ -263,7 +324,7 @@ describe('getLables() - Unit Test', () => {
         {
           label: 'documentation',
           regexs: ['/docs/'],
-          events: new Set([EventName.ISSUES, EventName.PULL_REQUEST]),
+          events: new Set([FilterEvent.ISSUES, FilterEvent.PULL_REQUEST]),
           targets: new Set([FilterTarget.COMMENT])
         }
       ]
@@ -324,7 +385,7 @@ describe('getLables() - Unit Test', () => {
         {
           label: 'documentation',
           regexs: ['/docs/'],
-          events: new Set([EventName.ISSUES, EventName.PULL_REQUEST]),
+          events: new Set([FilterEvent.ISSUES, FilterEvent.PULL_REQUEST]),
           targets: new Set([FilterTarget.TITLE])
         }
       ]
@@ -387,7 +448,7 @@ describe('getLables() - Unit Test', () => {
           regexs: [
             '/Whether Braking Changes(\\s)*Does this PR contain breaking changes\\?(\\s)*- \\[(X|x)\\] Yes/i'
           ],
-          events: new Set([EventName.ISSUES]),
+          events: new Set([FilterEvent.ISSUES]),
           targets: new Set([FilterTarget.COMMENT])
         }
       ]
@@ -454,7 +515,7 @@ describe('getLables() - Unit Test', () => {
         {
           label: 'feat',
           regexs: ['/- \\[(X|x)\\] New feature\\b/m'],
-          events: new Set([EventName.PULL_REQUEST]),
+          events: new Set([FilterEvent.PULL_REQUEST]),
           targets: new Set([FilterTarget.COMMENT])
         }
       ]

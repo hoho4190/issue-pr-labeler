@@ -10,12 +10,14 @@ const enum SenderType {
 // eslint-disable-next-line no-shadow
 const enum EventName {
   ISSUES = 'issues',
-  PULL_REQUEST = 'pull_request'
+  PULL_REQUEST = 'pull_request',
+  PULL_REQUEST_TARGET = 'pull_request_target'
 }
 
 // eslint-disable-next-line no-shadow
 const enum EventType {
-  OPENED = 'opened'
+  OPENED = 'opened',
+  REOPENED = 'reopened'
 }
 
 class Context {

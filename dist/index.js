@@ -246,12 +246,15 @@ class LabelService {
     getLables(title, comment, filters) {
         const labels = new Set();
         try {
+            const currentEvent = this.context.eventName === "issues" /* EventName.ISSUES */
+                ? "issues" /* FilterEvent.ISSUES */
+                : "pull_request" /* FilterEvent.PULL_REQUEST */;
             for (const filter of filters) {
                 // If already exists in the labels to be added
                 if (labels.has(filter.label))
                     continue;
                 // If is not a set event
-                if (!filter.events.has(this.context.eventName))
+                if (!filter.events.has(currentEvent))
                     continue;
                 for (const regStr of filter.regexs) {
                     const reg = util.convertToRegExp(regStr);
@@ -372,12 +375,14 @@ function run() {
 }
 function checkEventValues(context) {
     if (context.eventName !== "issues" /* EventName.ISSUES */ &&
-        context.eventName !== "pull_request" /* EventName.PULL_REQUEST */) {
-        core.warning(`Supports only "issue" and "pull_request": current event = ${context.eventName}`);
+        context.eventName !== "pull_request" /* EventName.PULL_REQUEST */ &&
+        context.eventName !== "pull_request_target" /* EventName.PULL_REQUEST_TARGET */) {
+        core.warning(`Supports only "issue, pull_request, pull_request_target": current event = ${context.eventName}`);
         return false;
     }
-    if (context.eventType !== "opened" /* EventType.OPENED */) {
-        core.warning(`Supports only "opened": current type = ${context.eventType}`);
+    if (context.eventType !== "opened" /* EventType.OPENED */ &&
+        context.eventType !== "reopened" /* EventType.REOPENED */) {
+        core.warning(`Supports only "opened, reopened": current type = ${context.eventType}`);
         return false;
     }
     if (context.senderType == null) {
@@ -419,13 +424,14 @@ function convertToConfigInfo(data) {
         const filterTargets = new Set();
         if (filter.events !== undefined) {
             for (const event of new Set(filter.events)) {
-                if (event === "issues" /* EventName.ISSUES */ || event === "pull_request" /* EventName.PULL_REQUEST */) {
+                if (event === "issues" /* FilterEvent.ISSUES */ ||
+                    event === "pull_request" /* FilterEvent.PULL_REQUEST */) {
                     filterEvents.add(event);
                 }
             }
         }
         if (filterEvents.size === 0) {
-            filterEvents.add("issues" /* EventName.ISSUES */).add("pull_request" /* EventName.PULL_REQUEST */);
+            filterEvents.add("issues" /* FilterEvent.ISSUES */).add("pull_request" /* FilterEvent.PULL_REQUEST */);
         }
         if (filter.targets !== undefined) {
             for (const target of new Set(filter.targets)) {

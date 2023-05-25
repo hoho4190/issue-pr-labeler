@@ -3,6 +3,7 @@ import {beforeEach, describe, expect, jest, test} from '@jest/globals'
 import {Context, EventName, EventType, SenderType} from '../src/classes/context'
 import {checkEventValues} from '../src/main'
 
+// TODO dist
 describe('checkEventValues() - Unit Test', () => {
   let context: Context
 
