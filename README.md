@@ -41,12 +41,12 @@ filters:
 
 #### Properties
 
-| Key       | Type           | Value                       | Description                                                                                    |
-| --------- | -------------- | --------------------------- | ---------------------------------------------------------------------------------------------- |
-| `label`   | `String`       | label name                  | - Required<br>- Label name to be added                                                         |
-| `regexs`  | `List<String>` | regular expression          | - Required<br>- List of regular expressions to filter<br>- Syntax: `/pattern/modifier(s)`      |
-| `events`  | `List<Event>`  | `issues`<br> `pull_request` | - Optional<br>- List of events to filter on when opened<br>- Default: `[issues, pull_request]` |
-| `targets` | `List<Target>` | `title`<br> `comment`       | - Optional<br>- target to filter<br>- Default: `[title, comment]`                              |
+| Key       | Type           | Value                       | Description                                                                               |
+| --------- | -------------- | --------------------------- | ----------------------------------------------------------------------------------------- |
+| `label`   | `String`       | label name                  | - Required<br>- Label name to be added                                                    |
+| `regexs`  | `List<String>` | regular expression          | - Required<br>- List of regular expressions to filter<br>- Syntax: `/pattern/modifier(s)` |
+| `events`  | `List<Event>`  | `issues`<br> `pull_request` | - Optional<br>- List of events to filter<br>- Default: `[issues, pull_request]`           |
+| `targets` | `List<Target>` | `title`<br> `comment`       | - Optional<br>- List of target to filter<br>- Default: `[title, comment]`                 |
 
 > `regexs` property
 >
@@ -75,6 +75,7 @@ on:
   issues:
     types:
       - opened
+      - edited
   pull_request: # or pull_request_target
     types:
       - opened
@@ -99,9 +100,9 @@ jobs:
 ```
 
 - Available events: `issues`, `pull_request`, `pull_request_target`
-- Available types: `opened`, `reopened`
+- Use the `pull_request_target` event to allow labelers to work even when you open a pull request from a forked repository to an upstream repository.
 
-> If it is not an available event and type, the workflow will display a warning message, but will result in a `Success` status. Not a `Failure` state.
+> If it is not an available event, the workflow will display a warning message, but will result in a `Success` status. Not a `Failure` state.
 
 #### Input
 

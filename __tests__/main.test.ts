@@ -1,6 +1,6 @@
 import * as core from '@actions/core'
 import {beforeEach, describe, expect, jest, test} from '@jest/globals'
-import {Context, EventName, EventType, SenderType} from '../src/classes/context'
+import {Context, EventName, SenderType} from '../src/classes/context'
 import {checkEventValues} from '../src/main'
 
 // TODO dist
@@ -16,7 +16,7 @@ describe('checkEventValues() - Unit Test', () => {
       sha: '',
       senderType: SenderType.USER,
       eventName: EventName.ISSUES,
-      eventType: EventType.OPENED,
+      eventType: 'opened',
       eventNumber: 1,
       isDisableBot: true,
       configFilePath: ''

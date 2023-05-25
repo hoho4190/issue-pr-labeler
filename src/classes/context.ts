@@ -14,12 +14,6 @@ const enum EventName {
   PULL_REQUEST_TARGET = 'pull_request_target'
 }
 
-// eslint-disable-next-line no-shadow
-const enum EventType {
-  OPENED = 'opened',
-  REOPENED = 'reopened'
-}
-
 class Context {
   githubEventPath: string
   token: string
@@ -28,7 +22,7 @@ class Context {
   sha: string
   senderType?: SenderType
   eventName: EventName
-  eventType?: EventType
+  eventType?: string
   eventNumber?: number
   isDisableBot: boolean
   configFilePath: string
@@ -49,7 +43,7 @@ class Context {
     } else if (github.context.payload.pull_request != null) {
       this.eventNumber = github.context.payload.pull_request.number
     }
-    this.eventType = github.context.payload.action as EventType
+    this.eventType = github.context.payload.action
 
     printLog(this)
     // printGithubLog()
@@ -92,4 +86,4 @@ function printLog(context: Context): void {
   debug(`configFilePath = ${context.configFilePath}`)
 }
 
-export {Context, SenderType, EventName, EventType}
+export {Context, SenderType, EventName}
