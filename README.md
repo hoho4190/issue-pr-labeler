@@ -100,7 +100,7 @@ jobs:
 ```
 
 - Available events: `issues`, `pull_request`, `pull_request_target`
-- Use the `pull_request_target` event to allow labelers to work even when you open a pull request from a forked repository to an upstream repository.
+- Use the `pull_request_target` event to allow Labeler to work even when you open a pull request from a forked repository to an upstream repository.
 
 > If it is not an available event, the workflow will display a warning message, but will result in a `Success` status. Not a `Failure` state.
 
