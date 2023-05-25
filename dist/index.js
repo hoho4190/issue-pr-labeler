@@ -380,9 +380,8 @@ function checkEventValues(context) {
         core.warning(`Supports only "issue, pull_request, pull_request_target": current event = ${context.eventName}`);
         return false;
     }
-    if (context.eventType !== "opened" /* EventType.OPENED */ &&
-        context.eventType !== "reopened" /* EventType.REOPENED */) {
-        core.warning(`Supports only "opened, reopened": current type = ${context.eventType}`);
+    if (context.eventType == null) {
+        core.warning('"Event type" not found');
         return false;
     }
     if (context.senderType == null) {
@@ -391,10 +390,6 @@ function checkEventValues(context) {
     else if (context.isDisableBot === true &&
         context.senderType === "Bot" /* SenderType.BOT */) {
         core.info('Passed - opened by Bot');
-        return false;
-    }
-    if (context.eventType == null) {
-        core.warning('"Event type" not found');
         return false;
     }
     if (context.eventNumber == null) {

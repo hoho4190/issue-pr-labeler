@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import {Context, EventName, EventType, SenderType} from './classes/context'
+import {Context, EventName, SenderType} from './classes/context'
 import {LabelService} from './label-service'
 
 async function run(): Promise<void> {
@@ -35,13 +35,8 @@ export function checkEventValues(context: Context): boolean {
     return false
   }
 
-  if (
-    context.eventType !== EventType.OPENED &&
-    context.eventType !== EventType.REOPENED
-  ) {
-    core.warning(
-      `Supports only "opened, reopened": current type = ${context.eventType}`
-    )
+  if (context.eventType == null) {
+    core.warning('"Event type" not found')
     return false
   }
 
@@ -52,11 +47,6 @@ export function checkEventValues(context: Context): boolean {
     context.senderType === SenderType.BOT
   ) {
     core.info('Passed - opened by Bot')
-    return false
-  }
-
-  if (context.eventType == null) {
-    core.warning('"Event type" not found')
     return false
   }
 
