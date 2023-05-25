@@ -7,7 +7,7 @@
 
 ## About
 
-Automatically add labels by filtering titles and content when **issues** and **pull requests** are **opened**.
+Automatically add labels by filtering the title and comment of **issues** and **pull requests**.
 
 <br>
 
@@ -53,27 +53,32 @@ filters:
 > Syntax: `/pattern/modifier(s)`
 >
 > - `pattern` must be written between `/` and `/`
-> - `modifier` Item is optional
+> - `modifier` is optional
 > - `modifier` values: `i`, `m`, `u`, `y`
 >
 > ex) `/bug/`, `/bug/im`, `/\bFeat\b/i`
 >
-> see: https://www.w3schools.com/jsref/jsref_obj_regexp.asp
+> References:
+>
+> - https://www.w3schools.com/jsref/jsref_obj_regexp.asp
+> - https://regex101.com
 
 <br>
 
 ### Workflow
 
 ```yaml
+# example
 name: Issue PR Labeler
 
 on:
   issues:
     types:
       - opened
-  pull_request:
+  pull_request: # or pull_request_target
     types:
       - opened
+      - reopened
 
 jobs:
   main:
@@ -93,8 +98,8 @@ jobs:
           config-file-name: labeler-config.yml
 ```
 
-- Available events: issues, pull_request
-- Available types: opened
+- Available events: `issues`, `pull_request`, `pull_request_target`
+- Available types: `opened`, `reopened`
 
 > If it is not an available event and type, the workflow will display a warning message, but will result in a `Success` status. Not a `Failure` state.
 
@@ -102,8 +107,8 @@ jobs:
 
 | Key                | Type      | Description                                                                                                                                |
 | ------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------ |
-| `token`            | `String`  | - Required<br>- Use `secrets.GITHUB_TOKEN`                                                                                                 |
-| `disable-bot`      | `Boolean` | - Optional<br> - Whether to add labels to issues and pull requests opened by bots.<br>- Default: `true`                                    |
+| `token`            | `String`  | - Required<br>- Use `${{ secrets.GITHUB_TOKEN }}`                                                                                          |
+| `disable-bot`      | `Boolean` | - Optional<br> - Whether to forbid filtering on issues and pull requests created by bots.<br>- Default: `true`                             |
 | `config-file-name` | `String`  | - Optional<br> - Configuration file(`yaml`) name.<br>- This file should be located in `.github` path. <br> - Default: `labeler-config.yml` |
 
 <br>

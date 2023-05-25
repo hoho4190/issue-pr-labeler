@@ -3,7 +3,12 @@ import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {GitHub} from '@actions/github/lib/utils'
 import * as fs from 'fs'
-import {ConfigInfo, Filter, FilterTarget} from './classes/config-info'
+import {
+  ConfigInfo,
+  Filter,
+  FilterEvent,
+  FilterTarget
+} from './classes/config-info'
 import {Context, EventName} from './classes/context'
 import * as util from './util'
 
@@ -154,12 +159,17 @@ class LabelService {
     const labels = new Set<string>()
 
     try {
+      const currentEvent =
+        this.context.eventName === EventName.ISSUES
+          ? FilterEvent.ISSUES
+          : FilterEvent.PULL_REQUEST
+
       for (const filter of filters) {
         // If already exists in the labels to be added
         if (labels.has(filter.label)) continue
 
         // If is not a set event
-        if (!filter.events.has(this.context.eventName)) continue
+        if (!filter.events.has(currentEvent)) continue
 
         for (const regStr of filter.regexs) {
           const reg = util.convertToRegExp(regStr)

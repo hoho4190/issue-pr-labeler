@@ -1,7 +1,6 @@
 import {expect, test} from '@jest/globals'
 import * as fs from 'fs'
-import {Filter, FilterTarget} from '../src/classes/config-info'
-import {EventName} from '../src/classes/context'
+import {Filter, FilterEvent, FilterTarget} from '../src/classes/config-info'
 import {convertToConfigInfo, convertToRegExp} from '../src/util'
 
 test('convertToConfigInfo() - Unit Test', () => {
@@ -14,19 +13,19 @@ test('convertToConfigInfo() - Unit Test', () => {
     new Filter(
       'enhancement',
       ['/feat/i', '/refactor/'],
-      new Set([EventName.ISSUES, EventName.PULL_REQUEST]),
+      new Set([FilterEvent.ISSUES, FilterEvent.PULL_REQUEST]),
       new Set([FilterTarget.TITLE, FilterTarget.COMMENT])
     ),
     new Filter(
       'bug',
       ['/\\bfix\\b|bug/'],
-      new Set([EventName.ISSUES, EventName.PULL_REQUEST]),
+      new Set([FilterEvent.ISSUES, FilterEvent.PULL_REQUEST]),
       new Set([FilterTarget.TITLE])
     ),
     new Filter(
       'documentation',
       ['/docs/'],
-      new Set([EventName.PULL_REQUEST]),
+      new Set([FilterEvent.PULL_REQUEST]),
       new Set([FilterTarget.TITLE, FilterTarget.COMMENT])
     )
   ].sort((a, b) => a.label.localeCompare(b.label))

@@ -26,16 +26,22 @@ async function run(): Promise<void> {
 export function checkEventValues(context: Context): boolean {
   if (
     context.eventName !== EventName.ISSUES &&
-    context.eventName !== EventName.PULL_REQUEST
+    context.eventName !== EventName.PULL_REQUEST &&
+    context.eventName !== EventName.PULL_REQUEST_TARGET
   ) {
     core.warning(
-      `Supports only "issue" and "pull_request": current event = ${context.eventName}`
+      `Supports only "issue, pull_request, pull_request_target": current event = ${context.eventName}`
     )
     return false
   }
 
-  if (context.eventType !== EventType.OPENED) {
-    core.warning(`Supports only "opened": current type = ${context.eventType}`)
+  if (
+    context.eventType !== EventType.OPENED &&
+    context.eventType !== EventType.REOPENED
+  ) {
+    core.warning(
+      `Supports only "opened, reopened": current type = ${context.eventType}`
+    )
     return false
   }
 

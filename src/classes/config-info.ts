@@ -1,4 +1,8 @@
-import {EventName} from './context'
+// eslint-disable-next-line no-shadow
+export const enum FilterEvent {
+  ISSUES = 'issues',
+  PULL_REQUEST = 'pull_request'
+}
 
 // eslint-disable-next-line no-shadow
 export const enum FilterTarget {
@@ -17,13 +21,13 @@ export class ConfigInfo {
 export class Filter {
   label: string
   regexs: string[]
-  events: Set<EventName>
+  events: Set<FilterEvent>
   targets: Set<FilterTarget>
 
   constructor(
     label: string,
     regexs: string[],
-    events: Set<EventName>,
+    events: Set<FilterEvent>,
     targets: Set<FilterTarget>
   ) {
     this.label = label
