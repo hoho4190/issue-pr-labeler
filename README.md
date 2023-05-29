@@ -20,15 +20,15 @@ Create `.github/labeler-config.yml` file.
 ```yaml
 # example
 filters:
-  - label: enhancement
+  - label: feat
     regexs:
-      - /feat/i
-      - /refactor/
+      - /\bfeat\b/
+      - /feature/i
     events: [issues, pull_request]
     targets: [title, comment]
   - label: bug
     regexs:
-      - /\bfix\b|bug/
+      - /fix|bug/
     targets: [title]
   - label: documentation
     regexs:
@@ -36,7 +36,7 @@ filters:
     events: [pull_request]
   - label: chore
     regexs:
-      - /chore/
+      - /\bchore(\(.*\))?:/i
 ```
 
 #### Properties
@@ -95,8 +95,8 @@ jobs:
         uses: hoho4190/issue-pr-labeler@v1
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          disable-bot: true
-          config-file-name: labeler-config.yml
+#          disable-bot: true
+#          config-file-name: labeler-config.yml
 ```
 
 - Available events: `issues`, `pull_request`, `pull_request_target`

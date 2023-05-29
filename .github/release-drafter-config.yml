@@ -15,6 +15,7 @@ categories:
       - 'build'
       - 'style'
       - 'chore'
+      - 'dependencies'
   - title: '📄 Documentation'
     label: 
       - 'docs'
