@@ -4,6 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)
 [![npm Build](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhoho4190%2Fissue-pr-labeler&count_bg=%2333CA56&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://github.com/hoho4190/issue-pr-labeler)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhoho4190%2Fissue-pr-labeler.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhoho4190%2Fissue-pr-labeler?ref=badge_shield)
 
 ## About
 
@@ -117,3 +118,6 @@ jobs:
 ## License
 
 The scripts and documentation in this project are released under the [MIT License](LICENSE)
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fhoho4190%2Fissue-pr-labeler.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fhoho4190%2Fissue-pr-labeler?ref=badge_large)
