@@ -4,7 +4,7 @@ on: # rebuild any PRs and main branch changes
   push:
     branches:
       - main
-      - 'release/*'
+      # - 'release/*'
 
 jobs:
   npm-build: # make sure build/ci work properly
@@ -17,3 +17,6 @@ jobs:
           npm install
       - run: |
           npm run all
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
