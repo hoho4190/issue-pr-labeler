@@ -4,6 +4,7 @@
 ![GitHub](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)
 [![npm Build](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml)
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhoho4190%2Fissue-pr-labeler&count_bg=%2333CA56&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://github.com/hoho4190/issue-pr-labeler)
+[![codecov](https://codecov.io/gh/hoho4190/issue-pr-labeler/branch/main/graph/badge.svg?token=CWCCAKBJQY)](https://codecov.io/gh/hoho4190/issue-pr-labeler)
 
 ## About
 
