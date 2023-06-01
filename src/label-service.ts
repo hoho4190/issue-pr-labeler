@@ -1,6 +1,4 @@
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import * as core from '@actions/core'
-import * as github from '@actions/github'
 import {GitHub} from '@actions/github/lib/utils'
 import * as fs from 'fs'
 import {
@@ -18,16 +16,20 @@ class LabelService {
   private context: Context
   private octokit: InstanceType<typeof GitHub>
 
-  private constructor(context: Context) {
+  private constructor(context: Context, octokit: InstanceType<typeof GitHub>) {
     this.context = context
-    this.octokit = github.getOctokit(context.token)
+    this.octokit = octokit
   }
 
-  static getInstance(context: Context): LabelService {
+  static getInstance(
+    context: Context,
+    octokit: InstanceType<typeof GitHub>
+  ): LabelService {
     if (!LabelService.instance) {
-      LabelService.instance = new LabelService(context)
+      LabelService.instance = new LabelService(context, octokit)
     } else {
       this.instance.context = context
+      this.instance.octokit = octokit
     }
 
     return LabelService.instance
@@ -63,14 +65,14 @@ class LabelService {
           await this.addIssueLabels(
             this.context.owner,
             this.context.repo,
-            this.context.eventNumber!,
+            this.context.eventNumber,
             labels
           )
         } else {
           await this.addPRLabels(
             this.context.owner,
             this.context.repo,
-            this.context.eventNumber!,
+            this.context.eventNumber,
             labels
           )
         }
@@ -99,15 +101,16 @@ class LabelService {
       })
 
       if (res.status !== 200) {
-        core.error(`Failed to load content: status = ${res.status}`)
-        throw new Error()
+        throw new Error(`status = ${res.status}`)
       }
 
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const data = res.data as any
       result = Buffer.from(data.content, data.encoding).toString()
     } catch (error) {
-      throw new Error(`Failed to load configuration file`)
+      if (error instanceof Error) {
+        throw new Error(`Failed to load configuration file: ${error.message}`)
+      }
     }
 
     return result
@@ -135,11 +138,11 @@ class LabelService {
       if (this.context.eventName === EventName.ISSUES) {
         title = event.issue.title
         // comment = event.issue.body
-        comment = github.context.payload.issue?.body
+        comment = this.context.githubContext.payload.issue?.body
       } else {
         title = event.pull_request.title
         // comment = event.issue.body
-        comment = github.context.payload.pull_request?.body
+        comment = this.context.githubContext.payload.pull_request?.body
       }
 
       core.debug(`title = ${title}`)
@@ -194,8 +197,6 @@ class LabelService {
     } catch (error) {
       if (error instanceof Error) {
         throw new Error(`Failed to filter label: ${error.message}`)
-      } else {
-        throw new Error(`Failed to filter label`)
       }
     }
 

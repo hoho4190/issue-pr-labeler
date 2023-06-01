@@ -1,9 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import {
-  afterAll,
   afterEach,
-  beforeAll,
   beforeEach,
   describe,
   expect,
@@ -11,44 +9,20 @@ import {
   test
 } from '@jest/globals'
 import {Context} from '../../src/classes/context'
-
-const originalGitHubEventPath = process.env['GITHUB_EVENT_PATH']
+import {InputInfo} from '../../src/classes/input-info'
 
 describe('constructor() - Unit Test', () => {
-  // Inputs for mock @actions/core
-  let inputs = {} as any
+  const inputInfo = new InputInfo(
+    'event.json',
+    'mock-token',
+    true,
+    'labeler-config.yml'
+  )
 
   // Shallow clone original @actions/github context
   let originalContext = {...github.context}
 
-  beforeAll(() => {
-    // process
-    process.env['GITHUB_EVENT_PATH'] = 'event.json'
-  })
-
-  afterAll(() => {
-    // Restore
-    delete process.env['GITHUB_EVENT_PATH']
-    if (originalGitHubEventPath) {
-      process.env['GITHUB_EVENT_PATH'] = originalGitHubEventPath
-    }
-  })
-
   beforeEach(() => {
-    inputs = {
-      token: 'mock-token',
-      'disable-bot': 'true',
-      'config-file-name': 'labeler-config.yml'
-    }
-
-    // Mock
-    jest.spyOn(core, 'getInput').mockImplementation((name: string) => {
-      return inputs[name]
-    })
-    jest.spyOn(core, 'getBooleanInput').mockImplementation((name: string) => {
-      return inputs[name]
-    })
-
     // Mock error/warning/info/debug
     jest.spyOn(core, 'error').mockImplementation(jest.fn())
     jest.spyOn(core, 'warning').mockImplementation(jest.fn())
@@ -64,11 +38,10 @@ describe('constructor() - Unit Test', () => {
     github.context.eventName = originalContext.eventName
 
     // Restore
-    inputs = {} as any
     jest.restoreAllMocks()
   })
 
-  test('성공 - issues', () => {
+  test('정상: issues', () => {
     // given
     const repoGetFunc = jest
       .spyOn(github.context, 'repo', 'get')
@@ -89,28 +62,29 @@ describe('constructor() - Unit Test', () => {
       key: 'key',
       number: 1
     }
+    github.context.payload.pull_request = undefined
     github.context.ref = 'refs/heads/mock-ref'
 
     // when
-    const result = new Context()
+    const result = new Context(inputInfo, github.context)
 
     // then
     expect(repoGetFunc).toBeCalledTimes(2)
-    expect(result.githubEventPath).toBe(process.env['GITHUB_EVENT_PATH'])
-    expect(result.token).toBe(inputs.token)
+    expect(result.githubEventPath).toBe(inputInfo.githubEventPath)
+    expect(result.token).toBe(inputInfo.token)
     expect(result.owner).toBe(github.context.repo.owner)
     expect(result.repo).toBe(github.context.repo.repo)
     expect(result.sha).toBe(github.context.sha)
     expect(result.eventName).toBe(github.context.eventName)
-    expect(result.isDisableBot).toBe(inputs['disable-bot'])
-    expect(result.configFilePath).toBe(`.github/${inputs['config-file-name']}`)
+    expect(result.isDisableBot).toBe(inputInfo.disableBot)
+    expect(result.configFilePath).toBe(`.github/${inputInfo.configFileName}`)
 
     expect(result.senderType).toBe(github.context.payload.sender?.type)
     expect(result.eventNumber).toBe(github.context.payload.issue?.number)
     expect(result.eventType).toBe(github.context.payload.action)
   })
 
-  test('성공 - pr', () => {
+  test('정상: pr', () => {
     // given
     const repoGetFunc = jest
       .spyOn(github.context, 'repo', 'get')
@@ -127,6 +101,7 @@ describe('constructor() - Unit Test', () => {
       type: 'User'
     }
     github.context.payload.action = 'opened'
+    github.context.payload.issue = undefined
     github.context.payload.pull_request = {
       key: 'key',
       number: 1
@@ -134,21 +109,45 @@ describe('constructor() - Unit Test', () => {
     github.context.ref = 'refs/heads/mock-ref'
 
     // when
-    const result = new Context()
+    const result = new Context(inputInfo, github.context)
 
     // then
     expect(repoGetFunc).toBeCalledTimes(2)
-    expect(result.githubEventPath).toBe(process.env['GITHUB_EVENT_PATH'])
-    expect(result.token).toBe(inputs.token)
+    expect(result.githubEventPath).toBe(inputInfo.githubEventPath)
+    expect(result.token).toBe(inputInfo.token)
     expect(result.owner).toBe(github.context.repo.owner)
     expect(result.repo).toBe(github.context.repo.repo)
     expect(result.sha).toBe(github.context.sha)
     expect(result.eventName).toBe(github.context.eventName)
-    expect(result.isDisableBot).toBe(inputs['disable-bot'])
-    expect(result.configFilePath).toBe(`.github/${inputs['config-file-name']}`)
+    expect(result.isDisableBot).toBe(inputInfo.disableBot)
+    expect(result.configFilePath).toBe(`.github/${inputInfo.configFileName}`)
 
     expect(result.senderType).toBe(github.context.payload.sender?.type)
     expect(result.eventNumber).toBe(github.context.payload.pull_request?.number)
     expect(result.eventType).toBe(github.context.payload.action)
+  })
+
+  test('예외: 페이로드에 issue, pull_request 값 없음', () => {
+    // given
+    jest.spyOn(github.context, 'repo', 'get').mockImplementation(() => {
+      return {
+        owner: 'mock-owner',
+        repo: 'moock-repo'
+      }
+    })
+    github.context.sha = '1234567890123456789012345678901234567890'
+    github.context.payload.sender = undefined
+    github.context.payload.action = 'edited'
+    github.context.payload.issue = undefined
+    github.context.payload.pull_request = undefined
+    github.context.ref = 'refs/heads/mock-ref'
+
+    // when
+    const result = () => new Context(inputInfo, github.context)
+
+    // then
+    expect(result).toThrowError(
+      'The payload must be an issue or pull_request value'
+    )
   })
 })

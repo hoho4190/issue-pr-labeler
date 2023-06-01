@@ -1,4 +1,4 @@
-import {expect, test} from '@jest/globals'
+import {describe, expect, test} from '@jest/globals'
 import * as fs from 'fs'
 import {Filter, FilterEvent, FilterTarget} from '../src/classes/config-info'
 import {convertToConfigInfo, convertToRegExp} from '../src/util'
@@ -39,7 +39,6 @@ test('convertToConfigInfo() - Unit Test', () => {
   // then
   expect(filters.length).toBe(3)
   for (const i in filters) {
-    // console.log(filters[i])
     expect(filters[i].label).toBe(expectedFilters[i].label)
     expect(filters[i].regexs).toStrictEqual(expectedFilters[i].regexs)
     expect(filters[i].events).toStrictEqual(expectedFilters[i].events)
@@ -47,16 +46,31 @@ test('convertToConfigInfo() - Unit Test', () => {
   }
 })
 
-test('convertToRegExp() - Unit Test', () => {
-  // given
-  const pattern = '\\bstr\\b'
-  const modifiers = 'im'
-  const regStr = `/${pattern}/${modifiers}`
+describe('convertToRegExp() - Unit Test', () => {
+  test('정상', () => {
+    // given
+    const pattern = '\\bstr\\b'
+    const modifiers = 'im'
+    const regStr = `/${pattern}/${modifiers}`
 
-  // when
-  const reg = convertToRegExp(regStr)
+    // when
+    const reg = convertToRegExp(regStr)
 
-  // then
-  expect(reg.source).toEqual(pattern)
-  expect(reg.flags).toEqual(modifiers)
+    // then
+    expect(reg.source).toEqual(pattern)
+    expect(reg.flags).toEqual(modifiers)
+  })
+
+  test('예외: 잘못된 정규식', () => {
+    // given
+    const pattern = '\\bstr\\b'
+    const modifiers = 'abc'
+    const regStr = `/${pattern}/${modifiers}`
+
+    // when
+    const result = () => convertToRegExp(regStr)
+
+    // then
+    expect(result).toThrowError(`invalid regular expression: ${regStr}`)
+  })
 })
