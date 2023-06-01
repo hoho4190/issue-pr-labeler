@@ -2,93 +2,94 @@ require('./sourcemap-register.js');/******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 8717:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
 
-var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    var desc = Object.getOwnPropertyDescriptor(m, k);
-    if (!desc || ("get" in desc ? !m.__esModule : desc.writable || desc.configurable)) {
-      desc = { enumerable: true, get: function() { return m[k]; } };
-    }
-    Object.defineProperty(o, k2, desc);
-}) : (function(o, m, k, k2) {
-    if (k2 === undefined) k2 = k;
-    o[k2] = m[k];
-}));
-var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
-    Object.defineProperty(o, "default", { enumerable: true, value: v });
-}) : function(o, v) {
-    o["default"] = v;
-});
-var __importStar = (this && this.__importStar) || function (mod) {
-    if (mod && mod.__esModule) return mod;
-    var result = {};
-    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
-    __setModuleDefault(result, mod);
-    return result;
-};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Context = void 0;
 const core_1 = __nccwpck_require__(2186);
-const github = __importStar(__nccwpck_require__(5438));
 class Context {
-    constructor() {
+    constructor(inputInfo, githubContext) {
         var _a;
-        this.githubEventPath = process.env['GITHUB_EVENT_PATH'];
-        this.token = (0, core_1.getInput)('token', { required: true });
-        this.owner = github.context.repo.owner;
-        this.repo = github.context.repo.repo;
-        this.sha = github.context.sha;
-        this.eventName = github.context.eventName;
-        this.isDisableBot = (0, core_1.getBooleanInput)('disable-bot');
-        this.configFilePath = `.github/${(0, core_1.getInput)('config-file-name')}`;
-        this.senderType = (_a = github.context.payload.sender) === null || _a === void 0 ? void 0 : _a.type;
-        if (github.context.payload.issue != null) {
-            this.eventNumber = github.context.payload.issue.number;
+        this.githubContext = githubContext;
+        this.githubEventPath = inputInfo.githubEventPath;
+        this.token = inputInfo.token;
+        this.owner = githubContext.repo.owner;
+        this.repo = githubContext.repo.repo;
+        this.sha = githubContext.sha;
+        this.eventName = githubContext.eventName;
+        this.isDisableBot = inputInfo.disableBot;
+        this.configFilePath = `.github/${inputInfo.configFileName}`;
+        this.senderType = (_a = githubContext.payload.sender) === null || _a === void 0 ? void 0 : _a.type;
+        if (githubContext.payload.issue != null) {
+            this.eventNumber = githubContext.payload.issue.number;
         }
-        else if (github.context.payload.pull_request != null) {
-            this.eventNumber = github.context.payload.pull_request.number;
+        else if (githubContext.payload.pull_request != null) {
+            this.eventNumber = githubContext.payload.pull_request.number;
         }
-        this.eventType = github.context.payload.action;
-        printLog(this);
-        // printGithubLog()
+        else {
+            throw new Error('The payload must be an issue or pull_request value');
+        }
+        this.eventType = githubContext.payload.action;
+        (0, core_1.debug)('== Github Context ==');
+        this.printGithubContext();
+        (0, core_1.debug)('== Service Context ==');
+        this.printServiceContext();
+    }
+    printGithubContext() {
+        var _a, _b;
+        (0, core_1.debug)(`context.eventName = ${this.githubContext.eventName}`);
+        // debug(`context.sha = ${this.githubContext.sha}`)
+        (0, core_1.debug)(`context.ref = ${this.githubContext.ref}`);
+        (0, core_1.debug)(`context.workflow = ${this.githubContext.workflow}`);
+        (0, core_1.debug)(`context.action = ${this.githubContext.action}`);
+        (0, core_1.debug)(`context.actor = ${this.githubContext.actor}`);
+        (0, core_1.debug)(`context.job = ${this.githubContext.job}`);
+        (0, core_1.debug)(`context.runNumber = ${this.githubContext.runNumber}`);
+        (0, core_1.debug)(`context.runId = ${this.githubContext.runId}`);
+        (0, core_1.debug)(`context.apiUrl = ${this.githubContext.apiUrl}`);
+        (0, core_1.debug)(`context.serverUrl = ${this.githubContext.serverUrl}`);
+        (0, core_1.debug)(`context.graphqlUrl = ${this.githubContext.graphqlUrl}`);
+        (0, core_1.debug)(`payload.action = ${this.githubContext.payload.action}`);
+        (0, core_1.debug)(`payload.issue.number = ${(_a = this.githubContext.payload.issue) === null || _a === void 0 ? void 0 : _a.number}`);
+        (0, core_1.debug)(`payload.pull_request.number = ${(_b = this.githubContext.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`);
+    }
+    printServiceContext() {
+        (0, core_1.debug)(`githubEventPath = ${this.githubEventPath}`);
+        (0, core_1.debug)(`token = ${this.token}`);
+        (0, core_1.debug)(`owner = ${this.owner}`);
+        (0, core_1.debug)(`repo = ${this.repo}`);
+        // debug(`sha = ${this.sha}`)
+        (0, core_1.debug)(`senderType = ${this.senderType}`);
+        (0, core_1.debug)(`eventName = ${this.eventName}`);
+        (0, core_1.debug)(`eventType = ${this.eventType}`);
+        (0, core_1.debug)(`eventNumber = ${this.eventNumber}`);
+        (0, core_1.debug)(`isDisableBot = ${this.isDisableBot}`);
+        (0, core_1.debug)(`configFilePath = ${this.configFilePath}`);
     }
 }
 exports.Context = Context;
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-function printGithubLog() {
-    var _a, _b;
-    (0, core_1.debug)(`context.eventName = ${github.context.eventName}`);
-    // debug(`context.sha = ${github.context.sha}`)
-    (0, core_1.debug)(`context.ref = ${github.context.ref}`);
-    (0, core_1.debug)(`context.workflow = ${github.context.workflow}`);
-    (0, core_1.debug)(`context.action = ${github.context.action}`);
-    (0, core_1.debug)(`context.actor = ${github.context.actor}`);
-    (0, core_1.debug)(`context.job = ${github.context.job}`);
-    (0, core_1.debug)(`context.runNumber = ${github.context.runNumber}`);
-    (0, core_1.debug)(`context.runId = ${github.context.runId}`);
-    (0, core_1.debug)(`context.apiUrl = ${github.context.apiUrl}`);
-    (0, core_1.debug)(`context.serverUrl = ${github.context.serverUrl}`);
-    (0, core_1.debug)(`context.graphqlUrl = ${github.context.graphqlUrl}`);
-    (0, core_1.debug)(`payload.action = ${github.context.payload.action}`);
-    (0, core_1.debug)(`payload.issue.number = ${(_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.number}`);
-    (0, core_1.debug)(`payload.pull_request.number = ${(_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.number}`);
+
+
+/***/ }),
+
+/***/ 5742:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.InputInfo = void 0;
+class InputInfo {
+    constructor(githubEventPath, token, disableBot, configFileName) {
+        this.githubEventPath = githubEventPath;
+        this.token = token;
+        this.disableBot = disableBot;
+        this.configFileName = configFileName;
+    }
 }
-function printLog(context) {
-    (0, core_1.debug)(`githubEventPath = ${context.githubEventPath}`);
-    (0, core_1.debug)(`token = ${context.token}`);
-    (0, core_1.debug)(`owner = ${context.owner}`);
-    (0, core_1.debug)(`repo = ${context.repo}`);
-    // debug(`sha = ${context.sha}`)
-    (0, core_1.debug)(`senderType = ${context.senderType}`);
-    (0, core_1.debug)(`eventName = ${context.eventName}`);
-    (0, core_1.debug)(`eventType = ${context.eventType}`);
-    (0, core_1.debug)(`eventNumber = ${context.eventNumber}`);
-    (0, core_1.debug)(`isDisableBot = ${context.isDisableBot}`);
-    (0, core_1.debug)(`configFilePath = ${context.configFilePath}`);
-}
+exports.InputInfo = InputInfo;
 
 
 /***/ }),
@@ -132,22 +133,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.LabelService = void 0;
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
 const core = __importStar(__nccwpck_require__(2186));
-const github = __importStar(__nccwpck_require__(5438));
 const fs = __importStar(__nccwpck_require__(7147));
 const util = __importStar(__nccwpck_require__(4024));
 class LabelService {
-    constructor(context) {
+    constructor(context, octokit) {
         this.context = context;
-        this.octokit = github.getOctokit(context.token);
+        this.octokit = octokit;
     }
-    static getInstance(context) {
+    static getInstance(context, octokit) {
         if (!LabelService.instance) {
-            LabelService.instance = new LabelService(context);
+            LabelService.instance = new LabelService(context, octokit);
         }
         else {
             this.instance.context = context;
+            this.instance.octokit = octokit;
         }
         return LabelService.instance;
     }
@@ -196,15 +196,16 @@ class LabelService {
                     path
                 });
                 if (res.status !== 200) {
-                    core.error(`Failed to load content: status = ${res.status}`);
-                    throw new Error();
+                    throw new Error(`status = ${res.status}`);
                 }
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const data = res.data;
                 result = Buffer.from(data.content, data.encoding).toString();
             }
             catch (error) {
-                throw new Error(`Failed to load configuration file`);
+                if (error instanceof Error) {
+                    throw new Error(`Failed to load configuration file: ${error.message}`);
+                }
             }
             return result;
         });
@@ -228,12 +229,12 @@ class LabelService {
             if (this.context.eventName === "issues" /* EventName.ISSUES */) {
                 title = event.issue.title;
                 // comment = event.issue.body
-                comment = (_a = github.context.payload.issue) === null || _a === void 0 ? void 0 : _a.body;
+                comment = (_a = this.context.githubContext.payload.issue) === null || _a === void 0 ? void 0 : _a.body;
             }
             else {
                 title = event.pull_request.title;
                 // comment = event.issue.body
-                comment = (_b = github.context.payload.pull_request) === null || _b === void 0 ? void 0 : _b.body;
+                comment = (_b = this.context.githubContext.payload.pull_request) === null || _b === void 0 ? void 0 : _b.body;
             }
             core.debug(`title = ${title}`);
             core.debug(`comment = ${comment}`);
@@ -277,9 +278,6 @@ class LabelService {
             if (error instanceof Error) {
                 throw new Error(`Failed to filter label: ${error.message}`);
             }
-            else {
-                throw new Error(`Failed to filter label`);
-            }
         }
         return Array.from(labels);
     }
@@ -311,7 +309,7 @@ exports.LabelService = LabelService;
 
 /***/ }),
 
-/***/ 3109:
+/***/ 5272:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -349,18 +347,21 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.checkEventValues = void 0;
+exports.run = void 0;
 const core = __importStar(__nccwpck_require__(2186));
+const github = __importStar(__nccwpck_require__(5438));
 const context_1 = __nccwpck_require__(8717);
+const input_info_1 = __nccwpck_require__(5742);
 const label_service_1 = __nccwpck_require__(392);
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         try {
-            const context = new context_1.Context();
+            const inputInfo = new input_info_1.InputInfo(process.env['GITHUB_EVENT_PATH'], core.getInput('token', { required: true }), core.getBooleanInput('disable-bot'), core.getInput('config-file-name'));
+            const context = new context_1.Context(inputInfo, github.context);
             if (!checkEventValues(context)) {
                 return;
             }
-            const service = label_service_1.LabelService.getInstance(context);
+            const service = label_service_1.LabelService.getInstance(context, github.getOctokit(context.token));
             // get configuration file info
             const configInfo = yield service.getConfigInfo();
             // add labels
@@ -373,6 +374,7 @@ function run() {
         }
     });
 }
+exports.run = run;
 function checkEventValues(context) {
     if (context.eventName !== "issues" /* EventName.ISSUES */ &&
         context.eventName !== "pull_request" /* EventName.PULL_REQUEST */ &&
@@ -384,22 +386,12 @@ function checkEventValues(context) {
         core.warning('"Event type" not found');
         return false;
     }
-    if (context.senderType == null) {
-        throw new Error('"Sender type" not found');
-    }
-    else if (context.isDisableBot === true &&
-        context.senderType === "Bot" /* SenderType.BOT */) {
+    if (context.isDisableBot && context.senderType === "Bot" /* SenderType.BOT */) {
         core.info('Passed - opened by Bot');
-        return false;
-    }
-    if (context.eventNumber == null) {
-        core.warning('"Event number" not found');
         return false;
     }
     return true;
 }
-exports.checkEventValues = checkEventValues;
-run();
 
 
 /***/ }),
@@ -18638,13 +18630,19 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(3109);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const labeler_1 = __nccwpck_require__(5272);
+(0, labeler_1.run)();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
 //# sourceMappingURL=index.js.map
