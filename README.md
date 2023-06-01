@@ -51,18 +51,16 @@ filters:
 
 > `regexs` property
 >
-> Syntax: `/pattern/modifier(s)`
+> - Syntax: `/pattern/modifier(s)`
+>   - `pattern` must be written between `/` and `/`
+>   - `modifier` is optional
+>   - `modifier` values: `i`, `m`, `u`, `y`
 >
-> - `pattern` must be written between `/` and `/`
-> - `modifier` is optional
-> - `modifier` values: `i`, `m`, `u`, `y`
+> - ex) `/bug/`, `/bug/im`, `/\bFeat\b/i`
 >
-> ex) `/bug/`, `/bug/im`, `/\bFeat\b/i`
->
-> References:
->
-> - https://www.w3schools.com/jsref/jsref_obj_regexp.asp
-> - https://regex101.com
+> - References:
+>   - https://www.w3schools.com/jsref/jsref_obj_regexp.asp
+>   - https://regex101.com
 
 <br>
 
