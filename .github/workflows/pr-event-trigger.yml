@@ -23,7 +23,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
         
       - name: Assign 🙆 assignees to the PR
-        uses: toshimaru/auto-author-assign@v1.6.2
+        uses: toshimaru/auto-author-assign@v2.0.0
 
   update_release_draft:
     name: Update release draft
