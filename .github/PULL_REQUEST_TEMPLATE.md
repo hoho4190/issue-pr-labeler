@@ -40,6 +40,7 @@ Does this PR contain breaking changes?
 #### Checklist before release branch merge
 **IF NOT RELEVANT, DELETE THIS SECTION**
 - [ ] Update version - package.json, package-lock.json
+- [ ] Update README.md
 - [ ] Add version - issue templates
 
 

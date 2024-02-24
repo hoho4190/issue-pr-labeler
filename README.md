@@ -90,7 +90,7 @@ jobs:
 
     steps:
       - name: Run Issue PR Labeler
-        uses: hoho4190/issue-pr-labeler@v1
+        uses: hoho4190/issue-pr-labeler@v2.0.0
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 #          disable-bot: true
@@ -100,7 +100,6 @@ jobs:
 - Available events: `issues`, `pull_request`, `pull_request_target`
 - Use the `pull_request_target` event to allow Labeler to work even when you open a pull request from a forked repository to an upstream repository.
 
-> If it is not an available event, the workflow will display a warning message, but will result in a `Success` status. Not a `Failure` state.
 
 #### Input
 
