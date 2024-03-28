@@ -1,7 +1,7 @@
 # Issue PR Labeler
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)
-![GitHub](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)
+[![GitHub Release](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)](https://github.com/hoho4190/issue-pr-labeler/releases/latest)
+[![GitHub License](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)](https://github.com/hoho4190/issue-pr-labeler?tab=MIT-1-ov-file)
 [![npm Build](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/npm-build.yml)
 [![codecov](https://codecov.io/gh/hoho4190/issue-pr-labeler/branch/main/graph/badge.svg?token=CWCCAKBJQY)](https://codecov.io/gh/hoho4190/issue-pr-labeler)
 
