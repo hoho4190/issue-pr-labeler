@@ -144,7 +144,7 @@ describe('getConfigInfo() - Unit Test', () => {
     const result = service.getConfigInfo()
 
     // then
-    await expect(result).rejects.toThrowError(
+    await expect(result).rejects.toThrow(
       'Failed to load configuration file: status = 500'
     )
     expect(convertToConfigInfoFunc).toHaveBeenCalledTimes(0)
@@ -183,7 +183,7 @@ describe('addLabels() - Unit Test', () => {
 
     // then
     expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
-    await expect(result).rejects.toThrowError('Failed to parse event.json')
+    await expect(result).rejects.toThrow('Failed to parse event.json')
   })
 
   test('예외: getTitleComment() 에러', async () => {
@@ -215,7 +215,7 @@ describe('addLabels() - Unit Test', () => {
     // then
     expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
     expect(parseFunc).toHaveBeenCalledTimes(1)
-    await expect(result).rejects.toThrowError('Failed to get title and comment')
+    await expect(result).rejects.toThrow('Failed to get title and comment')
   })
 
   test('예외: getLables() 에러', async () => {
@@ -260,7 +260,7 @@ describe('addLabels() - Unit Test', () => {
     // then
     expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
     expect(parseFunc).toHaveBeenCalledTimes(1)
-    await expect(result).rejects.toThrowError(
+    await expect(result).rejects.toThrow(
       "Failed to filter label: Cannot read properties of undefined (reading 'has')"
     )
   })
@@ -320,7 +320,7 @@ describe('addLabels() - Unit Test', () => {
     // then
     expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
     expect(parseFunc).toHaveBeenCalledTimes(1)
-    await expect(result).rejects.toThrowError()
+    await expect(result).rejects.toThrow()
   })
 
   test('정상: labels.length === 0', async () => {

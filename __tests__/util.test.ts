@@ -71,6 +71,6 @@ describe('convertToRegExp() - Unit Test', () => {
     const result = () => convertToRegExp(regStr)
 
     // then
-    expect(result).toThrowError(`invalid regular expression: ${regStr}`)
+    expect(result).toThrow(`invalid regular expression: ${regStr}`)
   })
 })
