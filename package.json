@@ -30,6 +30,7 @@
     "yaml": "^2.8.0"
   },
   "devDependencies": {
+    "@types/jest": "^30.0.0",
     "@types/node": "^24.0.1",
     "@typescript-eslint/parser": "^8.34.1",
     "@vercel/ncc": "^0.38.3",
