@@ -146,8 +146,6 @@ describe('constructor() - Unit Test', () => {
     const result = () => new Context(inputInfo, github.context)
 
     // then
-    expect(result).toThrow(
-      'The payload must be an issue or pull_request value'
-    )
+    expect(result).toThrow('The payload must be an issue or pull_request value')
   })
 })
