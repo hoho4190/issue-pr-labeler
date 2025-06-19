@@ -119,7 +119,7 @@ describe('getConfigInfo() - Unit Test', () => {
 
     // then
     expect(result.filters.length).toBe(1)
-    expect(convertToConfigInfoFunc).toBeCalledTimes(1)
+    expect(convertToConfigInfoFunc).toHaveBeenCalledTimes(1)
   })
 
   test('예외: status !== 200', async () => {
@@ -144,10 +144,10 @@ describe('getConfigInfo() - Unit Test', () => {
     const result = service.getConfigInfo()
 
     // then
-    await expect(result).rejects.toThrowError(
+    await expect(result).rejects.toThrow(
       'Failed to load configuration file: status = 500'
     )
-    expect(convertToConfigInfoFunc).toBeCalledTimes(0)
+    expect(convertToConfigInfoFunc).toHaveBeenCalledTimes(0)
   })
 })
 
@@ -182,8 +182,8 @@ describe('addLabels() - Unit Test', () => {
     const result = service.addLabels({} as ConfigInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    await expect(result).rejects.toThrowError('Failed to parse event.json')
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    await expect(result).rejects.toThrow('Failed to parse event.json')
   })
 
   test('예외: getTitleComment() 에러', async () => {
@@ -213,9 +213,9 @@ describe('addLabels() - Unit Test', () => {
     const result = service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    await expect(result).rejects.toThrowError('Failed to get title and comment')
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    await expect(result).rejects.toThrow('Failed to get title and comment')
   })
 
   test('예외: getLables() 에러', async () => {
@@ -258,9 +258,9 @@ describe('addLabels() - Unit Test', () => {
     const result = service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    await expect(result).rejects.toThrowError(
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    await expect(result).rejects.toThrow(
       "Failed to filter label: Cannot read properties of undefined (reading 'has')"
     )
   })
@@ -318,9 +318,9 @@ describe('addLabels() - Unit Test', () => {
     const result = service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    await expect(result).rejects.toThrowError()
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    await expect(result).rejects.toThrow()
   })
 
   test('정상: labels.length === 0', async () => {
@@ -376,9 +376,9 @@ describe('addLabels() - Unit Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.length).toBe(0)
   })
 
@@ -450,9 +450,9 @@ describe('addLabels() - Unit Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -509,9 +509,9 @@ describe('addLabels() - Unit Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -577,9 +577,9 @@ describe('addLabels() - Unit Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -636,9 +636,9 @@ describe('addLabels() - Unit Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 })
@@ -715,9 +715,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -780,9 +780,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -845,9 +845,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -910,9 +910,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -975,9 +975,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -1040,9 +1040,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -1105,9 +1105,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -1178,9 +1178,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 
@@ -1249,9 +1249,9 @@ describe('fitering - Test', () => {
     const result = await service.addLabels(configInfo)
 
     // then
-    expect(readFileSyncFunc).toBeCalledTimes(1)
-    expect(parseFunc).toBeCalledTimes(1)
-    expect(infofunc).toBeCalledTimes(1)
+    expect(readFileSyncFunc).toHaveBeenCalledTimes(1)
+    expect(parseFunc).toHaveBeenCalledTimes(1)
+    expect(infofunc).toHaveBeenCalledTimes(1)
     expect(result.sort()).toEqual(expectedLabels.sort())
   })
 })

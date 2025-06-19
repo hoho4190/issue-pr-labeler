@@ -1,10 +1,8 @@
-// eslint-disable-next-line no-shadow
 export const enum FilterEvent {
   ISSUES = 'issues',
   PULL_REQUEST = 'pull_request'
 }
 
-// eslint-disable-next-line no-shadow
 export const enum FilterTarget {
   TITLE = 'title',
   COMMENT = 'comment'

@@ -69,7 +69,7 @@ describe('constructor() - Unit Test', () => {
     const result = new Context(inputInfo, github.context)
 
     // then
-    expect(repoGetFunc).toBeCalledTimes(2)
+    expect(repoGetFunc).toHaveBeenCalledTimes(2)
     expect(result.githubEventPath).toBe(inputInfo.githubEventPath)
     expect(result.token).toBe(inputInfo.token)
     expect(result.owner).toBe(github.context.repo.owner)
@@ -112,7 +112,7 @@ describe('constructor() - Unit Test', () => {
     const result = new Context(inputInfo, github.context)
 
     // then
-    expect(repoGetFunc).toBeCalledTimes(2)
+    expect(repoGetFunc).toHaveBeenCalledTimes(2)
     expect(result.githubEventPath).toBe(inputInfo.githubEventPath)
     expect(result.token).toBe(inputInfo.token)
     expect(result.owner).toBe(github.context.repo.owner)
@@ -146,8 +146,6 @@ describe('constructor() - Unit Test', () => {
     const result = () => new Context(inputInfo, github.context)
 
     // then
-    expect(result).toThrowError(
-      'The payload must be an issue or pull_request value'
-    )
+    expect(result).toThrow('The payload must be an issue or pull_request value')
   })
 })

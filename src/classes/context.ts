@@ -2,13 +2,11 @@ import {debug} from '@actions/core'
 import {Context as GithubContext} from '@actions/github/lib/context'
 import {InputInfo} from './input-info'
 
-// eslint-disable-next-line no-shadow
 const enum SenderType {
   USER = 'User',
   BOT = 'Bot'
 }
 
-// eslint-disable-next-line no-shadow
 const enum EventName {
   ISSUES = 'issues',
   PULL_REQUEST = 'pull_request',
