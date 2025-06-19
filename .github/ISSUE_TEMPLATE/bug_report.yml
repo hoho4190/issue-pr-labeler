@@ -1,7 +1,7 @@
 name: Bug Report
 description: Create a report to help us improve
-title: "[Bug]"
-labels: ["bug"]
+title: '[Bug]'
+labels: ['bug']
 assignees:
   - hoho4190
 
@@ -25,6 +25,7 @@ body:
       label: Version
       description: What version did that bug occur in?
       options:
+        - v2.0.1
         - v2.0.0
         - v1.3.3
         - v1.3.2
@@ -42,7 +43,7 @@ body:
       label: Description
     validations:
       required: true
-      
+
   - type: textarea
     id: expected-behavior
     attributes:
