@@ -97,8 +97,8 @@ describe('run() - Test', () => {
     await run()
 
     // then
-    expect(warningFunc).toBeCalledTimes(1)
-    expect(getInstanceFunc).toBeCalledTimes(0)
+    expect(warningFunc).toHaveBeenCalledTimes(1)
+    expect(getInstanceFunc).toHaveBeenCalledTimes(0)
   })
 
   test('정상: 이벤트 타입 null 경고', async () => {
@@ -124,8 +124,8 @@ describe('run() - Test', () => {
     await run()
 
     // then
-    expect(warningFunc).toBeCalledTimes(1)
-    expect(getInstanceFunc).toBeCalledTimes(0)
+    expect(warningFunc).toHaveBeenCalledTimes(1)
+    expect(getInstanceFunc).toHaveBeenCalledTimes(0)
   })
 
   test('정상: isDisableBot === true && SenderType.BOT', async () => {
@@ -153,8 +153,8 @@ describe('run() - Test', () => {
     await run()
 
     // then
-    expect(infoFunc).toBeCalledTimes(1)
-    expect(getInstanceFunc).toBeCalledTimes(0)
+    expect(infoFunc).toHaveBeenCalledTimes(1)
+    expect(getInstanceFunc).toHaveBeenCalledTimes(0)
   })
 
   test('예외', async () => {
@@ -184,8 +184,8 @@ describe('run() - Test', () => {
     await run()
 
     // then
-    expect(getInstanceFunc).toBeCalledTimes(1)
-    expect(setFailedFunc).toBeCalledTimes(1)
+    expect(getInstanceFunc).toHaveBeenCalledTimes(1)
+    expect(setFailedFunc).toHaveBeenCalledTimes(1)
   })
 
   test('정상: 정상 흐름', async () => {
@@ -218,7 +218,7 @@ describe('run() - Test', () => {
     await run()
 
     // then
-    expect(getInstanceFunc).toBeCalledTimes(1)
-    expect(setFailedFunc).toBeCalledTimes(0)
+    expect(getInstanceFunc).toHaveBeenCalledTimes(1)
+    expect(setFailedFunc).toHaveBeenCalledTimes(0)
   })
 })
