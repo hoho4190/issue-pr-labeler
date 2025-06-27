@@ -53,6 +53,6 @@ filters:
 
   - label: major
     regexs:
-      - /Whether Braking Changes(\s)*Does this PR contain breaking changes\?(\s)*- \[(X|x)\] Yes/i
+      - /Whether Breaking Changes(\s)*Does this PR contain breaking changes\?(\s)*- \[(X|x)\] Yes/i
     events: [pull_request]
     targets: [comment]
