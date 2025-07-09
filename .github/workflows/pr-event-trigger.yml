@@ -6,22 +6,6 @@ on:
       - closed
 
 jobs:
-  pr_opened:
-    name: PR opened
-    runs-on: ubuntu-latest
-    if: github.event.action == 'opened'
-
-    permissions:
-      contents: read
-      issues: write
-      pull-requests: write
-
-    steps:
-      - name: Run Issue PR Labeler
-        uses: hoho4190/issue-pr-labeler@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
   update_release_draft:
     name: Update release draft
     runs-on: ubuntu-latest
