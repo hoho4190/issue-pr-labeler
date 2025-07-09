@@ -1,0 +1,66 @@
+name: ✨ Feature request
+description: Suggest an idea for this project
+title: '[Feature] '
+labels:
+  - enhancement
+body:
+  - type: markdown
+    attributes:
+      value: "\U0001F44B Thanks for suggesting a new feature! Please fill out the form below to help us understand your idea clearly.\n"
+  - type: dropdown
+    id: version
+    attributes:
+      label: Version
+      description: What version are you currently using?
+      options:
+        - v1.0.0
+        - v0.110.52
+        - v0.110.51
+        - v0.110.5
+        - v0.12.30
+        - v0.10.0
+        - v0.3.3
+        - v0.2.0
+        - v0.1.0
+    validations:
+      required: true
+  - type: input
+    id: feature-summary
+    attributes:
+      label: Feature Summary
+      description: Briefly describe the feature you’d like to request.
+      placeholder: e.g., Add dark mode to the UI
+    validations:
+      required: true
+  - type: textarea
+    id: feature-description
+    attributes:
+      label: Description
+      description: Provide a detailed explanation of the feature and its purpose.
+      placeholder: Explain what the feature does and why it would be useful.
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Motivation
+      description: What problem does this feature solve, or what value does it provide?
+      placeholder: e.g., Improves accessibility for users in low-light environments
+    validations:
+      required: false
+  - type: textarea
+    id: alternatives-considered
+    attributes:
+      label: Alternatives Considered
+      description: Have you considered any alternative solutions or workarounds?
+      placeholder: Describe any other options you've thought about
+    validations:
+      required: false
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional Context
+      description: Add any other context, mockups, screenshots, or related links.
+      placeholder: Optional — include links, screenshots, diagrams, etc.
+    validations:
+      required: false
