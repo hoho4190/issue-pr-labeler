@@ -1,0 +1,35 @@
+# GitHub Labeler
+# https://github.com/crazy-max/ghaction-github-labeler
+
+name: 🏷️ Label Initializer
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/label-initializer-config.yml
+      - .github/workflows/label-initializer.yml
+  workflow_dispatch:
+
+jobs:
+  label-init:
+    name: Label Initialization
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      issues: write
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Initialize Label
+        uses: crazy-max/ghaction-github-labeler@v5
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          yaml-file: .github/label-initializer-config.yml
+          skip-delete: true
