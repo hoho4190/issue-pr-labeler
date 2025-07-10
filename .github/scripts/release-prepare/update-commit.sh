@@ -59,8 +59,8 @@ git_push() {
 get_tags() {
     gh release list --exclude-drafts --json tagName | jq \
         --arg d "v$RELEASE_VERSION" \
-        '. += [{ "tagName": $d }] \
-        | map(.tagName) \
+        '. += [{ "tagName": $d }] 
+        | map(.tagName) 
         | .[]' |
         sort -V -r |
         jq -s .

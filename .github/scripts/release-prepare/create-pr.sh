@@ -13,12 +13,14 @@ readonly RELEASE_TAG="${BRANCH_NAME#release/}"
 # =======================================================================
 
 # 정식 릴리스만 조회(접미사 없는 정식 태그 'vX.Y.Z'만 필터링)
-get_release_level() {
+get_latest_release_tag() {
+    set +e
     gh release list --exclude-drafts --limit 100 |
         awk '{print $1}' |
         grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' |
         sort -V |
         tail -n1
+    set -e
 }
 
 # 릴리스 타입을 판별하는 함수
@@ -29,9 +31,12 @@ determine_release_type() {
     if [[ -z "$current_tag" ]]; then
         echo "ERROR: Input required: current_tag" >&2
         exit 1
-    elif [[ -z "$latest_tag" ]]; then
-        echo "ERROR: Input required: latest_tag" >&2
-        exit 1
+    fi
+
+    # latest_tag가 없는 경우, 첫 릴리스로 간주하고 major로 설정
+    if [[ -z "$latest_tag" ]]; then
+        echo "major"
+        return 0
     fi
 
     # current_tag가 latest_tag보다 낮거나 같으면 에러를 발생시키고 종료
@@ -95,7 +100,7 @@ echo "BRANCH_NAME=$BRANCH_NAME"
 echo "RELEASE_TAG=$RELEASE_TAG"
 
 # 이전 릴리스 조회
-LATEST_TAG=$(get_release_level)
+LATEST_TAG=$(get_latest_release_tag)
 echo "Latest Official Release: $LATEST_TAG"
 
 # major, minor, patch 중 어떤 업데이트인지 판별
