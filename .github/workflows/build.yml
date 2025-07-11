@@ -18,10 +18,6 @@ jobs:
       contents: write
       pull-requests: read
 
-    outputs:
-      IS_RELEASE_BRANCH_MERGE: ${{ env.IS_RELEASE_BRANCH_MERGE }}
-      RELEASE_TAG: ${{ env.RELEASE_TAG }}
-
     steps:
       - uses: actions/checkout@v4
 
