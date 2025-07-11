@@ -1,0 +1,39 @@
+name: 🚀 Release
+
+on:
+  release:
+    types:
+      - 'released'
+
+jobs:
+  major-version-tag-update:
+    name: Major Version Tag Update
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4 # → permissions: contents: read
+
+      - name: Prepare version tags
+        run: |
+          RELEASE_TAG=${{ github.event.release.tag_name }}
+          MAJOR_TAG=$(echo "$RELEASE_TAG" | cut -d'.' -f1)
+          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
+          echo "MAJOR_TAG=$MAJOR_TAG" >> $GITHUB_ENV
+          echo "Release Tag: $RELEASE_TAG"
+          echo "Major Tag: $MAJOR_TAG"
+
+      - name: Set up Git user
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      # Create or update the major version tag
+      - name: Update and push major tag
+        # `git push` → permissions: contents: write
+        run: |
+          git tag -f "$MAJOR_TAG" "$RELEASE_TAG"
+          git push origin -f "$MAJOR_TAG"

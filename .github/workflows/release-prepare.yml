@@ -19,7 +19,6 @@ jobs:
       - uses: actions/checkout@v4 # → permissions: contents: read
         with:
           ref: ${{ github.ref }} # for `git push`
-          fetch-depth: 1
 
       - name: Update files and commit changes
         env:
