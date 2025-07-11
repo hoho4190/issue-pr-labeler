@@ -13,6 +13,7 @@ body:
       label: Version
       description: What version are you currently using?
       options:
+        - v2.0.2-test
         - v2.0.1
         - v2.0.0
         - v1.3.3
