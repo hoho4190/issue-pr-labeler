@@ -1,6 +1,6 @@
 {
   "name": "issue-pr-labeler",
-  "version": "2.0.1",
+  "version": "2.0.2-test",
   "private": true,
   "description": "Automatically add labels by filtering the title and comment of issues and pull requests.",
   "main": "lib/main.js",
