@@ -81,8 +81,6 @@ Examples:
 
 - [ ] `dist/` directory updated
 
-N/A
-
 ## Additional Notes
 
 <!--
