@@ -79,7 +79,7 @@ Examples:
 - [ ] Changelog updated
 -->
 
-N/A
+- [ ] `dist/` directory updated
 
 ## Additional Notes
 

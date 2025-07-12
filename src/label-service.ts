@@ -216,7 +216,7 @@ class LabelService {
       labels
     })
 
-    core.info(`Added labels to issue: ${labels}`)
+    core.info(`Added labels to issue: ${labels.join(', ')}`)
   }
 
   private async addPRLabels(
@@ -232,7 +232,7 @@ class LabelService {
       labels
     })
 
-    core.info(`Added labels to PR: ${labels}`)
+    core.info(`Added labels to PR: ${labels.join(', ')}`)
   }
 }
 

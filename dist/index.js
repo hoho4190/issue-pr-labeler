@@ -299,7 +299,7 @@ class LabelService {
                 issue_number: eventNumber,
                 labels
             });
-            core.info(`Added labels to issue: ${labels}`);
+            core.info(`Added labels to issue: ${labels.join(', ')}`);
         });
     }
     addPRLabels(owner, repo, eventNumber, labels) {
@@ -310,7 +310,7 @@ class LabelService {
                 issue_number: eventNumber,
                 labels
             });
-            core.info(`Added labels to PR: ${labels}`);
+            core.info(`Added labels to PR: ${labels.join(', ')}`);
         });
     }
 }
