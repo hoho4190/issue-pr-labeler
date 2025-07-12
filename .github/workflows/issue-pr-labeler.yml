@@ -1,0 +1,33 @@
+# Issue PR Labeler
+# https://github.com/hoho4190/issue-pr-labeler
+
+name: 🏷️ Issue PR Labeler
+on:
+  pull_request:
+    types:
+      - opened
+      - edited
+
+concurrency:
+  group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
+jobs:
+  pr-labeling:
+    name: PR Labeling
+
+    # exclude `release/v**` → `main` PRs
+    if: ${{ !(startsWith(github.head_ref, 'release/v') && github.base_ref == 'main') }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Run Issue PR Labeler
+        uses: hoho4190/issue-pr-labeler@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          config-file-name: issue-pr-labeler-config.yml

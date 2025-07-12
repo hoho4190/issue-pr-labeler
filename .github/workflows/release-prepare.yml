@@ -1,0 +1,39 @@
+name: ⏳ Release Preparation
+
+on:
+  create:
+
+jobs:
+  release-preparation:
+    name: Release Preparation
+
+    if: ${{ github.event.ref_type == 'branch' && startsWith(github.ref, 'refs/heads/release/v') }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v4 # → permissions: contents: read
+        with:
+          ref: ${{ github.ref }} # for `git push`
+
+      - name: Update files and commit changes
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }} # for `gh release list`
+          BRANCH_NAME: ${{ github.ref_name }}
+          GIT_AUTHOR_NAME: ${{ github.event.sender.login }}
+          GIT_AUTHOR_EMAIL: ${{ github.event.sender.email || format('{0}@users.noreply.github.com', github.event.sender.login) }}
+        # `git push` → permissions: contents: write
+        run: |
+          bash .github/scripts/release-prepare/update-commit.sh
+
+      - name: Create Pull Request
+        env:
+          GH_TOKEN: ${{ secrets.CREATE_PR_PAT }} # for `gh pr create`
+          BRANCH_NAME: ${{ github.ref_name }}
+        # `gh pr create` → permissions: pull-requests: write
+        run: |
+          bash .github/scripts/release-prepare/create-pr.sh

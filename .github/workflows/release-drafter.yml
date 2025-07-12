@@ -1,0 +1,43 @@
+# Release Drafter
+# https://github.com/release-drafter/release-drafter
+
+name: 📝 Release Drafter
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  release-drafter:
+    name: Release Drafter
+
+    if: ${{ github.event.pull_request.merged == true && github.base_ref == 'main' }}
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pull-requests: read
+
+    steps:
+      - name: Draft release notes - ${{ github.head_ref }}
+        if: ${{ ! startsWith(github.head_ref, 'release/v') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter-config.yml
+
+      - name: Set environment variables
+        if: ${{ startsWith(github.head_ref, 'release/v') }}
+        run: |
+          echo "RELEASE_VERSION=$(sed 's/release\/v//' <<< ${{ github.head_ref }})" >> "$GITHUB_ENV"
+
+      - name: Draft release notes(release branch) - ${{ github.head_ref }}
+        if: ${{ startsWith(github.head_ref, 'release/v') }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: release-drafter/release-drafter@v6
+        with:
+          config-name: release-drafter-config.yml
+          version: ${{ env.RELEASE_VERSION }}

@@ -1,0 +1,61 @@
+# Issue PR Labeler
+# https://github.com/hoho4190/issue-pr-labeler
+
+filters:
+  # pull_request_template.md
+  - label: "type: ✨ feat"
+    regexs:
+      - /^- \[(X|x)\] ✨ New feature/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 🐛 fix"
+    regexs:
+      - /^- \[(X|x)\] 🐛 Bug fix/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: ♻️ refactor"
+    regexs:
+      - /^- \[(X|x)\] ♻️ Refactoring/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 🧪 test"
+    regexs:
+      - /^- \[(X|x)\] 🧪 Test/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 🎨 style"
+    regexs:
+      - /^- \[(X|x)\] 🎨 Code/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 🏗️ build"
+    regexs:
+      - /^- \[(X|x)\] 🏗️ Build-related/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: ⚙️ ci"
+    regexs:
+      - /^- \[(X|x)\] ⚙️ CI\/CD/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 🧹 chore"
+    regexs:
+      - /^- \[(X|x)\] 🧹 Chore/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 📚 docs"
+    regexs:
+      - /^- \[(X|x)\] 📚 Documentation/m
+    events: [pull_request]
+    targets: [comment]
+  - label: "type: 🚀 release"
+    regexs:
+      - /^- \[(X|x)\] 🚀 Release/m
+    events: [pull_request]
+    targets: [comment]
+
+  - label: "impact: 💥 breaking"
+    regexs:
+      - /^- \[(X|x)\] Yes [-–] breaking change/im
+    events: [pull_request]
+    targets: [comment]
