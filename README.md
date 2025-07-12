@@ -5,6 +5,10 @@
 [![🏗️ Build](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/build.yml/badge.svg)](https://github.com/hoho4190/issue-pr-labeler/actions/workflows/build.yml)
 [![codecov](https://codecov.io/gh/hoho4190/issue-pr-labeler/branch/main/graph/badge.svg?token=CWCCAKBJQY)](https://codecov.io/gh/hoho4190/issue-pr-labeler)
 
+> ⭐️ Support the project by giving it a star!
+
+<br>
+
 ## About
 
 Automatically add labels by filtering the title and comment of **issues** and **pull requests**.
