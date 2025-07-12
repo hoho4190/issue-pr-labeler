@@ -79,6 +79,8 @@ Examples:
 - [ ] Changelog updated
 -->
 
+- [ ] `dist/` directory updated
+
 N/A
 
 ## Additional Notes
