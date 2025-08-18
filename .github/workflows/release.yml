@@ -15,7 +15,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4 # → permissions: contents: read
+      - uses: actions/checkout@v5 # → permissions: contents: read
 
       - name: Prepare version tags
         run: |
