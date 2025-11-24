@@ -16,7 +16,7 @@ jobs:
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v4 # → permissions: contents: read
+      - uses: actions/checkout@v6 # → permissions: contents: read
         with:
           ref: ${{ github.ref }} # for `git push`
 
