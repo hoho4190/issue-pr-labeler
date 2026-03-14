@@ -1,0 +1,65 @@
+# This workflow checks the statuses of cached dependencies used in this action
+# with the help of the Licensed tool. If any licenses are invalid or missing,
+# this workflow will fail. See: https://github.com/licensee/licensed
+
+name: '🔍 License Check'
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'package.json'
+      - 'package-lock.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  license-check:
+    name: License Check
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+
+    env:
+      LICENSED_CONFIG_PATH: .github/license-check-config.yml
+
+    steps:
+      - uses: actions/checkout@v6 # → permissions: contents: read
+        with:
+          persist-credentials: false
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Install Dependencies
+        run: npm ci
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+
+      - name: Setup Licensed
+        uses: licensee/setup-licensed@v1.3.2
+        with:
+          version: '5.x'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Cache current license data
+        run: licensed cache -c ${{ env.LICENSED_CONFIG_PATH }}
+
+      - name: Verify license compliance
+        run: licensed status -c ${{ env.LICENSED_CONFIG_PATH }}

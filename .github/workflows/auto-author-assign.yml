@@ -1,0 +1,27 @@
+# Auto Author Assign
+# https://github.com/toshimaru/auto-author-assign
+
+name: '🧑‍💻 Auto Author Assign'
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+
+permissions:
+  contents: read
+
+jobs:
+  assign-pr-assignees:
+    name: Assign PR Assignees
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Assign author as PR assignee
+        uses: toshimaru/auto-author-assign@v3.0.1

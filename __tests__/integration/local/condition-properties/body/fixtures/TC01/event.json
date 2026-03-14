@@ -1,0 +1,10 @@
+{
+  "action": "opened",
+  "issue": {
+    "number": 123
+  },
+  "sender": {
+    "login": "sender1",
+    "type": "User"
+  }
+}

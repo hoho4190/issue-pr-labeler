@@ -1,0 +1,24 @@
+name: Issue PR Labeler
+description: Automatically label issues and pull requests based on configurable rules in .github/labeler-config.yml
+author: hoho4190
+
+inputs:
+  token:
+    description: A GitHub token for authenticating with the GitHub API.
+    required: true
+  config-file-path:
+    description: Path to the configuration file, which must be located under the `.github` directory.
+    required: false
+    default: labeler-config.yml
+
+outputs:
+  labels:
+    description: Report label actions and results.
+
+runs:
+  using: node24
+  main: dist/index.js
+
+branding:
+  icon: tag
+  color: purple

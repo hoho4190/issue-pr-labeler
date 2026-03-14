@@ -1,0 +1,19 @@
+{
+  "defaultBranchRef": {
+    "name": "main"
+  },
+  "issue": {
+    "author": {
+      "login": "author1"
+    },
+    "title": "Issue title",
+    "body": "",
+    "labels": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      }
+    }
+  }
+}

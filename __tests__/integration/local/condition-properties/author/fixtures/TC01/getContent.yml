@@ -1,0 +1,7 @@
+rules:
+  issue:
+    - label: default1
+      matches:
+        - operator: any
+          conditions:
+            - author: /author1/

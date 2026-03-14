@@ -1,0 +1,24 @@
+{
+  "defaultBranchRef": {
+    "name": "main"
+  },
+  "pullRequest": {
+    "author": {
+      "login": "author1"
+    },
+    "title": "Pull request title",
+    "body": "",
+    "baseRefName": "main",
+    "headRefName": "feature/something",
+    "isDraft": false,
+    "additions": 0,
+    "deletions": 1,
+    "labels": {
+      "nodes": [],
+      "pageInfo": {
+        "hasNextPage": false,
+        "endCursor": null
+      }
+    }
+  }
+}

@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://jestjs.io/docs/snapshot-testing
+
+exports[`Unit | Utils: summary.utils generateSummary() dry-run mode renders full summary under dry-run mode 1`] = `
+"> Issue: [Issue #42](https://github.com/octocat/hello-world/issues/42)
+>
+> ⚠️ Dry-run mode enabled: no changes were applied.
+>
+> ⚙️ Settings: dryRun=true, onMissingLabel=create, removeUnmatchedLabels=true, skipIfBot=false
+
+### Actions Performed
+
+| Action | Count |
+|---|---|
+| ➕ Add | 1 |
+| ➖ Remove | 0 |
+| ▫️ None | 0 |
+
+### Outcomes Summary
+
+| Result | Count |
+|---|---|
+| 🟢 (Success) | 1 |
+| 🔴 Failed | 0 |
+| 🟡 Skipped | 0 |
+| ⚪ Noop | 0 |
+
+> \`Skipped\`: Tried to add/remove, but skipped due to policy or current state.
+>
+> \`Noop\`: Does nothing because it is not a target for add/remove.
+
+### Reasons for Outcomes
+
+| Reason | Count |
+|---|---|
+| missing_label_create_policy | 1 |
+
+### Details by Label
+
+| Label | Action | Result | Reason |
+|---|---|---|---|
+| (label-a) | ➕ Add | 🟢 Success | missing_label_create_policy |"
+`;
+
+exports[`Unit | Utils: summary.utils generateSummary() dry-run mode renders summary without dry-run adjustments 1`] = `
+"> Issue: [Issue #42](https://github.com/octocat/hello-world/issues/42)
+>
+> ⚙️ Settings: dryRun=false, onMissingLabel=create, removeUnmatchedLabels=true, skipIfBot=false
+
+### Actions Performed
+
+| Action | Count |
+|---|---|
+| ➕ Add | 1 |
+| ➖ Remove | 0 |
+| ▫️ None | 0 |
+
+### Outcomes Summary
+
+| Result | Count |
+|---|---|
+| 🟢 Success | 1 |
+| 🔴 Failed | 0 |
+| 🟡 Skipped | 0 |
+| ⚪ Noop | 0 |
+
+> \`Skipped\`: Tried to add/remove, but skipped due to policy or current state.
+>
+> \`Noop\`: Does nothing because it is not a target for add/remove.
+
+### Reasons for Outcomes
+
+| Reason | Count |
+|---|---|
+| missing_label_create_policy | 1 |
+
+### Details by Label
+
+| Label | Action | Result | Reason |
+|---|---|---|---|
+| label-a | ➕ Add | 🟢 Success | missing_label_create_policy |"
+`;

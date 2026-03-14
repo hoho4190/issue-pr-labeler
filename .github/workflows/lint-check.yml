@@ -1,0 +1,46 @@
+# Super-Linter
+# https://github.com/super-linter/super-linter
+
+name: '🔍 Lint Check'
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  lint-check:
+    name: Lint Check
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      statuses: write
+      issues: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v6 # → permissions: contents: read
+        with:
+          fetch-depth: ${{ github.event_name == 'workflow_dispatch' && '1' || '0' }}
+          persist-credentials: false
+
+      - name: Load Super-Linter Configuration
+        run: |
+          grep -Ev '^(#|$)' .github/.super-linter.env >> "$GITHUB_ENV"
+
+      - name: Run Super-Linter
+        uses: super-linter/super-linter/slim@v8.5.0
+        env:
+          DEFAULT_BRANCH: main
+          ENABLE_GITHUB_PULL_REQUEST_SUMMARY_COMMENT: 'true'
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VALIDATE_ALL_CODEBASE: ${{ github.event_name == 'workflow_dispatch' && 'true' || 'false' }}

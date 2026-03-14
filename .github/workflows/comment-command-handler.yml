@@ -1,0 +1,83 @@
+name: '💬 Comment Command Handler'
+
+on:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: read
+
+env:
+  COMMENT_REACTION_URL: /repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions
+  COMMAND: ${{ github.event.comment.body }}
+
+jobs:
+  pr-comment-handler:
+    name: PR Comment Handler
+
+    if: |
+      github.event.issue.pull_request
+      && github.event.comment.user.login == github.repository_owner
+      && startsWith(github.event.comment.body, '/')
+      && (
+        github.event.comment.body == '/update-dist'
+      )
+
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: read
+      pull-requests: write
+
+    steps:
+      - name: Set Head Ref
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # `gh api` → permissions: pull-requests: read
+        run: |
+          HEAD_REF=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}" --jq '.head.ref')
+          echo "HEAD_REF=${HEAD_REF}" >> "$GITHUB_ENV"
+
+      - uses: actions/checkout@v6 # → permissions: contents: read
+        with:
+          persist-credentials: false
+          ref: ${{ env.HEAD_REF }}
+          token: ${{ secrets.CC_HANDLER_PAT }} # for `git push` to trigger another workflow
+
+      - name: React with 👀 to the comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        # `gh api` → permissions: pull-requests: write
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$COMMENT_REACTION_URL" \
+            -f 'content=eyes'
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: '.nvmrc'
+
+      - name: Run command handler script
+        env:
+          GIT_PUSH_TOKEN: ${{ secrets.CC_HANDLER_PAT }} # for `git push` to trigger another workflow
+        # `git push` → permissions: contents: write
+        run: |
+          bash .github/scripts/comment-command-handler/pr-command-handler.sh
+
+      - name: React with 👍 or 👎 based on result
+        if: ${{ always() }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REACTION: ${{ job.status == 'success' && '+1' || '-1' }}
+        # `gh api` → permissions: pull-requests: write
+        run: |
+          gh api \
+            --method POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            "$COMMENT_REACTION_URL" \
+            -f "content=$REACTION"

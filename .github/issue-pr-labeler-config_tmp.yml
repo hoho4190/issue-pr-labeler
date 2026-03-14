@@ -1,0 +1,23 @@
+settings:
+  onMissingLabel: create
+  skipIfBot: true
+  dryRun: true
+
+rules:
+  pr:
+    - label: aa
+      matches:
+        - operator: any
+          conditions:
+            - changed-lines: '>=50'
+    - label: bb
+      skipIfBot: false
+      matches:
+        - operator: any
+          skipIfBot: true
+          conditions:
+            - changed-lines: '>=50'
+        - operator: all
+          conditions:
+            - author: kevin
+              negate: true

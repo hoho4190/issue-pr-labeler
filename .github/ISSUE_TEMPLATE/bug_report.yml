@@ -1,0 +1,31 @@
+name: "\U0001F41B Bug Report"
+description: Create a report to help us improve
+title: '[Bug] '
+labels:
+  - bug
+assignees:
+  - hoho4190
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: What version did that bug occur in?
+      placeholder: e.g., v1.0.0
+    validations:
+      required: true
+  - type: textarea
+    id: bug-description
+    attributes:
+      label: Description
+      description: Please clearly describe what actually happened and what you expected to happen.
+    validations:
+      required: true
+  - type: textarea
+    id: failure-logs
+    attributes:
+      label: Failure Logs
+      description: Please paste any error messages or logs related to the issue here.
+      render: plain
+    validations:
+      required: false

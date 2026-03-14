@@ -1,0 +1,10 @@
+.github/CODE_OF_CONDUCT.md
+.github/pull_request_template.md
+.github/PULL_REQUEST_TEMPLATE/
+THIRD_PARTY_LICENSES/
+.licenses/
+dist/
+node_modules/
+coverage/
+tmp/
+__tests__/local-action/tmp/
