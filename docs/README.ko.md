@@ -10,6 +10,7 @@
 > ⭐️ Support the project by giving it a star!
 
 <br>
+
 이 GitHub Action은 이슈와 PR의 메타데이터를 기준으로 레이블을 자동으로 추가하거나 제거합니다.
 
 다음 조건을 조합해 간단한 레이블링 규칙을 만들 수 있습니다.
@@ -26,6 +27,8 @@
 `issues`, `pull_request`, `pull_request_target` 이벤트를 지원하며, 설정 파일은 기본적으로 `.github/labeler-config.yml`을
 사용합니다.
 
+<br>
+
 ## Quick Start
 
 워크플로우 파일 예시:
@@ -39,6 +42,7 @@ on:
       - opened
       - edited
       - reopened
+      # - ...
   pull_request: # or pull_request_target
     types:
       - opened
@@ -46,10 +50,12 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+      - converted_to_draft
+      # - ...
 
 jobs:
   label:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     permissions:
       contents: read # required to read configuration yml file
@@ -66,6 +72,8 @@ jobs:
 - `config-file-path`는 선택 입력이며, 기본값은 `labeler-config.yml`입니다.
 - 다른 파일명을 쓰고 싶다면 `.github/` 아래에 파일을 두고 `config-file-path` 입력값으로 지정하면 됩니다.
   - `config-file-path`에는 `.github/`를 포함하지 마세요.
+
+<br>
 
 ## Configuration File
 
@@ -117,6 +125,8 @@ rules:
 >
 > 자세한 설정 형식, 값 타입, 검증 규칙, 추가 예시는 [Configuration Guide](/docs/configuration-guide.ko.md)를 참고하세요.
 
+<br>
+
 ## How Rules Are Written
 
 - `rules.issue`는 `issues` 이벤트에 사용합니다.
@@ -124,6 +134,8 @@ rules:
 - 하나의 `rule`은 하나의 레이블을 대상으로 합니다.
 - 하나의 `match`는 `operator: any` 또는 `operator: all`로 조건들을 묶습니다.
 - 각 `condition`에는 속성 키를 하나만 두고, `negate: true`로 결과를 반전할 수 있습니다.
+
+<br>
 
 ## Common Options
 
@@ -142,6 +154,8 @@ rules:
 > [!IMPORTANT]
 >
 > `skipIfBot`은 `settings` -> `rule` -> `match` 순서로 상속/오버라이드됩니다.
+
+<br>
 
 ## Supported Conditions
 

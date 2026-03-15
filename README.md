@@ -10,6 +10,7 @@ English | [한국어](/docs/README.ko.md)
 > ⭐️ Support the project by giving it a star!
 
 <br>
+
 This GitHub Action automatically adds or removes labels based on issue and PR metadata.
 
 You can combine the following conditions to build simple labeling rules.
@@ -26,6 +27,8 @@ You can combine the following conditions to build simple labeling rules.
 It supports the `issues`, `pull_request`, and `pull_request_target` events, and uses `.github/labeler-config.yml` by
 default.
 
+<br>
+
 ## Quick Start
 
 Workflow file example:
@@ -39,6 +42,7 @@ on:
       - opened
       - edited
       - reopened
+      # - ...
   pull_request: # or pull_request_target
     types:
       - opened
@@ -46,10 +50,12 @@ on:
       - reopened
       - synchronize
       - ready_for_review
+      - converted_to_draft
+      # - ...
 
 jobs:
   label:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     permissions:
       contents: read # required to read configuration yml file
@@ -66,6 +72,8 @@ jobs:
 - `config-file-path` is optional, and its default value is `labeler-config.yml`.
 - If you want to use a different file name, place the file under `.github/` and set it through `config-file-path`.
   - Do not include `.github/` in `config-file-path`.
+
+<br>
 
 ## Configuration File
 
@@ -119,6 +127,8 @@ rules:
 > For detailed configuration format, value types, validation rules, and more examples, see the
 > [Configuration Guide](/docs/configuration-guide.md).
 
+<br>
+
 ## How Rules Are Written
 
 - `rules.issue` is used for the `issues` event.
@@ -126,6 +136,8 @@ rules:
 - One `rule` targets one label.
 - One `match` groups conditions with `operator: any` or `operator: all`.
 - Each `condition` can have only one property key, and you can invert the result with `negate: true`.
+
+<br>
 
 ## Common Options
 
@@ -144,6 +156,8 @@ rules:
 > [!IMPORTANT]
 >
 > `skipIfBot` is inherited and overridden in the order `settings` -> `rule` -> `match`.
+
+<br>
 
 ## Supported Conditions
 
