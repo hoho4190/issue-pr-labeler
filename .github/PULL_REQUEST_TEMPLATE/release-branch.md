@@ -16,6 +16,7 @@ release-related tasks.
   - [ ] `dist/` - if changed
 - **Verify CI Status**: Check that the `🏗️ Build` workflow triggered by this PR has passed successfully.
   - [ ] `Build` job succeeded.
+  - [ ] `Dist Check` job succeeded.
 
 <br>
 
