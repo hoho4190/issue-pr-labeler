@@ -1,0 +1,30 @@
+settings:
+  onMissingLabel: create
+  removeUnmatchedLabels: false
+  skipIfBot: true
+  dryRun: true
+
+rules:
+  issue:
+    - label: bug
+      matches:
+        - operator: all
+          conditions:
+            - title: /^\[bug\]/i
+            - body: /\bwip\b/i
+              negate: true
+  pr:
+    - label: documentation
+      skipIfBot: true
+      matches:
+        - operator: any
+          conditions:
+            - changed-files: 'docs/**/*.md'
+            - changed-files: 'README.md'
+    - label: size:medium
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - changed-lines: '>=10'
+            - changed-lines: '<100'

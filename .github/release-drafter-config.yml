@@ -1,44 +1,44 @@
 # Release Drafter
 # https://github.com/release-drafter/release-drafter
 
-name-template: "v$RESOLVED_VERSION 🚀"
-tag-template: "v$RESOLVED_VERSION"
+name-template: 'v$RESOLVED_VERSION 🚀'
+tag-template: 'v$RESOLVED_VERSION'
 categories:
-  - title: "💥 Breaking Changes"
+  - title: '💥 Breaking Changes'
     labels:
-      - "impact: 💥 breaking"
-  - title: "✨ Features"
+      - 'impact: 💥 breaking'
+  - title: '✨ Features'
     labels:
-      - "type: ✨ feat"
-  - title: "🐛 Bug Fixes"
+      - 'type: ✨ feat'
+  - title: '🐛 Bug Fixes'
     labels:
-      - "type: 🐛 fix"
-  - title: "🧰 Maintenance"
+      - 'type: 🐛 fix'
+  - title: '🧰 Maintenance'
     label:
-      - "type: ♻️ refactor"
-      - "type: 🧪 test"
-      - "type: 🎨 style"
-      - "type: 🏗️ build"
-      - "type: ⚙️ ci"
-      - "type: 🧹 chore"
-      - "dependencies"
-  - title: "📚 Documentation"
+      - 'type: ♻️ refactor'
+      - 'type: 🧪 test'
+      - 'type: 🎨 style'
+      - 'type: 🏗️ build'
+      - 'type: ⚙️ ci'
+      - 'type: 🧹 chore'
+      - 'dependencies'
+  - title: '📚 Documentation'
     label:
-      - "type: 📚 docs"
-change-template: "- $TITLE @$AUTHOR (#$NUMBER)"
+      - 'type: 📚 docs'
+change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 change-title-escapes: '\<*_&' # You can add # and @ to disable mentions, and add ` to disable code blocks.
 version-resolver:
   major:
     labels:
-      - "release: 💥 major"
-      - "impact: 💥 breaking"
+      - 'release: 💥 major'
+      - 'impact: 💥 breaking'
   minor:
     labels:
-      - "release: ✨ minor"
-      - "type: ✨ feat"
+      - 'release: ✨ minor'
+      - 'type: ✨ feat'
   patch:
     labels:
-      - "release: 🛠️ patch"
+      - 'release: 🛠️ patch'
   default: patch
 template: |
   ## What's Changed

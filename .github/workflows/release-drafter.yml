@@ -1,11 +1,14 @@
 # Release Drafter
 # https://github.com/release-drafter/release-drafter
 
-name: 📝 Release Drafter
+name: '📝 Release Drafter'
 on:
   pull_request:
     types:
       - closed
+
+permissions:
+  contents: read
 
 jobs:
   release-drafter:
@@ -26,12 +29,14 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: release-drafter/release-drafter@v6
         with:
-          config-name: release-drafter-config.yml
+          config-name: 'release-drafter-config.yml'
 
       - name: Set environment variables
         if: ${{ startsWith(github.head_ref, 'release/v') }}
+        env:
+          GITHUB_HEAD_REF: ${{ github.head_ref }}
         run: |
-          echo "RELEASE_VERSION=$(sed 's/release\/v//' <<< ${{ github.head_ref }})" >> "$GITHUB_ENV"
+          echo "RELEASE_VERSION=${GITHUB_HEAD_REF#release/v}" >> "$GITHUB_ENV"
 
       - name: Draft release notes(release branch) - ${{ github.head_ref }}
         if: ${{ startsWith(github.head_ref, 'release/v') }}

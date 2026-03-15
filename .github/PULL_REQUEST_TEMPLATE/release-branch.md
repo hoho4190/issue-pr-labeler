@@ -1,7 +1,7 @@
 ## Overview
 
-This pull request prepares for the `{{RELEASE_TAG}}` release.
-It includes automated version bumps and other release-related tasks.
+This pull request prepares for the `{{RELEASE_TAG}}` release. It includes automated version bumps and other
+release-related tasks.
 
 <br>
 
@@ -10,9 +10,8 @@ It includes automated version bumps and other release-related tasks.
 - **Verify Labels**: Ensure the correct labels are applied to this PR.
   - [ ] `type: 🚀 release`
   - [ ] `release: 💥 major` | `release: ✨ minor` | `release: 🛠️ patch`
-- **Verify Version Updates**: Confirm that the automated script has updated the versions correctly in the following files:
-  - [ ] `.github/ISSUE_TEMPLATE/bug_report.yml` - Version dropdown
-  - [ ] `.github/ISSUE_TEMPLATE/feature_request.yml` - Version dropdown
+- **Verify Version Updates**: Confirm that the automated script has updated the versions correctly in the following
+  files:
   - [ ] `package.json`, `package-lock.json` - `version` value
   - [ ] `dist/` - if changed
 - **Verify CI Status**: Check that the `🏗️ Build` workflow triggered by this PR has passed successfully.
@@ -23,7 +22,9 @@ It includes automated version bumps and other release-related tasks.
 ## Post-Merge Checklist
 
 > [!IMPORTANT]
-> After merging into the `main` branch, please verify the completion of the following items in the project's **Actions** and **Releases** tabs.
+>
+> After merging into the `main` branch, please verify the completion of the following items in the project's **Actions**
+> and **Releases** tabs.
 
 - **`main` branch `🏗️ Build` workflow completed successfully**:
   - [ ] Verified that the `{{RELEASE_TAG}}` Git tag was created and pushed.

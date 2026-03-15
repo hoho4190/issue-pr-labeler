@@ -1,0 +1,9 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    "noEmit": true
+  },
+  "include": ["__tests__", "src", "scripts", "eslint.config.ts", "jest.config.ts", "rollup.config.ts"]
+}

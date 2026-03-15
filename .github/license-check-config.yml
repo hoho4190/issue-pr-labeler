@@ -1,0 +1,18 @@
+# See: https://github.com/licensee/licensed/blob/main/docs/configuration.md
+
+sources:
+  npm: true
+
+allowed:
+  - mit
+  - bsd-2-clause
+  - bsd-3-clause
+  - isc
+  - zlib
+  - apache-2.0
+  - 0bsd
+
+reviewed:
+  npm:
+    - '@actions/http-client@3.0.2' # Licensed classifies this MIT license as "other"
+    - '@actions/http-client@4.0.0' # Licensed classifies this MIT license as "other"

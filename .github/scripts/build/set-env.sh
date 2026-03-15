@@ -30,8 +30,8 @@ set_release_var() {
         if [[ $merged_branch == "release/v"* ]]; then
             is_release_branch_merge=true
             release_branch="$merged_branch"
-            release_tag=$(sed 's/release\///' <<<"$merged_branch")
-            release_version=$(sed 's/release\/v//' <<<"$merged_branch")
+            release_tag=$(sed 's/release\///' <<< "$merged_branch")
+            release_version=$(sed 's/release\/v//' <<< "$merged_branch")
         fi
     fi
 }

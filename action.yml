@@ -1,25 +1,24 @@
 name: Issue PR Labeler
-description: |
-  Automatically add labels by filtering the title and comment of issues and pull requests.
+description: Automatically label issues and pull requests based on configurable rules in .github/labeler-config.yml
 author: hoho4190
+
 inputs:
   token:
-    description: github token
+    description: A GitHub token for authenticating with the GitHub API.
     required: true
-  disable-bot:
-    description: |
-      Whether to forbid filtering on issues and pull requests created by bots.
-    required: false
-    default: "true"
-  config-file-name:
-    description: |
-      Configuration file name.
-      This file should be located in `.github` path.
+  config-file-path:
+    description: Path to the configuration file, which must be located under the `.github` directory.
     required: false
     default: labeler-config.yml
+
+outputs:
+  labels:
+    description: Report label actions and results.
+
 runs:
-  using: node20
+  using: node24
   main: dist/index.js
+
 branding:
-  color: purple
   icon: tag
+  color: purple

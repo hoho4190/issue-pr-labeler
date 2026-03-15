@@ -1,0 +1,73 @@
+{
+  "name": "GitHub Actions (TypeScript) with Super-Linter",
+  "image": "mcr.microsoft.com/devcontainers/typescript-node:24",
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  "customizations": {
+    "codespaces": {
+      "openFiles": ["README.md"]
+    },
+    "vscode": {
+      "extensions": [
+        // Formatting extensions
+        // Code formatter
+        "esbenp.prettier-vscode",
+        // Shell formatter
+        "mkhl.shfmt",
+
+        // Linting extensions
+        // JavaScript and TypeScript linter
+        "dbaeumer.vscode-eslint",
+        // Markdown linter
+        "davidanson.vscode-markdownlint",
+        // Shell linter
+        "timonwong.shellcheck",
+
+        // Other extensions
+        // GitHub Actions support
+        "github.vscode-github-actions",
+        // Pull request integration
+        "github.vscode-pull-request-github",
+        // Todo tree
+        "gruntfuggly.todo-tree",
+        // Markdown authoring toolkit
+        "yzhang.markdown-all-in-one",
+        // Markdown preview theme
+        "bierner.markdown-preview-github-styles",
+        // YAML language support
+        "redhat.vscode-yaml"
+      ],
+      "settings": {
+        // Format files automatically when saving
+        "editor.formatOnSave": true,
+
+        // Use Prettier as the default formatter
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+        // Keep manually maintained Markdown TOCs unchanged on save
+        "markdown.extension.toc.updateOnSave": false,
+
+        // Use shfmt as the default formatter for shell scripts
+        "[shellscript]": {
+          "editor.defaultFormatter": "mkhl.shfmt"
+        },
+
+        // timonwong.shellcheck: use shellcheck binary installed in the container
+        "shellcheck.executablePath": "/usr/local/bin/shellcheck"
+      }
+    }
+  },
+  "containerEnv": {
+    "SUPER_LINTER_TAG": "slim-v8.5.0"
+  },
+  "remoteEnv": {},
+  "features": {
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers-extra/features/shfmt:1": {
+      "version": "3.12.0" // shfmt version aligned with the Super-Linter image tag
+    },
+    "ghcr.io/devcontainers-extra/features/shellcheck:1": {
+      "version": "0.11.0" // ShellCheck version aligned with the Super-Linter image tag
+    }
+  }
+}

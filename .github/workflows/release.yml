@@ -5,6 +5,9 @@ on:
     types:
       - 'released'
 
+permissions:
+  contents: read
+
 jobs:
   major-version-tag-update:
     name: Major Version Tag Update
@@ -15,14 +18,17 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v4 # → permissions: contents: read
+      - uses: actions/checkout@v6 # → permissions: contents: read
+        with:
+          persist-credentials: false
 
       - name: Prepare version tags
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
         run: |
-          RELEASE_TAG=${{ github.event.release.tag_name }}
           MAJOR_TAG=$(echo "$RELEASE_TAG" | cut -d'.' -f1)
-          echo "RELEASE_TAG=$RELEASE_TAG" >> $GITHUB_ENV
-          echo "MAJOR_TAG=$MAJOR_TAG" >> $GITHUB_ENV
+          echo "RELEASE_TAG=$RELEASE_TAG" >> "$GITHUB_ENV"
+          echo "MAJOR_TAG=$MAJOR_TAG" >> "$GITHUB_ENV"
           echo "Release Tag: $RELEASE_TAG"
           echo "Major Tag: $MAJOR_TAG"
 
@@ -33,7 +39,10 @@ jobs:
 
       # Create or update the major version tag
       - name: Update and push major tag
+        env:
+          GIT_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # `git push` → permissions: contents: write
         run: |
+          source .github/scripts/utils/git-util.sh
           git tag -f "$MAJOR_TAG" "$RELEASE_TAG"
-          git push origin -f "$MAJOR_TAG"
+          git_with_auth push origin -f "$MAJOR_TAG"

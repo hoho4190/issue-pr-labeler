@@ -1,7 +1,7 @@
 # Issue PR Labeler
 # https://github.com/hoho4190/issue-pr-labeler
 
-name: 🏷️ Issue PR Labeler
+name: '🏷️ Issue PR Labeler'
 on:
   pull_request:
     types:
@@ -11,6 +11,9 @@ on:
 concurrency:
   group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
   cancel-in-progress: true
+
+permissions:
+  contents: read
 
 jobs:
   pr-labeling:

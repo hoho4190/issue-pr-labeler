@@ -6,22 +6,15 @@ labels:
 body:
   - type: markdown
     attributes:
-      value: "\U0001F44B Thanks for suggesting a new feature! Please fill out the form below to help us understand your idea clearly.\n"
-  - type: dropdown
+      value:
+        "\U0001F44B Thanks for suggesting a new feature! Please fill out the form below to help us understand your idea
+        clearly.\n"
+  - type: input
     id: version
     attributes:
       label: Version
       description: What version are you currently using?
-      options:
-        - v2.0.1
-        - v2.0.0
-        - v1.3.3
-        - v1.3.2
-        - v1.3.1
-        - v1.3.0
-        - v1.2.0
-        - v1.1.0
-        - v1.0.0
+      placeholder: e.g., v1.0.0
     validations:
       required: true
   - type: input
@@ -40,27 +33,3 @@ body:
       placeholder: Explain what the feature does and why it would be useful.
     validations:
       required: true
-  - type: textarea
-    id: motivation
-    attributes:
-      label: Motivation
-      description: What problem does this feature solve, or what value does it provide?
-      placeholder: e.g., Improves accessibility for users in low-light environments
-    validations:
-      required: false
-  - type: textarea
-    id: alternatives-considered
-    attributes:
-      label: Alternatives Considered
-      description: Have you considered any alternative solutions or workarounds?
-      placeholder: Describe any other options you've thought about
-    validations:
-      required: false
-  - type: textarea
-    id: additional-context
-    attributes:
-      label: Additional Context
-      description: Add any other context, mockups, screenshots, or related links.
-      placeholder: Optional — include links, screenshots, diagrams, etc.
-    validations:
-      required: false

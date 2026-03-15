@@ -18,5 +18,5 @@ set_env_var() {
         return 1
     fi
 
-    echo "$name=$value" >>"$GITHUB_ENV"
+    echo "$name=$value" >> "$GITHUB_ENV"
 }

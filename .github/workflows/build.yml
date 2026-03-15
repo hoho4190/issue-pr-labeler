@@ -1,12 +1,15 @@
-name: 🏗️ Build
+name: '🏗️ Build'
 
 on:
   push:
     branches:
-      - 'main'
+      - main
   pull_request:
     branches:
-      - 'main'
+      - main
+
+permissions:
+  contents: read
 
 jobs:
   build:
@@ -19,31 +22,20 @@ jobs:
       pull-requests: read
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6 # → permissions: contents: read
+        with:
+          persist-credentials: false
 
       - name: Setup Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version-file: '.nvmrc'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build
-
-      - name: Lint
-        run: npm run lint
-
-      - name: Check format
-        run: npm run format-check
-
       - name: Test
-        run: npm test -- --coverage
-
-      - name: Package
-        run: npm run package
+        run: npm run test:ci
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
@@ -59,13 +51,20 @@ jobs:
 
       - name: Set up Git user from pusher info
         if: ${{ env.IS_RELEASE_BRANCH_MERGE == 'true' }}
+        env:
+          PUSHER_EMAIL: ${{ github.event.pusher.email }}
+          PUSHER_NAME: ${{ github.event.pusher.name }}
         run: |
-          git config --global user.email ${{ github.event.pusher.email }}
-          git config --global user.name ${{ github.event.pusher.name }}
+          git config --global user.email "$PUSHER_EMAIL"
+          git config --global user.name "$PUSHER_NAME"
 
       - name: Create and push new tag
         if: ${{ env.IS_RELEASE_BRANCH_MERGE == 'true' }}
+        env:
+          RELEASE_TAG: ${{ env.RELEASE_TAG }}
+          GIT_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # `git push` → permissions: contents: write
         run: |
-          git tag ${{ env.RELEASE_TAG }}
-          git push origin ${{ env.RELEASE_TAG }}
+          source .github/scripts/utils/git-util.sh
+          git tag -- "$RELEASE_TAG"
+          git_with_auth push origin "refs/tags/$RELEASE_TAG"

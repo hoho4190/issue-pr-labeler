@@ -1,0 +1,33 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Action",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npx",
+      "args": ["@github/local-action", ".", "src/local.ts", "__tests__/local-action/fixtures/.env"],
+      "console": "integratedTerminal",
+      "skipFiles": ["<node_internals>/**", "node_modules/**"]
+    },
+    {
+      "name": "Debug Jest Tests",
+      "type": "node",
+      "request": "launch",
+      "cwd": "${workspaceRoot}",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "jest",
+        "--runInBand", // 병렬 실행 막고 디버깅 안정화
+        "--watchAll=false"
+      ],
+      "args": [],
+      "env": {
+        "NODE_OPTIONS": "--experimental-vm-modules --disable-warning=ExperimentalWarning"
+      },
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    }
+  ]
+}

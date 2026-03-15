@@ -15,28 +15,22 @@ readonly RELEASE_TAG="${BRANCH_NAME#release/}"
 # 정식 릴리스만 조회(접미사 없는 정식 태그 'vX.Y.Z'만 필터링)
 get_latest_release_tag() {
     set +e
-    gh release list --exclude-drafts --limit 100 |
-        awk '{print $1}' |
-        grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' |
-        sort -V |
-        tail -n1
+    gh release list --exclude-drafts --exclude-pre-releases --limit 20 \
+        | awk '{print $1}' \
+        | grep -E '^v[0-9]+\.[0-9]+\.[0-9]+$' \
+        | sort -V \
+        | tail -n1
     set -e
 }
 
 # 릴리스 타입을 판별하는 함수
 determine_release_type() {
     local current_tag="$1"
-    local latest_tag="$2"
+    local latest_tag="${2:-v0.0.0}"
 
     if [[ -z "$current_tag" ]]; then
         echo "ERROR: Input required: current_tag" >&2
         exit 1
-    fi
-
-    # latest_tag가 없는 경우, 첫 릴리스로 간주하고 major로 설정
-    if [[ -z "$latest_tag" ]]; then
-        echo "major"
-        return 0
     fi
 
     # current_tag가 latest_tag보다 낮거나 같으면 에러를 발생시키고 종료
@@ -47,8 +41,8 @@ determine_release_type() {
     fi
 
     # 버전을 major.minor.patch로 분리
-    IFS='.' read -r current_major current_minor _ <<<"${current_tag#v}"
-    IFS='.' read -r latest_major latest_minor _ <<<"${latest_tag#v}"
+    IFS='.' read -r current_major current_minor _ <<< "${current_tag#v}"
+    IFS='.' read -r latest_major latest_minor _ <<< "${latest_tag#v}"
 
     # 릴리스 타입 판별
     if [[ "$current_major" -gt "$latest_major" ]]; then
@@ -70,7 +64,7 @@ get_template_body() {
     sed "s/{{RELEASE_TAG}}/${RELEASE_TAG}/g" "$TEMPLATE_FILE"
 }
 
-# Relase 타입(major, minor, patch)으로 레이블 얻기
+# Release 타입(major, minor, patch)으로 레이블 얻기
 get_release_type_label() {
     local release_type="$1"
 
@@ -80,19 +74,19 @@ get_release_type_label() {
     fi
 
     case "$RELEASE_TYPE" in
-    "major")
-        echo "release: 💥 major"
-        ;;
-    "minor")
-        echo "release: ✨ minor"
-        ;;
-    "patch")
-        echo "release: 🛠️ patch"
-        ;;
-    *)
-        echo "ERROR: Invalid release_type: $release_type" >&2
-        exit 1
-        ;;
+        "major")
+            echo "release: 💥 major"
+            ;;
+        "minor")
+            echo "release: ✨ minor"
+            ;;
+        "patch")
+            echo "release: 🛠️ patch"
+            ;;
+        *)
+            echo "ERROR: Invalid release_type: $release_type" >&2
+            exit 1
+            ;;
     esac
 }
 
