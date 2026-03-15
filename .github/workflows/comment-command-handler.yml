@@ -36,7 +36,8 @@ jobs:
         # `gh api` → permissions: pull-requests: read
         run: |
           HEAD_REF=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}" --jq '.head.ref')
-          echo "HEAD_REF=${HEAD_REF}" >> "$GITHUB_ENV"
+          HEAD_REF_SANITIZED=$(printf '%s' "$HEAD_REF" | tr -d '\n\r')
+          echo "HEAD_REF=${HEAD_REF_SANITIZED}" >> "$GITHUB_ENV"
 
       - uses: actions/checkout@v6 # → permissions: contents: read
         with:
