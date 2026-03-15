@@ -77,7 +77,6 @@ export async function runAction(
           ? safeStringify(error, 2)
           : String(error)
 
-    core.summary.addRaw(message)
     core.setFailed(message)
     return undefined
   } finally {
