@@ -38,7 +38,7 @@ exports[`Unit | Utils: summary.utils generateSummary() dry-run mode renders full
 
 | Label | Action | Result | Reason |
 |---|---|---|---|
-| (label-a) | ➕ Add | 🟢 Success | missing_label_create_policy |"
+| label-a | ➕ Add | 🟢 (Success) | missing_label_create_policy |"
 `;
 
 exports[`Unit | Utils: summary.utils generateSummary() dry-run mode renders summary without dry-run adjustments 1`] = `

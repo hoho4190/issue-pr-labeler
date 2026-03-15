@@ -174,8 +174,8 @@ function summarizeByAction(actions: Immutable<SummaryActionRow[]>): string {
 
 function summarizeByResult(outcomes: Immutable<SummaryOutcomeRow[]>, dryRun: boolean): string {
   const rows = outcomes.map(({ result, count }) => {
-    const resultLabel = dryRun && result === LabelActionResult.Success ? '(Success)' : result
-    return `| ${resultEmoji[result]} ${resultLabel} | ${count} |`
+    const formattedResult = formatDryRunSuccessResult(result, dryRun)
+    return `| ${resultEmoji[result]} ${formattedResult} | ${count} |`
   })
 
   return [
@@ -199,11 +199,11 @@ function summarizeByReason(reasons: Immutable<SummaryReasonRow[]>): string {
 
 function summarizeOperations(operations: Immutable<SummaryOperation[]>, dryRun: boolean): string {
   const rows = operations.map((r) => {
-    const labelName = dryRun && r.simulatedByDryRun ? `(${r.name})` : r.name
     const actionStr = `${actionEmoji[r.action]} ${r.action}`
-    const resultStr = `${resultEmoji[r.result]} ${r.result}`
+    const formattedResult = formatDryRunSuccessResult(r.result, dryRun && r.simulatedByDryRun)
+    const resultStr = `${resultEmoji[r.result]} ${formattedResult}`
     const reasonStr = r.reason
-    return `| ${labelName} | ${actionStr} | ${resultStr} | ${reasonStr} |`
+    return `| ${r.name} | ${actionStr} | ${resultStr} | ${reasonStr} |`
   })
 
   return [
@@ -213,4 +213,11 @@ function summarizeOperations(operations: Immutable<SummaryOperation[]>, dryRun: 
     '|---|---|---|---|',
     ...rows
   ].join('\n')
+}
+
+function formatDryRunSuccessResult(
+  result: LabelActionResult,
+  wrapWithParentheses: boolean
+): string {
+  return wrapWithParentheses && result === LabelActionResult.Success ? '(Success)' : result
 }

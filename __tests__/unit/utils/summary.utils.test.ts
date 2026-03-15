@@ -243,7 +243,7 @@ describe('Unit | Utils: summary.utils', () => {
         expect(result).toContain('| 🟢 (Success) | 1 |') // dry-run Success 변환
         expect(result).toContain('| missing_label_create_policy | 1 |') // reason count
         expect(result).toContain(
-          '| (label-a) | ➕ Add | 🟢 Success | missing_label_create_policy |'
+          '| label-a | ➕ Add | 🟢 (Success) | missing_label_create_policy |'
         )
 
         expect(result).toMatchSnapshot()
@@ -302,8 +302,8 @@ describe('Unit | Utils: summary.utils', () => {
         expect(result).toMatchSnapshot()
       })
 
-      // settings.dryRun=true일 때 operation별 simulatedByDryRun 플래그에 따라 레이블 표기 분기 확인
-      test('wraps only operations with simulatedByDryRun=true in parentheses', () => {
+      // settings.dryRun=true일 때 operation별 simulatedByDryRun 플래그에 따라 결과 표기 분기 확인
+      test('wraps only simulated success results in parentheses', () => {
         // given
         const settings: Settings = {
           skipIfBot: false,
@@ -346,9 +346,10 @@ describe('Unit | Utils: summary.utils', () => {
         const result = generateSummary(summaryData, context, settings)
 
         // then
-        expect(result).toContain('| (simulated-label) | ➕ Add | 🟢 Success | - |')
+        expect(result).toContain('| simulated-label | ➕ Add | 🟢 (Success) | - |')
         expect(result).toContain('| actual-label | ➖ Remove | 🔴 Failed | - |')
-        expect(result).not.toContain('(actual-label)')
+        expect(result).not.toContain('(simulated-label)')
+        expect(result).not.toContain('🔴 (Failed)')
       })
     })
 
