@@ -31,19 +31,19 @@ jobs:
 
     steps:
       - name: Set Head Ref
+        id: set_head_ref
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # `gh api` → permissions: pull-requests: read
         run: |
           HEAD_REF=$(gh api "repos/${{ github.repository }}/pulls/${{ github.event.issue.number }}" --jq '.head.ref')
-          # Strip newlines/carriage returns and restrict to a safe character set for env var values.
-          HEAD_REF_SANITIZED=$(printf '%s' "$HEAD_REF" | tr -d '\n\r' | sed 's/[^A-Za-z0-9._/-]/_/g')
-          echo "HEAD_REF=${HEAD_REF_SANITIZED}" >> "$GITHUB_ENV"
+          git check-ref-format --branch "$HEAD_REF" >/dev/null
+          printf 'head_ref=%s\n' "$HEAD_REF" >> "$GITHUB_OUTPUT"
 
       - uses: actions/checkout@v6 # → permissions: contents: read
         with:
           persist-credentials: false
-          ref: ${{ env.HEAD_REF }}
+          ref: ${{ steps.set_head_ref.outputs.head_ref }}
           token: ${{ secrets.CC_HANDLER_PAT }} # for `git push` to trigger another workflow
 
       - name: React with 👀 to the comment
@@ -65,6 +65,7 @@ jobs:
 
       - name: Run command handler script
         env:
+          HEAD_REF: ${{ steps.set_head_ref.outputs.head_ref }}
           GIT_PUSH_TOKEN: ${{ secrets.CC_HANDLER_PAT }} # for `git push` to trigger another workflow
         # `git push` → permissions: contents: write
         run: |
