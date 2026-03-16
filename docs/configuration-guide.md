@@ -3,6 +3,8 @@
 This document explains the structure of the configuration file and how to write it. The configuration file is located in
 the `.github` directory.
 
+<br>
+
 ## Table of Contents
 
 - [1. Quick Start](#1-quick-start)
@@ -29,6 +31,8 @@ the `.github` directory.
   - [7.3 Mixing `glob-pattern` and `string` in `changed-files`](#73-mixing-glob-pattern-and-string-in-changed-files)
   - [7.4 Mixing `regex` and `string` in `author`](#74-mixing-regex-and-string-in-author)
 - [8. Common Mistakes](#8-common-mistakes)
+
+<br>
 
 ## 1. Quick Start
 
@@ -81,6 +85,8 @@ rules:
 > - If you want to understand how rules, matches, and conditions are evaluated, see
 >   [Rule Evaluation Policy](/docs/dev/policy-rule-evaluation.md).
 
+<br>
+
 ## 2. Top-Level Structure
 
 ```yaml
@@ -94,6 +100,8 @@ rules:
 - If the configuration file is empty (`null`) or `settings`/`rules` is missing, default values are injected
   automatically.
 - `rules.issue` and `rules.pr` are treated as empty arrays (`[]`) even when they are `null` or not specified.
+
+<br>
 
 ## 3. settings
 
@@ -177,6 +185,8 @@ When `true`, the action simulates label add/remove behavior without calling the 
 - In the action output `labels`, you can check whether each item was simulated through its `simulatedByDryRun` field.
 - In the summary, you can check whether it was simulated through the parenthesized notation attached to the label name.
 
+<br>
+
 ## 4. rules
 
 ### 4.1 Event Keys
@@ -236,6 +246,8 @@ Evaluation rules:
 - `all`: **fail** when at least one condition is false
 - Conditions are short-circuited.
 - `conditions` cannot be an empty array.
+
+<br>
 
 ## 5. conditions
 
@@ -357,6 +369,8 @@ For example, `changed-files` is interpreted in the order `glob-pattern` -> `stri
 - `changed-files: 'src/**/*.ts'` is evaluated as a glob pattern.
 - `changed-files: 'README.md'` is evaluated as an exact string match.
 
+<br>
+
 ## 6. When Configuration Validation Fails
 
 Below are common cases that fail during parsing.
@@ -371,6 +385,8 @@ Below are common cases that fail during parsing.
 - Writing `matches` as an empty array
 - Writing `conditions` as an empty array
 - Using a condition value format that does not match any allowed type for that property
+
+<br>
 
 ## 7. Practical Examples
 
@@ -429,6 +445,8 @@ rules:
             - author: /.*\[bot\]/
             - author: 'octocat'
 ```
+
+<br>
 
 ## 8. Common Mistakes
 
