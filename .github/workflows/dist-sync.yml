@@ -1,0 +1,43 @@
+name: '🔄 Dist Sync'
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: dist-sync-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  dist_sync:
+    name: Dist Sync
+
+    if: ${{ github.ref_type == 'branch' && github.ref_name != 'main' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout selected branch
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref_name }}
+          persist-credentials: false
+
+      - name: Use Node.js 24
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install --legacy-peer-deps
+
+      - name: Build dist
+        run: npm run build
+
+      - name: Commit and push synced dist
+        env:
+          BRANCH_NAME: ${{ github.ref_name }}
+          GIT_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: bash .github/scripts/dist-sync/dist-sync.sh
