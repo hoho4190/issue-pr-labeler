@@ -52,15 +52,9 @@ Select all types that apply to this PR.
 
 ## Breaking Changes
 
-<!--
-Does this PR introduce breaking changes to the API or behavior?
-Check "Yes" only if existing users must change their usage.
--->
+- [ ] Breaking change
 
-> If **yes**, explain what breaks and what users need to know.
-
-- [ ] Yes - breaking change
-- [ ] No
+> If checked, explain what breaks and what users need to know.
 
 ## Testing
 
