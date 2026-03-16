@@ -1,61 +1,87 @@
 # Issue PR Labeler
 # https://github.com/hoho4190/issue-pr-labeler
 
-filters:
-  # pull_request_template.md
-  - label: 'type: ✨ feat'
-    regexs:
-      - /^- \[(X|x)\] ✨ New feature/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 🐛 fix'
-    regexs:
-      - /^- \[(X|x)\] 🐛 Bug fix/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: ♻️ refactor'
-    regexs:
-      - /^- \[(X|x)\] ♻️ Refactoring/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 🧪 test'
-    regexs:
-      - /^- \[(X|x)\] 🧪 Test/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 🎨 style'
-    regexs:
-      - /^- \[(X|x)\] 🎨 Code/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 🏗️ build'
-    regexs:
-      - /^- \[(X|x)\] 🏗️ Build-related/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: ⚙️ ci'
-    regexs:
-      - /^- \[(X|x)\] ⚙️ CI\/CD/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 🧹 chore'
-    regexs:
-      - /^- \[(X|x)\] 🧹 Chore/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 📚 docs'
-    regexs:
-      - /^- \[(X|x)\] 📚 Documentation/m
-    events: [pull_request]
-    targets: [comment]
-  - label: 'type: 🚀 release'
-    regexs:
-      - /^- \[(X|x)\] 🚀 Release/m
-    events: [pull_request]
-    targets: [comment]
+settings:
+  skipIfBot: false
+  removeUnmatchedLabels: true
+  onMissingLabel: error
+  dryRun: false
 
-  - label: 'impact: 💥 breaking'
-    regexs:
-      - /^- \[(X|x)\] Yes [-–] breaking change/im
-    events: [pull_request]
-    targets: [comment]
+rules:
+  pr:
+    - label: 'type: ✨ feat'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] ✨ New feature/m
+
+    - label: 'type: 🐛 fix'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 🐛 Bug fix/m
+
+    - label: 'type: ♻️ refactor'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] ♻️ Refactoring/m
+
+    - label: 'type: 🧪 test'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 🧪 Test/m
+
+    - label: 'type: 🎨 style'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 🎨 Code/m
+
+    - label: 'type: 🏗️ build'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 🏗️ Build-related/m
+
+    - label: 'type: ⚙️ ci'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] ⚙️ CI\/CD/m
+
+    - label: 'type: 🧹 chore'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 🧹 Chore/m
+
+    - label: 'type: 📚 docs'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 📚 Documentation/m
+
+    - label: 'type: 🚀 release'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] 🚀 Release/m
+
+    - label: 'impact: 💥 breaking'
+      skipIfBot: true
+      matches:
+        - operator: all
+          conditions:
+            - body: /^- \[(X|x)\] Breaking change$/m

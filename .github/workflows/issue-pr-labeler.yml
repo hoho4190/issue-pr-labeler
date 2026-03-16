@@ -7,6 +7,10 @@ on:
     types:
       - opened
       - edited
+      - reopened
+      - synchronize
+      - ready_for_review
+      - converted_to_draft
 
 concurrency:
   group: ${{ github.workflow }}-pr-${{ github.event.pull_request.number }}
@@ -16,21 +20,22 @@ permissions:
   contents: read
 
 jobs:
-  pr-labeling:
-    name: PR Labeling
+  labeling:
+    name: Labeling
 
     # exclude `release/v**` → `main` PRs
     if: ${{ !(startsWith(github.head_ref, 'release/v') && github.base_ref == 'main') }}
 
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
 
     permissions:
-      contents: read
-      pull-requests: write
+      contents: read # required to read configuration yml file
+      # issues: write # required to add labels to issues
+      pull-requests: write # required to add labels to pull requests
 
     steps:
       - name: Run Issue PR Labeler
-        uses: hoho4190/issue-pr-labeler@v2
+        uses: hoho4190/issue-pr-labeler@v3
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          config-file-name: issue-pr-labeler-config.yml
+          config-file-path: issue-pr-labeler-config.yml

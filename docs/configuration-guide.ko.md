@@ -2,6 +2,8 @@
 
 이 문서는 설정 파일의 구조와 작성 방법을 설명합니다. 설정 파일은 `.github` 디렉터리에 위치합니다.
 
+<br>
+
 ## 목차
 
 - [1. 빠른 시작](#1-빠른-시작)
@@ -28,6 +30,8 @@
   - [7.3 `changed-files`에서 `glob-pattern`과 `string` 혼합](#73-changed-files에서-glob-pattern과-string-혼합)
   - [7.4 `author`에서 `regex`와 `string` 혼합](#74-author에서-regex와-string-혼합)
 - [8. 자주 하는 실수](#8-자주-하는-실수)
+
+<br>
 
 ## 1. 빠른 시작
 
@@ -79,6 +83,8 @@ rules:
 > - 규칙, 매치, 조건이 어떻게 평가되는지 알고 싶다면 [규칙 평가 정책](/docs/dev/policy-rule-evaluation.ko.md) 문서를
 >   참고하시기 바랍니다.
 
+<br>
+
 ## 2. 최상위 구조
 
 ```yaml
@@ -91,6 +97,8 @@ rules:
 - 루트 키는 `settings`, `rules`만 허용됩니다.
 - 설정 파일이 비어 있거나(`null`) `settings`/`rules`가 누락되면 기본값이 자동 주입됩니다.
 - `rules.issue`, `rules.pr`는 `null`이거나 미지정이어도 빈 배열(`[]`)로 처리됩니다.
+
+<br>
 
 ## 3. settings
 
@@ -170,6 +178,8 @@ rules:
 - 액션 출력(output)의 `labels` 필드에서 각 항목의 `simulatedByDryRun` 필드로 시뮬레이션 여부를 확인할 수 있습니다.
 - 요약(summary)에서는 레이블 이름에 붙는 괄호 표기로 시뮬레이션 여부를 확인할 수 있습니다.
 
+<br>
+
 ## 4. rules
 
 ### 4.1 이벤트 키
@@ -228,6 +238,8 @@ matches:
 - `all`: 조건 중 하나라도 거짓이면 **fail**
 - 조건은 단락 평가(short-circuit)됩니다.
 - `conditions`는 빈 배열을 허용하지 않습니다.
+
+<br>
 
 ## 5. conditions
 
@@ -347,6 +359,8 @@ conditions:
 - `changed-files: 'src/**/*.ts'`로 작성하면 glob 패턴으로 평가됩니다.
 - `changed-files: 'README.md'`로 작성하면 문자열 정확 일치로 평가됩니다.
 
+<br>
+
 ## 6. 설정 검증에서 에러가 발생하는 경우
 
 아래는 파싱 단계에서 실패하는 대표적인 경우입니다.
@@ -361,6 +375,8 @@ conditions:
 - `matches`를 빈 배열로 작성
 - `conditions`를 빈 배열로 작성
 - 조건 값 형식이 해당 속성의 허용 타입과 맞지 않음
+
+<br>
 
 ## 7. 실전 예시
 
@@ -419,6 +435,8 @@ rules:
             - author: /.*\[bot\]/
             - author: 'octocat'
 ```
+
+<br>
 
 ## 8. 자주 하는 실수
 
