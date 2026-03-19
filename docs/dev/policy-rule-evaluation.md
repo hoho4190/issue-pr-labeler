@@ -1,5 +1,7 @@
 # Rule Evaluation Policy
 
+English | [한국어](/docs/dev/policy-rule-evaluation.ko.md)
+
 The evaluation step evaluates the configured rules (`Rule`) and determines whether each label should be added, removed,
 or kept.
 

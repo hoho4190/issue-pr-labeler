@@ -1,5 +1,7 @@
 # 설정 파일 가이드
 
+[English](/docs/configuration-guide.md) | 한국어
+
 이 문서는 설정 파일의 구조와 작성 방법을 설명합니다. 설정 파일은 `.github` 디렉터리에 위치합니다.
 
 <br>

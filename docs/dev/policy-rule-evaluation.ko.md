@@ -1,5 +1,7 @@
 # 규칙 평가 정책
 
+[English](/docs/dev/policy-rule-evaluation.md) | 한국어
+
 평가 단계는 설정 파일에 작성된 규칙(`Rule`)들을 평가하여 레이블을 추가해야 할지, 제거해야 할지, 유지해야 할지를
 결정한다.
 
