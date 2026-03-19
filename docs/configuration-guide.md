@@ -1,5 +1,7 @@
 # Configuration Guide
 
+English | [한국어](/docs/configuration-guide.ko.md)
+
 This document explains the structure of the configuration file and how to write it. The configuration file is located in
 the `.github` directory.
 

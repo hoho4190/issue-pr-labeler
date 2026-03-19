@@ -19,7 +19,7 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": [
         "jest",
-        "--runInBand", // 병렬 실행 막고 디버깅 안정화
+        "--runInBand", // Run tests serially in a single process for easier debugging
         "--watchAll=false"
       ],
       "args": [],
