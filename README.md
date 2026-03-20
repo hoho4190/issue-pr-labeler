@@ -1,6 +1,6 @@
 # Issue PR Labeler
 
-English | [한국어](/docs/README.ko.md)
+English | [한국어](/docs/latest/README.ko.md)
 
 [![GitHub Release](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)](https://github.com/hoho4190/issue-pr-labeler/releases/latest)
 [![GitHub License](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)](https://github.com/hoho4190/issue-pr-labeler?tab=MIT-1-ov-file)
@@ -125,7 +125,7 @@ rules:
 > [!NOTE]
 >
 > For detailed configuration format, value types, validation rules, and more examples, see the
-> [Configuration Guide](/docs/configuration-guide.md).
+> [Configuration Guide](/docs/latest/configuration-guide.md).
 
 <br>
 
@@ -144,7 +144,7 @@ rules:
 > [!NOTE]
 >
 > For each option's default value and behavior, see
-> [Configuration Guide - 3. settings](/docs/configuration-guide.md#3-settings).
+> [Configuration Guide - 3. settings](/docs/latest/configuration-guide.md#3-settings).
 
 | Option                  | Allowed values            | Default  | Description                                                    |
 | ----------------------- | ------------------------- | -------- | -------------------------------------------------------------- |
@@ -164,7 +164,7 @@ rules:
 > [!NOTE]
 >
 > For supported properties, allowed value types, how to use `negate`, and more examples, see
-> [Configuration Guide - 5. conditions](/docs/configuration-guide.md#5-conditions).
+> [Configuration Guide - 5. conditions](/docs/latest/configuration-guide.md#5-conditions).
 
 | Property        | Issue | PR  | Allowed value types (in precedence order) |
 | --------------- | ----- | --- | ----------------------------------------- |
