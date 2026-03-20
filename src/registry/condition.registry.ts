@@ -1,3 +1,4 @@
+import { ActorProperty } from './condition-properties/actor.property.js'
 import { AuthorProperty } from './condition-properties/author.property.js'
 import { BaseBranchProperty } from './condition-properties/base-branch.property.js'
 import { BodyProperty } from './condition-properties/body.property.js'
@@ -36,6 +37,7 @@ const CONDITION_VALUE_TAG_REGISTRY = createConditionValueTagRegistry({
 const CONDITION_PROPERTY_REGISTRY = createConditionPropertyRegistry({
   [ConditionPropertyType.Title]: TitleProperty,
   [ConditionPropertyType.Body]: BodyProperty,
+  [ConditionPropertyType.Actor]: ActorProperty,
   [ConditionPropertyType.Author]: AuthorProperty,
   [ConditionPropertyType.BaseBranch]: BaseBranchProperty,
   [ConditionPropertyType.HeadBranch]: HeadBranchProperty,

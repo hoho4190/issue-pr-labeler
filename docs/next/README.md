@@ -21,6 +21,7 @@ You can combine the following conditions to build simple labeling rules.
 
 - Title (`title`)
 - Body (`body`)
+- Event actor (`actor`)
 - Author (`author`)
 - Base branch (`base-branch`)
 - Head branch (`head-branch`)
@@ -174,6 +175,7 @@ rules:
 | --------------- | ----- | --- | ----------------------------------------- |
 | `title`         | O     | O   | `regex`                                   |
 | `body`          | O     | O   | `regex`                                   |
+| `actor`         | O     | O   | `regex`, `string`                         |
 | `author`        | O     | O   | `regex`, `string`                         |
 | `base-branch`   | X     | O   | `regex`, `string`                         |
 | `head-branch`   | X     | O   | `regex`, `string`                         |
@@ -181,6 +183,7 @@ rules:
 | `changed-lines` | X     | O   | `numeric-comparison`                      |
 | `changed-files` | X     | O   | `glob-pattern`, `string`                  |
 
+- `author` is the issue/PR author, while `actor` is the subject that triggered the event.
 - `changed-lines` compares the PR's **total changed lines (additions + deletions)**.
 - `regex`: write it in the `/pattern/flags` format.
 - `glob-pattern`: write it as a **glob pattern string** such as `src/**/*.ts` or `**/*.md`.

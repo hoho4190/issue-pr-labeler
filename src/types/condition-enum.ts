@@ -15,6 +15,7 @@ export enum ConditionValueTagType {
 export enum ConditionPropertyType {
   Title = 'title',
   Body = 'body',
+  Actor = 'actor',
   Author = 'author',
   BaseBranch = 'base-branch',
   HeadBranch = 'head-branch',
