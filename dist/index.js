@@ -46090,6 +46090,7 @@ var ConditionPropertyType;
 (function (ConditionPropertyType) {
     ConditionPropertyType["Title"] = "title";
     ConditionPropertyType["Body"] = "body";
+    ConditionPropertyType["Actor"] = "actor";
     ConditionPropertyType["Author"] = "author";
     ConditionPropertyType["BaseBranch"] = "base-branch";
     ConditionPropertyType["HeadBranch"] = "head-branch";
@@ -46154,6 +46155,24 @@ function toConditionPropertyEvaluator(evaluateTagInput) {
         return evaluator(tag, resolved, expected);
     };
 }
+
+const TYPE$d = ConditionPropertyType.Actor;
+const ALLOWED_EVENTS$8 = [EventType.Issue, EventType.PullRequest];
+const ALLOWED_TAGS$8 = [ConditionValueTagType.Regex, ConditionValueTagType.String];
+const ActorProperty = defineConditionProperty({
+    type: TYPE$d,
+    allowedEvents: ALLOWED_EVENTS$8,
+    allowedTags: ALLOWED_TAGS$8,
+    resolve: (context, _conditionResolveService) => actorResolver[context.eventType](context),
+    evaluateTag: {
+        [ConditionValueTagType.Regex]: (tag, resolved, expected) => tag.evaluate(resolved, expected),
+        [ConditionValueTagType.String]: (tag, resolved, expected) => tag.evaluate(resolved, expected)
+    }
+});
+const actorResolver = {
+    [EventType.Issue]: (context) => context.actor,
+    [EventType.PullRequest]: (context) => context.actor
+};
 
 const TYPE$c = ConditionPropertyType.Author;
 const ALLOWED_EVENTS$7 = [EventType.Issue, EventType.PullRequest];
@@ -48753,6 +48772,7 @@ const CONDITION_VALUE_TAG_REGISTRY = createConditionValueTagRegistry({
 const CONDITION_PROPERTY_REGISTRY = createConditionPropertyRegistry({
     [ConditionPropertyType.Title]: TitleProperty,
     [ConditionPropertyType.Body]: BodyProperty,
+    [ConditionPropertyType.Actor]: ActorProperty,
     [ConditionPropertyType.Author]: AuthorProperty,
     [ConditionPropertyType.BaseBranch]: BaseBranchProperty,
     [ConditionPropertyType.HeadBranch]: HeadBranchProperty,
