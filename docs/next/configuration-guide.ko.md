@@ -266,17 +266,18 @@ conditions:
 
 ### 5.1 이벤트별 지원 속성
 
-| 속성            | 이슈 | PR  | 허용 값 타입(우선순위)   |
-| --------------- | ---- | --- | ------------------------ |
-| `title`         | O    | O   | `regex`                  |
-| `body`          | O    | O   | `regex`                  |
-| `actor`         | O    | O   | `regex`, `string`        |
-| `author`        | O    | O   | `regex`, `string`        |
-| `base-branch`   | X    | O   | `regex`, `string`        |
-| `head-branch`   | X    | O   | `regex`, `string`        |
-| `draft`         | X    | O   | `boolean`                |
-| `changed-lines` | X    | O   | `numeric-comparison`     |
-| `changed-files` | X    | O   | `glob-pattern`, `string` |
+| 속성              | 이슈 | PR  | 허용 값 타입(우선순위)   |
+| ----------------- | ---- | --- | ------------------------ |
+| `title`           | O    | O   | `regex`                  |
+| `body`            | O    | O   | `regex`                  |
+| `actor`           | O    | O   | `regex`, `string`        |
+| `author`          | O    | O   | `regex`, `string`        |
+| `base-branch`     | X    | O   | `regex`, `string`        |
+| `head-branch`     | X    | O   | `regex`, `string`        |
+| `draft`           | X    | O   | `boolean`                |
+| `changed-lines`   | X    | O   | `numeric-comparison`     |
+| `changed-files`   | X    | O   | `glob-pattern`, `string` |
+| `commit-messages` | X    | O   | `regex`                  |
 
 ### 5.2 속성
 
@@ -318,6 +319,11 @@ conditions:
 
 - PR 변경 파일 경로 목록을 기준으로 검사합니다.
 - 각 파일 경로를 하나씩 검사하며, 하나라도 일치하면 조건은 참이 됩니다.
+
+#### commit-messages
+
+- PR에 포함된 각 커밋의 전체 메시지를 기준으로 검사합니다.
+- 각 커밋 메시지를 하나씩 검사하며, 하나라도 정규식에 일치하면 조건은 참이 됩니다.
 
 ### 5.3 값 타입
 

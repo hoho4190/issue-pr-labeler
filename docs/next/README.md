@@ -28,6 +28,7 @@ You can combine the following conditions to build simple labeling rules.
 - Draft state (`draft`)
 - Changed lines (`changed-lines`)
 - Changed files (`changed-files`)
+- Full commit messages (`commit-messages`)
 
 It supports the `issues`, `pull_request`, and `pull_request_target` events, and uses `.github/labeler-config.yml` by
 default.
@@ -171,17 +172,18 @@ rules:
 > For supported properties, allowed value types, how to use `negate`, and more examples, see
 > [Configuration Guide - 5. conditions](/docs/next/configuration-guide.md#5-conditions).
 
-| Property        | Issue | PR  | Allowed value types (in precedence order) |
-| --------------- | ----- | --- | ----------------------------------------- |
-| `title`         | O     | O   | `regex`                                   |
-| `body`          | O     | O   | `regex`                                   |
-| `actor`         | O     | O   | `regex`, `string`                         |
-| `author`        | O     | O   | `regex`, `string`                         |
-| `base-branch`   | X     | O   | `regex`, `string`                         |
-| `head-branch`   | X     | O   | `regex`, `string`                         |
-| `draft`         | X     | O   | `boolean`                                 |
-| `changed-lines` | X     | O   | `numeric-comparison`                      |
-| `changed-files` | X     | O   | `glob-pattern`, `string`                  |
+| Property          | Issue | PR  | Allowed value types (in precedence order) |
+| ----------------- | ----- | --- | ----------------------------------------- |
+| `title`           | O     | O   | `regex`                                   |
+| `body`            | O     | O   | `regex`                                   |
+| `actor`           | O     | O   | `regex`, `string`                         |
+| `author`          | O     | O   | `regex`, `string`                         |
+| `base-branch`     | X     | O   | `regex`, `string`                         |
+| `head-branch`     | X     | O   | `regex`, `string`                         |
+| `draft`           | X     | O   | `boolean`                                 |
+| `changed-lines`   | X     | O   | `numeric-comparison`                      |
+| `changed-files`   | X     | O   | `glob-pattern`, `string`                  |
+| `commit-messages` | X     | O   | `regex`                                   |
 
 - `author` is the issue/PR author, while `actor` is the subject that triggered the event.
 - `changed-lines` compares the PR's **total changed lines (additions + deletions)**.

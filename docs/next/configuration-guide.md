@@ -275,17 +275,18 @@ conditions:
 
 ### 5.1 Supported Properties by Event
 
-| Property        | Issue | PR  | Allowed value types (in precedence order) |
-| --------------- | ----- | --- | ----------------------------------------- |
-| `title`         | O     | O   | `regex`                                   |
-| `body`          | O     | O   | `regex`                                   |
-| `actor`         | O     | O   | `regex`, `string`                         |
-| `author`        | O     | O   | `regex`, `string`                         |
-| `base-branch`   | X     | O   | `regex`, `string`                         |
-| `head-branch`   | X     | O   | `regex`, `string`                         |
-| `draft`         | X     | O   | `boolean`                                 |
-| `changed-lines` | X     | O   | `numeric-comparison`                      |
-| `changed-files` | X     | O   | `glob-pattern`, `string`                  |
+| Property          | Issue | PR  | Allowed value types (in precedence order) |
+| ----------------- | ----- | --- | ----------------------------------------- |
+| `title`           | O     | O   | `regex`                                   |
+| `body`            | O     | O   | `regex`                                   |
+| `actor`           | O     | O   | `regex`, `string`                         |
+| `author`          | O     | O   | `regex`, `string`                         |
+| `base-branch`     | X     | O   | `regex`, `string`                         |
+| `head-branch`     | X     | O   | `regex`, `string`                         |
+| `draft`           | X     | O   | `boolean`                                 |
+| `changed-lines`   | X     | O   | `numeric-comparison`                      |
+| `changed-files`   | X     | O   | `glob-pattern`, `string`                  |
+| `commit-messages` | X     | O   | `regex`                                   |
 
 ### 5.2 Properties
 
@@ -327,6 +328,11 @@ conditions:
 
 - Checks against the list of changed file paths in the PR.
 - Each file path is checked one by one, and the condition becomes true if any one of them matches.
+
+#### commit-messages
+
+- Checks against the full message of each commit included in the PR.
+- Each commit message is checked one by one, and the condition becomes true if any one of them matches the regex.
 
 ### 5.3 Value Types
 
