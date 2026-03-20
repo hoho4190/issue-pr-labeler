@@ -275,18 +275,20 @@ conditions:
 
 ### 5.1 Supported Properties by Event
 
-| Property          | Issue | PR  | Allowed value types (in precedence order) |
-| ----------------- | ----- | --- | ----------------------------------------- |
-| `title`           | O     | O   | `regex`                                   |
-| `body`            | O     | O   | `regex`                                   |
-| `actor`           | O     | O   | `regex`, `string`                         |
-| `author`          | O     | O   | `regex`, `string`                         |
-| `base-branch`     | X     | O   | `regex`, `string`                         |
-| `head-branch`     | X     | O   | `regex`, `string`                         |
-| `draft`           | X     | O   | `boolean`                                 |
-| `changed-lines`   | X     | O   | `numeric-comparison`                      |
-| `changed-files`   | X     | O   | `glob-pattern`, `string`                  |
-| `commit-messages` | X     | O   | `regex`                                   |
+| Property                  | Issue | PR  | Allowed value types (in precedence order) |
+| ------------------------- | ----- | --- | ----------------------------------------- |
+| `title`                   | O     | O   | `regex`                                   |
+| `body`                    | O     | O   | `regex`                                   |
+| `actor`                   | O     | O   | `regex`, `string`                         |
+| `author`                  | O     | O   | `regex`, `string`                         |
+| `base-branch`             | X     | O   | `regex`, `string`                         |
+| `head-branch`             | X     | O   | `regex`, `string`                         |
+| `draft`                   | X     | O   | `boolean`                                 |
+| `changed-lines`           | X     | O   | `numeric-comparison`                      |
+| `changed-files`           | X     | O   | `glob-pattern`, `string`                  |
+| `commit-messages`         | X     | O   | `regex`                                   |
+| `commit-message-subjects` | X     | O   | `regex`                                   |
+| `commit-message-bodies`   | X     | O   | `regex`                                   |
 
 ### 5.2 Properties
 
@@ -333,6 +335,17 @@ conditions:
 
 - Checks against the full message of each commit included in the PR.
 - Each commit message is checked one by one, and the condition becomes true if any one of them matches the regex.
+
+#### commit-message-subjects
+
+- Checks against the subject of each commit message included in the PR.
+- Each commit subject is checked one by one, and the condition becomes true if any one of them matches the regex.
+
+#### commit-message-bodies
+
+- Checks against the body of each commit message included in the PR.
+- Each commit body is checked one by one, and the condition becomes true if any one of them matches the regex.
+- If the body is empty, it is evaluated after treating the body value as an empty string (`''`).
 
 ### 5.3 Value Types
 

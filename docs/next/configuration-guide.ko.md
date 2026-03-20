@@ -266,18 +266,20 @@ conditions:
 
 ### 5.1 이벤트별 지원 속성
 
-| 속성              | 이슈 | PR  | 허용 값 타입(우선순위)   |
-| ----------------- | ---- | --- | ------------------------ |
-| `title`           | O    | O   | `regex`                  |
-| `body`            | O    | O   | `regex`                  |
-| `actor`           | O    | O   | `regex`, `string`        |
-| `author`          | O    | O   | `regex`, `string`        |
-| `base-branch`     | X    | O   | `regex`, `string`        |
-| `head-branch`     | X    | O   | `regex`, `string`        |
-| `draft`           | X    | O   | `boolean`                |
-| `changed-lines`   | X    | O   | `numeric-comparison`     |
-| `changed-files`   | X    | O   | `glob-pattern`, `string` |
-| `commit-messages` | X    | O   | `regex`                  |
+| 속성                      | 이슈 | PR  | 허용 값 타입(우선순위)   |
+| ------------------------- | ---- | --- | ------------------------ |
+| `title`                   | O    | O   | `regex`                  |
+| `body`                    | O    | O   | `regex`                  |
+| `actor`                   | O    | O   | `regex`, `string`        |
+| `author`                  | O    | O   | `regex`, `string`        |
+| `base-branch`             | X    | O   | `regex`, `string`        |
+| `head-branch`             | X    | O   | `regex`, `string`        |
+| `draft`                   | X    | O   | `boolean`                |
+| `changed-lines`           | X    | O   | `numeric-comparison`     |
+| `changed-files`           | X    | O   | `glob-pattern`, `string` |
+| `commit-messages`         | X    | O   | `regex`                  |
+| `commit-message-subjects` | X    | O   | `regex`                  |
+| `commit-message-bodies`   | X    | O   | `regex`                  |
 
 ### 5.2 속성
 
@@ -324,6 +326,17 @@ conditions:
 
 - PR에 포함된 각 커밋의 전체 메시지를 기준으로 검사합니다.
 - 각 커밋 메시지를 하나씩 검사하며, 하나라도 정규식에 일치하면 조건은 참이 됩니다.
+
+#### commit-message-subjects
+
+- PR에 포함된 각 커밋 메시지의 제목을 기준으로 검사합니다.
+- 각 커밋 제목을 하나씩 검사하며, 하나라도 정규식에 일치하면 조건은 참이 됩니다.
+
+#### commit-message-bodies
+
+- PR에 포함된 각 커밋 메시지의 본문을 기준으로 검사합니다.
+- 각 커밋 본문을 하나씩 검사하며, 하나라도 정규식에 일치하면 조건은 참이 됩니다.
+- 본문이 비어 있으면, 본문 값은 빈 문자열(`''`)로 처리한 뒤 평가합니다.
 
 ### 5.3 값 타입
 

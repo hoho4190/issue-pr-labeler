@@ -29,6 +29,8 @@
 - 변경 라인 수(`changed-lines`)
 - 변경 파일(`changed-files`)
 - 커밋 메시지 전체(`commit-messages`)
+- 커밋 메시지 제목(`commit-message-subjects`)
+- 커밋 메시지 본문(`commit-message-bodies`)
 
 `issues`, `pull_request`, `pull_request_target` 이벤트를 지원하며, 설정 파일은 기본적으로 `.github/labeler-config.yml`을
 사용합니다.
@@ -171,18 +173,20 @@ rules:
 > 지원 속성, 허용 값 타입, `negate` 사용법, 추가 예시는
 > [Configuration Guide - 5. conditions](/docs/next/configuration-guide.ko.md#5-conditions)를 참고하세요.
 
-| 속성              | 이슈 | PR  | 허용 값 타입(우선순위)   |
-| ----------------- | ---- | --- | ------------------------ |
-| `title`           | O    | O   | `regex`                  |
-| `body`            | O    | O   | `regex`                  |
-| `actor`           | O    | O   | `regex`, `string`        |
-| `author`          | O    | O   | `regex`, `string`        |
-| `base-branch`     | X    | O   | `regex`, `string`        |
-| `head-branch`     | X    | O   | `regex`, `string`        |
-| `draft`           | X    | O   | `boolean`                |
-| `changed-lines`   | X    | O   | `numeric-comparison`     |
-| `changed-files`   | X    | O   | `glob-pattern`, `string` |
-| `commit-messages` | X    | O   | `regex`                  |
+| 속성                      | 이슈 | PR  | 허용 값 타입(우선순위)   |
+| ------------------------- | ---- | --- | ------------------------ |
+| `title`                   | O    | O   | `regex`                  |
+| `body`                    | O    | O   | `regex`                  |
+| `actor`                   | O    | O   | `regex`, `string`        |
+| `author`                  | O    | O   | `regex`, `string`        |
+| `base-branch`             | X    | O   | `regex`, `string`        |
+| `head-branch`             | X    | O   | `regex`, `string`        |
+| `draft`                   | X    | O   | `boolean`                |
+| `changed-lines`           | X    | O   | `numeric-comparison`     |
+| `changed-files`           | X    | O   | `glob-pattern`, `string` |
+| `commit-messages`         | X    | O   | `regex`                  |
+| `commit-message-subjects` | X    | O   | `regex`                  |
+| `commit-message-bodies`   | X    | O   | `regex`                  |
 
 - `author`는 이슈/PR의 작성자이고, `actor`는 해당 이벤트를 발생시킨 주체입니다.
 - `changed-lines` 비교 대상은 PR의 **총 변경 줄 수(추가 + 삭제)** 입니다.
