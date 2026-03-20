@@ -95,6 +95,7 @@ const createGitHubServiceMock = (): jest.Mocked<IGitHubService> =>
     getContent: jest.fn(),
     listRepositoryLabels: jest.fn(),
     listPullRequestFiles: jest.fn(),
+    listPullRequestCommits: jest.fn(),
     listLabelsForIssueOrPr: jest.fn(),
     addLabels: jest.fn(),
     removeLabel: jest.fn()
@@ -102,7 +103,8 @@ const createGitHubServiceMock = (): jest.Mocked<IGitHubService> =>
 
 const createConditionResolveServiceMock = (): jest.Mocked<IConditionResolveService> =>
   ({
-    resolveChangedFiles: jest.fn()
+    resolveChangedFiles: jest.fn(),
+    resolveCommitMessages: jest.fn()
   }) as jest.Mocked<IConditionResolveService>
 
 const createLabelService = (context: Context, gitHubService: jest.Mocked<IGitHubService>) =>

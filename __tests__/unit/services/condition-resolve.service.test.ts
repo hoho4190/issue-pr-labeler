@@ -11,6 +11,7 @@ const createGitHubServiceMock = (): jest.Mocked<IGitHubService> =>
     getContent: jest.fn(),
     listRepositoryLabels: jest.fn(),
     listPullRequestFiles: jest.fn(),
+    listPullRequestCommits: jest.fn(),
     listLabelsForIssueOrPr: jest.fn(),
     addLabels: jest.fn(),
     removeLabel: jest.fn()
@@ -59,5 +60,35 @@ describe('Unit | Services: condition-resolve.service', () => {
     // then
     expect(gitHubService.listPullRequestFiles).toHaveBeenCalledWith('octo-org', 'octo-repo', 99)
     expect(files).toEqual(['src/main.ts', 'README.md'])
+  })
+
+  // PR 컨텍스트일 때 커밋을 조회하고 전체 커밋 메시지 목록만 반환하는지 확인
+  test('returns commit messages for pull request context', async () => {
+    // given
+    const gitHubService = createGitHubServiceMock()
+    const service = new ConditionResolveService(gitHubService)
+    const context = createPullRequestContext()
+    gitHubService.listPullRequestCommits.mockResolvedValue([
+      {
+        message: 'feat: add commit messages\n\nImplement support',
+        messageHeadline: 'feat: add commit messages',
+        messageBody: 'Implement support'
+      },
+      {
+        message: 'test: cover commit resolver',
+        messageHeadline: 'test: cover commit resolver',
+        messageBody: undefined
+      }
+    ])
+
+    // when
+    const messages = await service.resolveCommitMessages(context)
+
+    // then
+    expect(gitHubService.listPullRequestCommits).toHaveBeenCalledWith('octo-org', 'octo-repo', 99)
+    expect(messages).toEqual([
+      'feat: add commit messages\n\nImplement support',
+      'test: cover commit resolver'
+    ])
   })
 })

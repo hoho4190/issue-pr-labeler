@@ -16,4 +16,17 @@ export class ConditionResolveService implements IConditionResolveService {
       context.eventNumber
     )
   }
+
+  /**
+   * Resolves the value used to evaluate the `commit-messages` condition.
+   */
+  public async resolveCommitMessages(context: Immutable<PullRequestContext>): Promise<string[]> {
+    const commits = await this.gitHubService.listPullRequestCommits(
+      context.repoOwner,
+      context.repoName,
+      context.eventNumber
+    )
+
+    return commits.map((commit) => commit.message)
+  }
 }

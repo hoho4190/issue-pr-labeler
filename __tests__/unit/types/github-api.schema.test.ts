@@ -21,6 +21,8 @@ let GitHubPullRequestResponseSchema: GitHubApiSchemaModule['GitHubPullRequestRes
 let GitHubContentResponseSchema: GitHubApiSchemaModule['GitHubContentResponseSchema']
 let GitHubLabelsResponseSchema: GitHubApiSchemaModule['GitHubLabelsResponseSchema']
 let GitHubPullRequestFilesResponseSchema: GitHubApiSchemaModule['GitHubPullRequestFilesResponseSchema']
+let GitHubPullRequestCommitDataSchema: GitHubApiSchemaModule['GitHubPullRequestCommitDataSchema']
+let GitHubPullRequestCommitsResponseSchema: GitHubApiSchemaModule['GitHubPullRequestCommitsResponseSchema']
 let GitHubIssueOrPullRequestLabelsResponseSchema: GitHubApiSchemaModule['GitHubIssueOrPullRequestLabelsResponseSchema']
 
 const createLabelsData = () => ({
@@ -51,6 +53,8 @@ describe('Unit | Types: github-api.schema', () => {
     GitHubContentResponseSchema = module.GitHubContentResponseSchema
     GitHubLabelsResponseSchema = module.GitHubLabelsResponseSchema
     GitHubPullRequestFilesResponseSchema = module.GitHubPullRequestFilesResponseSchema
+    GitHubPullRequestCommitDataSchema = module.GitHubPullRequestCommitDataSchema
+    GitHubPullRequestCommitsResponseSchema = module.GitHubPullRequestCommitsResponseSchema
     GitHubIssueOrPullRequestLabelsResponseSchema =
       module.GitHubIssueOrPullRequestLabelsResponseSchema
   })
@@ -292,6 +296,60 @@ describe('Unit | Types: github-api.schema', () => {
     })
   })
 
+  describe('GitHubPullRequestCommitDataSchema', () => {
+    // nullable body가 null일 때 transform이 호출되는지 확인
+    test('applies messageBody transform when commit messageBody is null', () => {
+      // given
+      const input = {
+        message: 'feat: add commit messages\n\nImplement support',
+        messageHeadline: 'feat: add commit messages',
+        messageBody: null
+      }
+
+      // when
+      const parsed = GitHubPullRequestCommitDataSchema.parse(input)
+
+      // then
+      expect(parsed.messageBody).toBeUndefined()
+      expect(nullOrEmptyToUndefinedMock).toHaveBeenCalledWith(null)
+    })
+
+    // body가 누락된 경우 optional transform 경로를 타는지 확인
+    test('applies messageBody transform when commit messageBody is omitted', () => {
+      // given
+      const input = {
+        message: 'feat: add commit messages',
+        messageHeadline: 'feat: add commit messages'
+      }
+
+      // when
+      const parsed = GitHubPullRequestCommitDataSchema.parse(input)
+
+      // then
+      expect(parsed.messageBody).toBeUndefined()
+      expect(nullOrEmptyToUndefinedMock).toHaveBeenCalledWith(undefined)
+    })
+
+    // messageHeadline 타입이 잘못되면 해당 경로에서 검증 실패하는지 확인
+    test('fails when commit messageHeadline type is invalid', () => {
+      // given
+      const input = {
+        message: 'feat: add commit messages',
+        messageHeadline: 123,
+        messageBody: 'Implement support'
+      }
+
+      // when
+      const thrown = expectZodError(
+        captureThrown(() => GitHubPullRequestCommitDataSchema.parse(input))
+      )
+
+      // then
+      expect(thrown.issues[0]?.code).toBe('invalid_type')
+      expect(thrown.issues[0]?.path).toEqual(['messageHeadline'])
+    })
+  })
+
   describe('other response schemas', () => {
     // content 응답에서 text 필드를 파싱하는지 확인
     test('parses content response payload', () => {
@@ -346,6 +404,38 @@ describe('Unit | Types: github-api.schema', () => {
 
       // then
       expect(parsed.repository.pullRequest.files.nodes[0]?.path).toBe('src/main.ts')
+    })
+
+    // PR commits 응답에서 커밋 메시지 구조를 파싱하는지 확인
+    test('parses pull request commits response payload', () => {
+      // given
+      const input = {
+        repository: {
+          pullRequest: {
+            commits: {
+              pageInfo: { hasNextPage: false, endCursor: null },
+              nodes: [
+                {
+                  commit: {
+                    message: 'feat: add commit messages\n\nImplement support',
+                    messageHeadline: 'feat: add commit messages',
+                    messageBody: 'Implement support'
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+
+      // when
+      const parsed = GitHubPullRequestCommitsResponseSchema.parse(input)
+
+      // then
+      expect(parsed.repository.pullRequest.commits.nodes[0]?.commit.messageHeadline).toBe(
+        'feat: add commit messages'
+      )
+      expect(nullOrEmptyToUndefinedMock).toHaveBeenCalledWith('Implement support')
     })
 
     // issue/pullRequest labels 응답에서 issue만 존재해도 파싱되는지 확인

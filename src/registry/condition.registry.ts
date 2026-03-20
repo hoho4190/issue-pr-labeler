@@ -4,6 +4,7 @@ import { BaseBranchProperty } from './condition-properties/base-branch.property.
 import { BodyProperty } from './condition-properties/body.property.js'
 import { ChangedFilesProperty } from './condition-properties/changed-files.property.js'
 import { ChangedLinesProperty } from './condition-properties/changed-lines.property.js'
+import { CommitMessagesProperty } from './condition-properties/commit-messages.property.js'
 import { HeadBranchProperty } from './condition-properties/head-branch.property.js'
 import { IsDraftProperty } from './condition-properties/is-draft.property.js'
 import { TitleProperty } from './condition-properties/title.property.js'
@@ -43,7 +44,8 @@ const CONDITION_PROPERTY_REGISTRY = createConditionPropertyRegistry({
   [ConditionPropertyType.HeadBranch]: HeadBranchProperty,
   [ConditionPropertyType.IsDraft]: IsDraftProperty,
   [ConditionPropertyType.ChangedLines]: ChangedLinesProperty,
-  [ConditionPropertyType.ChangedFiles]: ChangedFilesProperty
+  [ConditionPropertyType.ChangedFiles]: ChangedFilesProperty,
+  [ConditionPropertyType.CommitMessages]: CommitMessagesProperty
 } as const)
 
 // ============================================================================

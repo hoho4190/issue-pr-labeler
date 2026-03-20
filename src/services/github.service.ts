@@ -8,6 +8,8 @@ import {
   GitHubIssueOrPullRequestLabelsResponseSchema,
   GitHubIssueResponseSchema,
   GitHubLabelsResponseSchema,
+  type GitHubPullRequestCommitData,
+  GitHubPullRequestCommitsResponseSchema,
   type GitHubPullRequestData,
   GitHubPullRequestFilesResponseSchema,
   GitHubPullRequestResponseSchema
@@ -274,6 +276,72 @@ export class GitHubService implements IGitHubService {
 
       return files
     }, 'listPullRequestFiles')
+  }
+
+  /**
+   * Lists all commits in the pull request.
+   */
+  public async listPullRequestCommits(
+    owner: string,
+    repo: string,
+    eventNumber: number
+  ): Promise<GitHubPullRequestCommitData[]> {
+    return this.callGitHubAPI(async () => {
+      const commits: GitHubPullRequestCommitData[] = []
+
+      let after: string | null = null
+      let pageCount = 0
+      do {
+        pageCount++
+        if (pageCount > MAX_GRAPHQL_PAGES) {
+          throw new Error(`Too many pages (> ${MAX_GRAPHQL_PAGES}), possible infinite loop`)
+        }
+
+        const query = `
+          query($owner: String!, $repo: String!, $eventNumber: Int!, $after: String) {
+            repository(owner: $owner, name: $repo) {
+              pullRequest(number: $eventNumber) {
+                commits(first: 100, after: $after) {
+                  pageInfo { hasNextPage endCursor }
+                  nodes {
+                    commit {
+                      message
+                      messageHeadline
+                      messageBody
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `
+
+        const variables: {
+          owner: string
+          repo: string
+          eventNumber: number
+          after: string | null
+        } = {
+          owner,
+          repo,
+          eventNumber,
+          after
+        }
+
+        const responseRaw = await this.octokit.graphql(query, variables)
+        const response = parseWithContext(GitHubPullRequestCommitsResponseSchema, responseRaw, {
+          message: 'Retrieving pull request commits'
+        })
+        const resCommits = response.repository.pullRequest.commits
+
+        commits.push(...resCommits.nodes.map(({ commit }) => commit))
+
+        const pageInfo = resCommits.pageInfo
+        after = pageInfo.hasNextPage ? pageInfo.endCursor : null
+      } while (after)
+
+      return commits
+    }, 'listPullRequestCommits')
   }
 
   /**

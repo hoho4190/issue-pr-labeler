@@ -109,6 +109,32 @@ export const GitHubPullRequestFilesResponseSchema = z.object({
 })
 
 // ──────────────────────────────────────────────
+// Pull request commits schema
+// ──────────────────────────────────────────────
+
+export const GitHubPullRequestCommitDataSchema = z.object({
+  message: z.string(),
+  messageHeadline: z.string(),
+  messageBody: z
+    .string()
+    .nullable()
+    .optional()
+    .transform((v) => nullOrEmptyToUndefined(v))
+})
+
+export const GitHubPullRequestCommitsResponseSchema = z.object({
+  repository: z.object({
+    pullRequest: z.object({
+      commits: GitHubPagedNodesSchema(
+        z.object({
+          commit: GitHubPullRequestCommitDataSchema
+        })
+      )
+    })
+  })
+})
+
+// ──────────────────────────────────────────────
 // Issue or Pull request labels schema
 // ──────────────────────────────────────────────
 
@@ -134,3 +160,4 @@ export const GitHubIssueOrPullRequestLabelsResponseSchema = z.object({
 export type GitHubLabelsData = z.infer<typeof GitHubLabelsDataSchema>
 export type GitHubIssueData = z.infer<typeof GitHubIssueDataSchema>
 export type GitHubPullRequestData = z.infer<typeof GitHubPullRequestDataSchema>
+export type GitHubPullRequestCommitData = z.infer<typeof GitHubPullRequestCommitDataSchema>
