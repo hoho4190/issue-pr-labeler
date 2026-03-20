@@ -82,7 +82,7 @@ rules:
 > [!NOTE]
 >
 > - `pull_request_target` 이벤트도 `rules.pr`에 설정합니다.
-> - 규칙, 매치, 조건이 어떻게 평가되는지 알고 싶다면 [규칙 평가 정책](/docs/dev/policy-rule-evaluation.ko.md) 문서를
+> - 규칙, 매치, 조건이 어떻게 평가되는지 알고 싶다면 [규칙 평가 정책](/docs/policy-rule-evaluation.ko.md) 문서를
 >   참고하시기 바랍니다.
 
 <br>

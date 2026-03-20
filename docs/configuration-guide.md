@@ -85,7 +85,7 @@ rules:
 >
 > - Configure the `pull_request_target` event under `rules.pr` as well.
 > - If you want to understand how rules, matches, and conditions are evaluated, see
->   [Rule Evaluation Policy](/docs/dev/policy-rule-evaluation.md).
+>   [Rule Evaluation Policy](/docs/policy-rule-evaluation.md).
 
 <br>
 
