@@ -5,6 +5,7 @@ import { EventType } from '../../../src/types/common.js'
 const readFileSyncMock = jest.fn<(path: string, encoding: BufferEncoding) => string>()
 const issueDataSchemaParseMock = jest.fn<(input: unknown) => unknown>()
 const pullRequestDataSchemaParseMock = jest.fn<(input: unknown) => unknown>()
+const pullRequestCommitsDataSchemaParseMock = jest.fn<(input: unknown) => unknown>()
 
 jest.unstable_mockModule('fs', () => ({
   default: {
@@ -19,6 +20,9 @@ jest.unstable_mockModule('../../../src/types/github-api.schema.js', () => ({
   },
   GitHubPullRequestDataSchema: {
     parse: (input: unknown) => pullRequestDataSchemaParseMock(input)
+  },
+  GitHubPullRequestCommitsDataSchema: {
+    parse: (input: unknown) => pullRequestCommitsDataSchemaParseMock(input)
   }
 }))
 
@@ -68,10 +72,12 @@ describe('Unit | Services: github.service.local', () => {
     readFileSyncMock.mockReset()
     issueDataSchemaParseMock.mockReset()
     pullRequestDataSchemaParseMock.mockReset()
+    pullRequestCommitsDataSchemaParseMock.mockReset()
 
     readFileSyncMock.mockReturnValue('{}')
     issueDataSchemaParseMock.mockImplementation((input) => input)
     pullRequestDataSchemaParseMock.mockImplementation((input) => input)
+    pullRequestCommitsDataSchemaParseMock.mockImplementation((input) => input)
   })
 
   describe('getIssue()', () => {
@@ -337,31 +343,33 @@ describe('Unit | Services: github.service.local', () => {
     test('parses pull request commits from fixture json', async () => {
       // given
       const { service } = createService()
-      readFileSyncMock.mockReturnValue(
-        JSON.stringify([
-          {
-            message: 'test: add local fixtures for pull request commits',
-            messageHeadline: 'test: add local fixtures for pull request commits',
-            messageBody: ''
-          }
-        ])
-      )
-
-      // when
-      const result = await service.listPullRequestCommits('octo-org', 'octo-repo', 66)
-
-      // then
-      expect(result).toEqual([
+      const fixtureJson = [
         {
           message: 'test: add local fixtures for pull request commits',
           messageHeadline: 'test: add local fixtures for pull request commits',
           messageBody: ''
         }
-      ])
+      ]
+      const parsedCommits = [
+        {
+          message: 'test: add local fixtures for pull request commits',
+          messageHeadline: 'test: add local fixtures for pull request commits',
+          messageBody: undefined
+        }
+      ]
+      readFileSyncMock.mockReturnValue(JSON.stringify(fixtureJson))
+      pullRequestCommitsDataSchemaParseMock.mockReturnValue(parsedCommits)
+
+      // when
+      const result = await service.listPullRequestCommits('octo-org', 'octo-repo', 66)
+
+      // then
+      expect(result).toEqual(parsedCommits)
       expect(readFileSyncMock).toHaveBeenCalledWith(
         '/tmp/fixtures/listPullRequestCommits.json',
         'utf-8'
       )
+      expect(pullRequestCommitsDataSchemaParseMock).toHaveBeenCalledWith(fixtureJson)
     })
   })
 

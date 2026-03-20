@@ -22,5 +22,7 @@ export enum ConditionPropertyType {
   IsDraft = 'draft',
   ChangedLines = 'changed-lines',
   ChangedFiles = 'changed-files',
-  CommitMessages = 'commit-messages'
+  CommitMessages = 'commit-messages',
+  CommitMessageSubjects = 'commit-message-subjects',
+  CommitMessageBodies = 'commit-message-bodies'
 }

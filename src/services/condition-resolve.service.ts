@@ -29,4 +29,34 @@ export class ConditionResolveService implements IConditionResolveService {
 
     return commits.map((commit) => commit.message)
   }
+
+  /**
+   * Resolves the value used to evaluate the `commit-message-subjects` condition.
+   */
+  public async resolveCommitMessageSubjects(
+    context: Immutable<PullRequestContext>
+  ): Promise<string[]> {
+    const commits = await this.gitHubService.listPullRequestCommits(
+      context.repoOwner,
+      context.repoName,
+      context.eventNumber
+    )
+
+    return commits.map((commit) => commit.messageHeadline)
+  }
+
+  /**
+   * Resolves the value used to evaluate the `commit-message-bodies` condition.
+   */
+  public async resolveCommitMessageBodies(
+    context: Immutable<PullRequestContext>
+  ): Promise<string[]> {
+    const commits = await this.gitHubService.listPullRequestCommits(
+      context.repoOwner,
+      context.repoName,
+      context.eventNumber
+    )
+
+    return commits.map((commit) => commit.messageBody ?? '')
+  }
 }

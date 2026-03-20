@@ -5,6 +5,7 @@ import {
   type GitHubIssueData,
   GitHubIssueDataSchema,
   type GitHubPullRequestCommitData,
+  GitHubPullRequestCommitsDataSchema,
   type GitHubPullRequestData,
   GitHubPullRequestDataSchema
 } from '../types/github-api.schema.js'
@@ -114,7 +115,8 @@ export class LocalGitHubService implements IGitHubService {
     }
 
     const data = fs.readFileSync(fixturePath, 'utf-8')
-    return JSON.parse(data)
+    const json = JSON.parse(data)
+    return GitHubPullRequestCommitsDataSchema.parse(json)
   }
 
   public async listLabelsForIssueOrPr(

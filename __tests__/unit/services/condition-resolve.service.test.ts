@@ -91,4 +91,58 @@ describe('Unit | Services: condition-resolve.service', () => {
       'test: cover commit resolver'
     ])
   })
+
+  // PR 컨텍스트일 때 커밋을 조회하고 subject 목록만 반환하는지 확인
+  test('returns commit message subjects for pull request context', async () => {
+    // given
+    const gitHubService = createGitHubServiceMock()
+    const service = new ConditionResolveService(gitHubService)
+    const context = createPullRequestContext()
+    gitHubService.listPullRequestCommits.mockResolvedValue([
+      {
+        message: 'feat: add commit messages\n\nImplement support',
+        messageHeadline: 'feat: add commit messages',
+        messageBody: 'Implement support'
+      },
+      {
+        message: 'test: cover commit resolver',
+        messageHeadline: 'test: cover commit resolver',
+        messageBody: undefined
+      }
+    ])
+
+    // when
+    const subjects = await service.resolveCommitMessageSubjects(context)
+
+    // then
+    expect(gitHubService.listPullRequestCommits).toHaveBeenCalledWith('octo-org', 'octo-repo', 99)
+    expect(subjects).toEqual(['feat: add commit messages', 'test: cover commit resolver'])
+  })
+
+  // PR 컨텍스트일 때 커밋을 조회하고 body가 없으면 빈 문자열로 정규화하는지 확인
+  test('returns commit message bodies for pull request context', async () => {
+    // given
+    const gitHubService = createGitHubServiceMock()
+    const service = new ConditionResolveService(gitHubService)
+    const context = createPullRequestContext()
+    gitHubService.listPullRequestCommits.mockResolvedValue([
+      {
+        message: 'feat: add commit messages\n\nImplement support',
+        messageHeadline: 'feat: add commit messages',
+        messageBody: 'Implement support'
+      },
+      {
+        message: 'test: cover commit resolver',
+        messageHeadline: 'test: cover commit resolver',
+        messageBody: undefined
+      }
+    ])
+
+    // when
+    const bodies = await service.resolveCommitMessageBodies(context)
+
+    // then
+    expect(gitHubService.listPullRequestCommits).toHaveBeenCalledWith('octo-org', 'octo-repo', 99)
+    expect(bodies).toEqual(['Implement support', ''])
+  })
 })

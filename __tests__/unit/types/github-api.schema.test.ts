@@ -22,6 +22,7 @@ let GitHubContentResponseSchema: GitHubApiSchemaModule['GitHubContentResponseSch
 let GitHubLabelsResponseSchema: GitHubApiSchemaModule['GitHubLabelsResponseSchema']
 let GitHubPullRequestFilesResponseSchema: GitHubApiSchemaModule['GitHubPullRequestFilesResponseSchema']
 let GitHubPullRequestCommitDataSchema: GitHubApiSchemaModule['GitHubPullRequestCommitDataSchema']
+let GitHubPullRequestCommitsDataSchema: GitHubApiSchemaModule['GitHubPullRequestCommitsDataSchema']
 let GitHubPullRequestCommitsResponseSchema: GitHubApiSchemaModule['GitHubPullRequestCommitsResponseSchema']
 let GitHubIssueOrPullRequestLabelsResponseSchema: GitHubApiSchemaModule['GitHubIssueOrPullRequestLabelsResponseSchema']
 
@@ -54,6 +55,7 @@ describe('Unit | Types: github-api.schema', () => {
     GitHubLabelsResponseSchema = module.GitHubLabelsResponseSchema
     GitHubPullRequestFilesResponseSchema = module.GitHubPullRequestFilesResponseSchema
     GitHubPullRequestCommitDataSchema = module.GitHubPullRequestCommitDataSchema
+    GitHubPullRequestCommitsDataSchema = module.GitHubPullRequestCommitsDataSchema
     GitHubPullRequestCommitsResponseSchema = module.GitHubPullRequestCommitsResponseSchema
     GitHubIssueOrPullRequestLabelsResponseSchema =
       module.GitHubIssueOrPullRequestLabelsResponseSchema
@@ -347,6 +349,33 @@ describe('Unit | Types: github-api.schema', () => {
       // then
       expect(thrown.issues[0]?.code).toBe('invalid_type')
       expect(thrown.issues[0]?.path).toEqual(['messageHeadline'])
+    })
+  })
+
+  describe('GitHubPullRequestCommitsDataSchema', () => {
+    // 커밋 배열 fixture도 각 commit 스키마 규칙을 따라 파싱하는지 확인
+    test('parses pull request commits fixture payload', () => {
+      // given
+      const input = [
+        {
+          message: 'feat: add commit messages\n\nImplement support',
+          messageHeadline: 'feat: add commit messages',
+          messageBody: ''
+        }
+      ]
+
+      // when
+      const parsed = GitHubPullRequestCommitsDataSchema.parse(input)
+
+      // then
+      expect(parsed).toEqual([
+        {
+          message: 'feat: add commit messages\n\nImplement support',
+          messageHeadline: 'feat: add commit messages',
+          messageBody: undefined
+        }
+      ])
+      expect(nullOrEmptyToUndefinedMock).toHaveBeenCalledWith('')
     })
   })
 

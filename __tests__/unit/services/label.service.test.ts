@@ -104,7 +104,9 @@ const createGitHubServiceMock = (): jest.Mocked<IGitHubService> =>
 const createConditionResolveServiceMock = (): jest.Mocked<IConditionResolveService> =>
   ({
     resolveChangedFiles: jest.fn(),
-    resolveCommitMessages: jest.fn()
+    resolveCommitMessages: jest.fn(),
+    resolveCommitMessageSubjects: jest.fn(),
+    resolveCommitMessageBodies: jest.fn()
   }) as jest.Mocked<IConditionResolveService>
 
 const createLabelService = (context: Context, gitHubService: jest.Mocked<IGitHubService>) =>

@@ -122,6 +122,8 @@ export const GitHubPullRequestCommitDataSchema = z.object({
     .transform((v) => nullOrEmptyToUndefined(v))
 })
 
+export const GitHubPullRequestCommitsDataSchema = z.array(GitHubPullRequestCommitDataSchema)
+
 export const GitHubPullRequestCommitsResponseSchema = z.object({
   repository: z.object({
     pullRequest: z.object({
