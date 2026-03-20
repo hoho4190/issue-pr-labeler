@@ -1,6 +1,10 @@
 # Issue PR Labeler
 
-[English](/README.md) | 한국어
+<!-- LANGUAGE_SWITCH_START -->
+
+[English](/docs/next/README.md) | 한국어
+
+<!-- LANGUAGE_SWITCH_END -->
 
 [![GitHub Release](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)](https://github.com/hoho4190/issue-pr-labeler/releases/latest)
 [![GitHub License](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)](https://github.com/hoho4190/issue-pr-labeler?tab=MIT-1-ov-file)
@@ -123,7 +127,8 @@ rules:
 
 > [!NOTE]
 >
-> 자세한 설정 형식, 값 타입, 검증 규칙, 추가 예시는 [Configuration Guide](/docs/configuration-guide.ko.md)를 참고하세요.
+> 자세한 설정 형식, 값 타입, 검증 규칙, 추가 예시는 [Configuration Guide](/docs/next/configuration-guide.ko.md)를
+> 참고하세요.
 
 <br>
 
@@ -141,7 +146,7 @@ rules:
 
 > [!NOTE]
 >
-> 각 옵션의 기본값과 동작 방식은 [Configuration Guide - 3. settings](/docs/configuration-guide.ko.md#3-settings)를
+> 각 옵션의 기본값과 동작 방식은 [Configuration Guide - 3. settings](/docs/next/configuration-guide.ko.md#3-settings)를
 > 참고하세요.
 
 | 옵션                    | 허용 값                   | 기본값   | 설명                                                             |
@@ -162,7 +167,7 @@ rules:
 > [!NOTE]
 >
 > 지원 속성, 허용 값 타입, `negate` 사용법, 추가 예시는
-> [Configuration Guide - 5. conditions](/docs/configuration-guide.ko.md#5-conditions)를 참고하세요.
+> [Configuration Guide - 5. conditions](/docs/next/configuration-guide.ko.md#5-conditions)를 참고하세요.
 
 | 속성            | 이슈 | PR  | 허용 값 타입(우선순위)   |
 | --------------- | ---- | --- | ------------------------ |

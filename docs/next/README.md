@@ -2,7 +2,7 @@
 
 <!-- LANGUAGE_SWITCH_START -->
 
-English | [한국어](/docs/latest/README.ko.md)
+English | [한국어](/docs/next/README.ko.md)
 
 <!-- LANGUAGE_SWITCH_END -->
 
@@ -129,7 +129,7 @@ rules:
 > [!NOTE]
 >
 > For detailed configuration format, value types, validation rules, and more examples, see the
-> [Configuration Guide](/docs/latest/configuration-guide.md).
+> [Configuration Guide](/docs/next/configuration-guide.md).
 
 <br>
 
@@ -148,7 +148,7 @@ rules:
 > [!NOTE]
 >
 > For each option's default value and behavior, see
-> [Configuration Guide - 3. settings](/docs/latest/configuration-guide.md#3-settings).
+> [Configuration Guide - 3. settings](/docs/next/configuration-guide.md#3-settings).
 
 | Option                  | Allowed values            | Default  | Description                                                    |
 | ----------------------- | ------------------------- | -------- | -------------------------------------------------------------- |
@@ -168,7 +168,7 @@ rules:
 > [!NOTE]
 >
 > For supported properties, allowed value types, how to use `negate`, and more examples, see
-> [Configuration Guide - 5. conditions](/docs/latest/configuration-guide.md#5-conditions).
+> [Configuration Guide - 5. conditions](/docs/next/configuration-guide.md#5-conditions).
 
 | Property        | Issue | PR  | Allowed value types (in precedence order) |
 | --------------- | ----- | --- | ----------------------------------------- |

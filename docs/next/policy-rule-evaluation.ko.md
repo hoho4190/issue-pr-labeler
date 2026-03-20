@@ -1,6 +1,6 @@
 # 규칙 평가 정책
 
-[English](/docs/dev/policy-rule-evaluation.md) | 한국어
+[English](/docs/next/policy-rule-evaluation.md) | 한국어
 
 평가 단계는 설정 파일에 작성된 규칙(`Rule`)들을 평가하여 레이블을 추가해야 할지, 제거해야 할지, 유지해야 할지를
 결정한다.
@@ -22,13 +22,13 @@
 
 > [!NOTE]
 >
-> [`skipIfBot`](/docs/configuration-guide.ko.md#31-skipifbot) 참고
+> [`skipIfBot`](/docs/next/configuration-guide.ko.md#31-skipifbot) 참고
 
 ## `removeUnmatchedLabels` 옵션 정책
 
 > [!NOTE]
 >
-> [`removeUnmatchedLabels`](/docs/configuration-guide.ko.md#32-removeunmatchedlabels) 참고
+> [`removeUnmatchedLabels`](/docs/next/configuration-guide.ko.md#32-removeunmatchedlabels) 참고
 
 ## 규칙 결과별 경우의 수
 

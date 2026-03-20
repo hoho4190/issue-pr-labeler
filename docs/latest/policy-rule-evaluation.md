@@ -1,6 +1,6 @@
 # Rule Evaluation Policy
 
-English | [한국어](/docs/dev/policy-rule-evaluation.ko.md)
+English | [한국어](/docs/latest/policy-rule-evaluation.ko.md)
 
 The evaluation step evaluates the configured rules (`Rule`) and determines whether each label should be added, removed,
 or kept.
@@ -23,13 +23,13 @@ or kept.
 
 > [!NOTE]
 >
-> See [`skipIfBot`](/docs/configuration-guide.md#31-skipifbot).
+> See [`skipIfBot`](/docs/latest/configuration-guide.md#31-skipifbot).
 
 ## `removeUnmatchedLabels` Option Policy
 
 > [!NOTE]
 >
-> See [`removeUnmatchedLabels`](/docs/configuration-guide.md#32-removeunmatchedlabels).
+> See [`removeUnmatchedLabels`](/docs/latest/configuration-guide.md#32-removeunmatchedlabels).
 
 ## Cases by Rule Result
 

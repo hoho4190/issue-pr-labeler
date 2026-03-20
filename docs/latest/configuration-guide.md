@@ -1,6 +1,6 @@
 # Configuration Guide
 
-English | [한국어](/docs/configuration-guide.ko.md)
+English | [한국어](/docs/latest/configuration-guide.ko.md)
 
 This document explains the structure of the configuration file and how to write it. The configuration file is located in
 the `.github` directory.
@@ -85,7 +85,7 @@ rules:
 >
 > - Configure the `pull_request_target` event under `rules.pr` as well.
 > - If you want to understand how rules, matches, and conditions are evaluated, see
->   [Rule Evaluation Policy](/docs/dev/policy-rule-evaluation.md).
+>   [Rule Evaluation Policy](/docs/latest/policy-rule-evaluation.md).
 
 <br>
 
