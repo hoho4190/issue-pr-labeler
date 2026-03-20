@@ -1,6 +1,10 @@
 # Issue PR Labeler
 
+<!-- LANGUAGE_SWITCH_START -->
+
 [English](/docs/next/README.md) | 한국어
+
+<!-- LANGUAGE_SWITCH_END -->
 
 [![GitHub Release](https://img.shields.io/github/v/release/hoho4190/issue-pr-labeler)](https://github.com/hoho4190/issue-pr-labeler/releases/latest)
 [![GitHub License](https://img.shields.io/github/license/hoho4190/issue-pr-labeler?color=informational)](https://github.com/hoho4190/issue-pr-labeler?tab=MIT-1-ov-file)
@@ -123,7 +127,8 @@ rules:
 
 > [!NOTE]
 >
-> 자세한 설정 형식, 값 타입, 검증 규칙, 추가 예시는 [Configuration Guide](/docs/next/configuration-guide.ko.md)를 참고하세요.
+> 자세한 설정 형식, 값 타입, 검증 규칙, 추가 예시는 [Configuration Guide](/docs/next/configuration-guide.ko.md)를
+> 참고하세요.
 
 <br>
 
