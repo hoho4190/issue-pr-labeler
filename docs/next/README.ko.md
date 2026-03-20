@@ -21,6 +21,7 @@
 
 - 제목(`title`)
 - 본문(`body`)
+- 이벤트 실행자(`actor`)
 - 작성자(`author`)
 - 대상 브랜치(`base-branch`)
 - 소스 브랜치(`head-branch`)
@@ -173,6 +174,7 @@ rules:
 | --------------- | ---- | --- | ------------------------ |
 | `title`         | O    | O   | `regex`                  |
 | `body`          | O    | O   | `regex`                  |
+| `actor`         | O    | O   | `regex`, `string`        |
 | `author`        | O    | O   | `regex`, `string`        |
 | `base-branch`   | X    | O   | `regex`, `string`        |
 | `head-branch`   | X    | O   | `regex`, `string`        |
@@ -180,6 +182,7 @@ rules:
 | `changed-lines` | X    | O   | `numeric-comparison`     |
 | `changed-files` | X    | O   | `glob-pattern`, `string` |
 
+- `author`는 이슈/PR의 작성자이고, `actor`는 해당 이벤트를 발생시킨 주체입니다.
 - `changed-lines` 비교 대상은 PR의 **총 변경 줄 수(추가 + 삭제)** 입니다.
 - `regex`: `/pattern/flags` 형식으로 작성합니다.
 - `glob-pattern`: `src/**/*.ts`, `**/*.md` 같은 **glob 패턴 문자열**로 작성합니다.

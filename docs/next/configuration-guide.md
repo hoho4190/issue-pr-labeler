@@ -279,6 +279,7 @@ conditions:
 | --------------- | ----- | --- | ----------------------------------------- |
 | `title`         | O     | O   | `regex`                                   |
 | `body`          | O     | O   | `regex`                                   |
+| `actor`         | O     | O   | `regex`, `string`                         |
 | `author`        | O     | O   | `regex`, `string`                         |
 | `base-branch`   | X     | O   | `regex`, `string`                         |
 | `head-branch`   | X     | O   | `regex`, `string`                         |
@@ -296,6 +297,10 @@ conditions:
 
 - Checks the issue/PR body (`issue.body`, `pullRequest.body`).
 - If the body is empty, it is evaluated after treating the body value as an empty string (`''`).
+
+#### actor
+
+- Checks the subject that triggered the current event (`actor`).
 
 #### author
 

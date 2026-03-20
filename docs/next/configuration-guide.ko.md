@@ -270,6 +270,7 @@ conditions:
 | --------------- | ---- | --- | ------------------------ |
 | `title`         | O    | O   | `regex`                  |
 | `body`          | O    | O   | `regex`                  |
+| `actor`         | O    | O   | `regex`, `string`        |
 | `author`        | O    | O   | `regex`, `string`        |
 | `base-branch`   | X    | O   | `regex`, `string`        |
 | `head-branch`   | X    | O   | `regex`, `string`        |
@@ -287,6 +288,10 @@ conditions:
 
 - 이슈/PR 본문(`issue.body`, `pullRequest.body`)을 대상으로 검사합니다.
 - 본문이 비어 있으면, 본문 값은 빈 문자열(`''`)로 처리한 뒤 평가합니다.
+
+#### actor
+
+- 현재 이벤트를 발생시킨 주체(`actor`)를 대상으로 검사합니다.
 
 #### author
 
