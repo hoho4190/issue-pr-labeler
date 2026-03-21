@@ -21,12 +21,16 @@ You can combine the following conditions to build simple labeling rules.
 
 - Title (`title`)
 - Body (`body`)
+- Event actor (`actor`)
 - Author (`author`)
 - Base branch (`base-branch`)
 - Head branch (`head-branch`)
 - Draft state (`draft`)
 - Changed lines (`changed-lines`)
 - Changed files (`changed-files`)
+- Commit message (full) (`commit-messages`)
+- Commit message subject (`commit-message-subjects`)
+- Commit message body (`commit-message-bodies`)
 
 It supports the `issues`, `pull_request`, and `pull_request_target` events, and uses `.github/labeler-config.yml` by
 default.
@@ -170,17 +174,22 @@ rules:
 > For supported properties, allowed value types, how to use `negate`, and more examples, see
 > [Configuration Guide - 5. conditions](/docs/latest/configuration-guide.md#5-conditions).
 
-| Property        | Issue | PR  | Allowed value types (in precedence order) |
-| --------------- | ----- | --- | ----------------------------------------- |
-| `title`         | O     | O   | `regex`                                   |
-| `body`          | O     | O   | `regex`                                   |
-| `author`        | O     | O   | `regex`, `string`                         |
-| `base-branch`   | X     | O   | `regex`, `string`                         |
-| `head-branch`   | X     | O   | `regex`, `string`                         |
-| `draft`         | X     | O   | `boolean`                                 |
-| `changed-lines` | X     | O   | `numeric-comparison`                      |
-| `changed-files` | X     | O   | `glob-pattern`, `string`                  |
+| Property                  | Issue | PR  | Allowed value types (in precedence order) |
+| ------------------------- | ----- | --- | ----------------------------------------- |
+| `title`                   | O     | O   | `regex`                                   |
+| `body`                    | O     | O   | `regex`                                   |
+| `actor`                   | O     | O   | `regex`, `string`                         |
+| `author`                  | O     | O   | `regex`, `string`                         |
+| `base-branch`             | X     | O   | `regex`, `string`                         |
+| `head-branch`             | X     | O   | `regex`, `string`                         |
+| `draft`                   | X     | O   | `boolean`                                 |
+| `changed-lines`           | X     | O   | `numeric-comparison`                      |
+| `changed-files`           | X     | O   | `glob-pattern`, `string`                  |
+| `commit-messages`         | X     | O   | `regex`                                   |
+| `commit-message-subjects` | X     | O   | `regex`                                   |
+| `commit-message-bodies`   | X     | O   | `regex`                                   |
 
+- `author` is the issue/PR author, while `actor` is the subject that triggered the event.
 - `changed-lines` compares the PR's **total changed lines (additions + deletions)**.
 - `regex`: write it in the `/pattern/flags` format.
 - `glob-pattern`: write it as a **glob pattern string** such as `src/**/*.ts` or `**/*.md`.
