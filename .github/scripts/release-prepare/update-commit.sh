@@ -98,6 +98,16 @@ replace_language_switch_block() {
     mv "$tmp_file" "$file"
 }
 
+format_promoted_markdown_files() {
+    local markdown_files=("$ROOT_README_FILE")
+
+    while IFS= read -r -d '' file; do
+        markdown_files+=("$file")
+    done < <(find "$DOCS_LATEST_DIR" -type f -name '*.md' -print0)
+
+    npx prettier --write "${markdown_files[@]}"
+}
+
 promote_docs() {
     echo "Promote docs"
 
@@ -122,6 +132,8 @@ promote_docs() {
 
     replace_language_switch_block "$ROOT_README_FILE" "English | [한국어](/docs/latest/README.ko.md)"
     replace_language_switch_block "$DOCS_LATEST_DIR/README.ko.md" "[English](/README.md) | 한국어"
+
+    format_promoted_markdown_files
 
     git_commit "release: promote next docs to latest" "$DOCS_LATEST_DIR" "$ROOT_README_FILE"
 }
