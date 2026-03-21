@@ -1,7 +1,7 @@
 {
   "name": "issue-pr-labeler",
   "description": "GitHub Action that automatically labels issues and pull requests based on user-defined rules.",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "author": {
     "name": "hoho4190",
     "url": "https://github.com/hoho4190"
