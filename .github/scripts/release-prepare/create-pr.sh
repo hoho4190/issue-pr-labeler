@@ -73,7 +73,7 @@ get_release_type_label() {
         exit 1
     fi
 
-    case "$RELEASE_TYPE" in
+    case "$release_type" in
         "major")
             echo "release: 💥 major"
             ;;
@@ -108,6 +108,7 @@ TEMPLATE_BODY=$(get_template_body)
 gh pr create \
     --base "main" \
     --head "$BRANCH_NAME" \
+    --draft \
     --title "release: ${RELEASE_TAG}" \
     --body "$TEMPLATE_BODY" \
     --label "type: 🚀 release" \
