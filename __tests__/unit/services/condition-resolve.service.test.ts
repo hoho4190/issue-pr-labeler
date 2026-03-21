@@ -199,8 +199,18 @@ describe('Unit | Services: condition-resolve.service', () => {
 
     // then
     expect(gitHubService.listPullRequestCommits).toHaveBeenCalledTimes(2)
-    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(1, 'octo-org', 'octo-repo', 99)
-    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(2, 'octo-org', 'octo-repo', 100)
+    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(
+      1,
+      'octo-org',
+      'octo-repo',
+      99
+    )
+    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(
+      2,
+      'octo-org',
+      'octo-repo',
+      100
+    )
     expect(firstMessages).toEqual([
       'feat: add commit messages\n\nImplement support',
       'test: cover commit resolver'
@@ -229,8 +239,18 @@ describe('Unit | Services: condition-resolve.service', () => {
 
     // then
     expect(gitHubService.listPullRequestCommits).toHaveBeenCalledTimes(2)
-    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(1, 'octo-org', 'octo-repo', 99)
-    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(2, 'octo-org', 'octo-repo', 99)
+    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(
+      1,
+      'octo-org',
+      'octo-repo',
+      99
+    )
+    expect(gitHubService.listPullRequestCommits).toHaveBeenNthCalledWith(
+      2,
+      'octo-org',
+      'octo-repo',
+      99
+    )
     expect(retriedSubjects).toEqual(['feat: add commit messages', 'test: cover commit resolver'])
   })
 })

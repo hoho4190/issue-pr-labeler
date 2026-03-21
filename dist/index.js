@@ -38716,6 +38716,7 @@ function failOnMissingLabelsErrorPolicy(onMissingLabel, missingLabels) {
 
 class ConditionResolveService {
     gitHubService;
+    pullRequestCommitsCache = new Map();
     constructor(gitHubService) {
         this.gitHubService = gitHubService;
     }
@@ -38729,22 +38730,43 @@ class ConditionResolveService {
      * Resolves the value used to evaluate the `commit-messages` condition.
      */
     async resolveCommitMessages(context) {
-        const commits = await this.gitHubService.listPullRequestCommits(context.repoOwner, context.repoName, context.eventNumber);
+        const commits = await this.getPullRequestCommits(context);
         return commits.map((commit) => commit.message);
     }
     /**
      * Resolves the value used to evaluate the `commit-message-subjects` condition.
      */
     async resolveCommitMessageSubjects(context) {
-        const commits = await this.gitHubService.listPullRequestCommits(context.repoOwner, context.repoName, context.eventNumber);
+        const commits = await this.getPullRequestCommits(context);
         return commits.map((commit) => commit.messageHeadline);
     }
     /**
      * Resolves the value used to evaluate the `commit-message-bodies` condition.
      */
     async resolveCommitMessageBodies(context) {
-        const commits = await this.gitHubService.listPullRequestCommits(context.repoOwner, context.repoName, context.eventNumber);
+        const commits = await this.getPullRequestCommits(context);
         return commits.map((commit) => commit.messageBody ?? '');
+    }
+    // ============================================================================
+    // 🔸 Internal Helpers
+    // ============================================================================
+    async getPullRequestCommits(context) {
+        const cacheKey = this.getPullRequestCommitsCacheKey(context);
+        const cached = this.pullRequestCommitsCache.get(cacheKey);
+        if (cached) {
+            return await cached;
+        }
+        const fetchPromise = this.gitHubService
+            .listPullRequestCommits(context.repoOwner, context.repoName, context.eventNumber)
+            .catch((error) => {
+            this.pullRequestCommitsCache.delete(cacheKey);
+            throw error;
+        });
+        this.pullRequestCommitsCache.set(cacheKey, fetchPromise);
+        return await fetchPromise;
+    }
+    getPullRequestCommitsCacheKey(context) {
+        return `${context.repoOwner}/${context.repoName}#${String(context.eventNumber)}`;
     }
 }
 
