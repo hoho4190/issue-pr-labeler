@@ -1,0 +1,7 @@
+rules:
+  pr:
+    - label: default1
+      matches:
+        - operator: any
+          conditions:
+            - commit-message-bodies: '/^feat\(api\): add label sync$/'

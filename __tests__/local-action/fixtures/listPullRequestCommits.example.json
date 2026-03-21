@@ -1,0 +1,12 @@
+[
+  {
+    "message": "feat: add commit message property\n\nDescribe the implementation details here.",
+    "messageHeadline": "feat: add commit message property",
+    "messageBody": "Describe the implementation details here."
+  },
+  {
+    "message": "test: add local fixtures for pull request commits",
+    "messageHeadline": "test: add local fixtures for pull request commits",
+    "messageBody": ""
+  }
+]

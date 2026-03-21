@@ -4,6 +4,8 @@ import type { EventType } from '../types/common.js'
 import {
   type GitHubIssueData,
   GitHubIssueDataSchema,
+  type GitHubPullRequestCommitData,
+  GitHubPullRequestCommitsDataSchema,
   type GitHubPullRequestData,
   GitHubPullRequestDataSchema
 } from '../types/github-api.schema.js'
@@ -96,6 +98,25 @@ export class LocalGitHubService implements IGitHubService {
 
     const data = fs.readFileSync(fixturePath, 'utf-8')
     return JSON.parse(data)
+  }
+
+  public async listPullRequestCommits(
+    owner: string,
+    repo: string,
+    eventNumber: number
+  ): Promise<GitHubPullRequestCommitData[]> {
+    const { useReal, fixturePath } = this.getMethodOptions(
+      'listPullRequestCommits',
+      'listPullRequestCommits.json'
+    )
+
+    if (useReal) {
+      return this.realService.listPullRequestCommits(owner, repo, eventNumber)
+    }
+
+    const data = fs.readFileSync(fixturePath, 'utf-8')
+    const json = JSON.parse(data)
+    return GitHubPullRequestCommitsDataSchema.parse(json)
   }
 
   public async listLabelsForIssueOrPr(

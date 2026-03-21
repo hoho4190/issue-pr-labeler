@@ -1,0 +1,9 @@
+[
+  {
+    "name": "default1",
+    "action": "Add",
+    "result": "Success",
+    "reason": "-",
+    "simulatedByDryRun": false
+  }
+]

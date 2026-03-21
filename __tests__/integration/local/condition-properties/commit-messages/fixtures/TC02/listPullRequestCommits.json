@@ -1,0 +1,12 @@
+[
+  {
+    "message": "docs: refresh README\n\nClarify setup steps",
+    "messageHeadline": "docs: refresh README",
+    "messageBody": "Clarify setup steps"
+  },
+  {
+    "message": "chore(ci): tighten workflow checks",
+    "messageHeadline": "chore(ci): tighten workflow checks",
+    "messageBody": ""
+  }
+]

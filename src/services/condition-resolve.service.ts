@@ -2,8 +2,14 @@ import type { IConditionResolveService } from './condition-resolve.service.inter
 import type { IGitHubService } from './github.service.interface.js'
 import type { Immutable } from '../types/common.js'
 import type { PullRequestContext } from '../types/context.js'
+import type { GitHubPullRequestCommitData } from '../types/github-api.schema.js'
 
 export class ConditionResolveService implements IConditionResolveService {
+  private readonly pullRequestCommitsCache = new Map<
+    string,
+    Promise<GitHubPullRequestCommitData[]>
+  >()
+
   public constructor(private readonly gitHubService: IGitHubService) {}
 
   /**
@@ -15,5 +21,66 @@ export class ConditionResolveService implements IConditionResolveService {
       context.repoName,
       context.eventNumber
     )
+  }
+
+  /**
+   * Resolves the value used to evaluate the `commit-messages` condition.
+   */
+  public async resolveCommitMessages(context: Immutable<PullRequestContext>): Promise<string[]> {
+    const commits = await this.getPullRequestCommits(context)
+
+    return commits.map((commit) => commit.message)
+  }
+
+  /**
+   * Resolves the value used to evaluate the `commit-message-subjects` condition.
+   */
+  public async resolveCommitMessageSubjects(
+    context: Immutable<PullRequestContext>
+  ): Promise<string[]> {
+    const commits = await this.getPullRequestCommits(context)
+
+    return commits.map((commit) => commit.messageHeadline)
+  }
+
+  /**
+   * Resolves the value used to evaluate the `commit-message-bodies` condition.
+   */
+  public async resolveCommitMessageBodies(
+    context: Immutable<PullRequestContext>
+  ): Promise<string[]> {
+    const commits = await this.getPullRequestCommits(context)
+
+    return commits.map((commit) => commit.messageBody ?? '')
+  }
+
+  // ============================================================================
+  // 🔸 Internal Helpers
+  // ============================================================================
+
+  private async getPullRequestCommits(
+    context: Immutable<PullRequestContext>
+  ): Promise<GitHubPullRequestCommitData[]> {
+    const cacheKey = this.getPullRequestCommitsCacheKey(context)
+    const cached = this.pullRequestCommitsCache.get(cacheKey)
+
+    if (cached) {
+      return await cached
+    }
+
+    const fetchPromise = this.gitHubService
+      .listPullRequestCommits(context.repoOwner, context.repoName, context.eventNumber)
+      .catch((error: unknown) => {
+        this.pullRequestCommitsCache.delete(cacheKey)
+        throw error
+      })
+
+    this.pullRequestCommitsCache.set(cacheKey, fetchPromise)
+
+    return await fetchPromise
+  }
+
+  private getPullRequestCommitsCacheKey(context: Immutable<PullRequestContext>): string {
+    return `${context.repoOwner}/${context.repoName}#${String(context.eventNumber)}`
   }
 }

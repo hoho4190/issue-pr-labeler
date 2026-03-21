@@ -1,0 +1,12 @@
+[
+  {
+    "message": "docs: refresh README\n\nClarify setup steps",
+    "messageHeadline": "docs: refresh README",
+    "messageBody": "Clarify setup steps"
+  },
+  {
+    "message": "feat(api): add label sync\n\nTicket: OPS-123",
+    "messageHeadline": "feat(api): add label sync",
+    "messageBody": "Ticket: OPS-123"
+  }
+]

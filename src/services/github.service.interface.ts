@@ -1,6 +1,10 @@
 import type { getOctokit } from '@actions/github'
 import type { EventType } from '../types/common.js'
-import type { GitHubIssueData, GitHubPullRequestData } from '../types/github-api.schema.js'
+import type {
+  GitHubIssueData,
+  GitHubPullRequestCommitData,
+  GitHubPullRequestData
+} from '../types/github-api.schema.js'
 
 export type OctokitClient = ReturnType<typeof getOctokit>
 
@@ -14,6 +18,12 @@ export interface IGitHubService {
   listRepositoryLabels(owner: string, repo: string): Promise<string[]>
 
   listPullRequestFiles(owner: string, repo: string, eventNumber: number): Promise<string[]>
+
+  listPullRequestCommits(
+    owner: string,
+    repo: string,
+    eventNumber: number
+  ): Promise<GitHubPullRequestCommitData[]>
 
   listLabelsForIssueOrPr(
     owner: string,

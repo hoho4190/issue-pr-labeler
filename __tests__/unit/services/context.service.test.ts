@@ -27,6 +27,7 @@ const createGitHubServiceMock = (): jest.Mocked<IGitHubService> =>
     getContent: jest.fn(),
     listRepositoryLabels: jest.fn(),
     listPullRequestFiles: jest.fn(),
+    listPullRequestCommits: jest.fn(),
     listLabelsForIssueOrPr: jest.fn(),
     addLabels: jest.fn(),
     removeLabel: jest.fn()

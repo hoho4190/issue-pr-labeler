@@ -37936,6 +37936,26 @@ const GitHubPullRequestFilesResponseSchema = object({
     })
 });
 // ──────────────────────────────────────────────
+// Pull request commits schema
+// ──────────────────────────────────────────────
+const GitHubPullRequestCommitDataSchema = object({
+    message: string$1(),
+    messageHeadline: string$1(),
+    messageBody: string$1()
+        .nullable()
+        .optional()
+        .transform((v) => nullOrEmptyToUndefined(v))
+});
+const GitHubPullRequestCommitsResponseSchema = object({
+    repository: object({
+        pullRequest: object({
+            commits: GitHubPagedNodesSchema(object({
+                commit: GitHubPullRequestCommitDataSchema
+            }))
+        })
+    })
+});
+// ──────────────────────────────────────────────
 // Issue or Pull request labels schema
 // ──────────────────────────────────────────────
 const GitHubIssueOrPullRequestLabelsResponseSchema = object({
@@ -38210,6 +38230,55 @@ class GitHubService {
             } while (after);
             return files;
         }, 'listPullRequestFiles');
+    }
+    /**
+     * Lists all commits in the pull request.
+     */
+    async listPullRequestCommits(owner, repo, eventNumber) {
+        return this.callGitHubAPI(async () => {
+            const commits = [];
+            let after = null;
+            let pageCount = 0;
+            do {
+                pageCount++;
+                if (pageCount > MAX_GRAPHQL_PAGES) {
+                    throw new Error(`Too many pages (> ${MAX_GRAPHQL_PAGES}), possible infinite loop`);
+                }
+                const query = `
+          query($owner: String!, $repo: String!, $eventNumber: Int!, $after: String) {
+            repository(owner: $owner, name: $repo) {
+              pullRequest(number: $eventNumber) {
+                commits(first: 100, after: $after) {
+                  pageInfo { hasNextPage endCursor }
+                  nodes {
+                    commit {
+                      message
+                      messageHeadline
+                      messageBody
+                    }
+                  }
+                }
+              }
+            }
+          }
+        `;
+                const variables = {
+                    owner,
+                    repo,
+                    eventNumber,
+                    after
+                };
+                const responseRaw = await this.octokit.graphql(query, variables);
+                const response = parseWithContext(GitHubPullRequestCommitsResponseSchema, responseRaw, {
+                    message: 'Retrieving pull request commits'
+                });
+                const resCommits = response.repository.pullRequest.commits;
+                commits.push(...resCommits.nodes.map(({ commit }) => commit));
+                const pageInfo = resCommits.pageInfo;
+                after = pageInfo.hasNextPage ? pageInfo.endCursor : null;
+            } while (after);
+            return commits;
+        }, 'listPullRequestCommits');
     }
     /**
      * Lists all labels on the target issue or pull request.
@@ -38647,6 +38716,7 @@ function failOnMissingLabelsErrorPolicy(onMissingLabel, missingLabels) {
 
 class ConditionResolveService {
     gitHubService;
+    pullRequestCommitsCache = new Map();
     constructor(gitHubService) {
         this.gitHubService = gitHubService;
     }
@@ -38655,6 +38725,48 @@ class ConditionResolveService {
      */
     async resolveChangedFiles(context) {
         return await this.gitHubService.listPullRequestFiles(context.repoOwner, context.repoName, context.eventNumber);
+    }
+    /**
+     * Resolves the value used to evaluate the `commit-messages` condition.
+     */
+    async resolveCommitMessages(context) {
+        const commits = await this.getPullRequestCommits(context);
+        return commits.map((commit) => commit.message);
+    }
+    /**
+     * Resolves the value used to evaluate the `commit-message-subjects` condition.
+     */
+    async resolveCommitMessageSubjects(context) {
+        const commits = await this.getPullRequestCommits(context);
+        return commits.map((commit) => commit.messageHeadline);
+    }
+    /**
+     * Resolves the value used to evaluate the `commit-message-bodies` condition.
+     */
+    async resolveCommitMessageBodies(context) {
+        const commits = await this.getPullRequestCommits(context);
+        return commits.map((commit) => commit.messageBody ?? '');
+    }
+    // ============================================================================
+    // 🔸 Internal Helpers
+    // ============================================================================
+    async getPullRequestCommits(context) {
+        const cacheKey = this.getPullRequestCommitsCacheKey(context);
+        const cached = this.pullRequestCommitsCache.get(cacheKey);
+        if (cached) {
+            return await cached;
+        }
+        const fetchPromise = this.gitHubService
+            .listPullRequestCommits(context.repoOwner, context.repoName, context.eventNumber)
+            .catch((error) => {
+            this.pullRequestCommitsCache.delete(cacheKey);
+            throw error;
+        });
+        this.pullRequestCommitsCache.set(cacheKey, fetchPromise);
+        return await fetchPromise;
+    }
+    getPullRequestCommitsCacheKey(context) {
+        return `${context.repoOwner}/${context.repoName}#${String(context.eventNumber)}`;
     }
 }
 
@@ -46097,6 +46209,9 @@ var ConditionPropertyType;
     ConditionPropertyType["IsDraft"] = "draft";
     ConditionPropertyType["ChangedLines"] = "changed-lines";
     ConditionPropertyType["ChangedFiles"] = "changed-files";
+    ConditionPropertyType["CommitMessages"] = "commit-messages";
+    ConditionPropertyType["CommitMessageSubjects"] = "commit-message-subjects";
+    ConditionPropertyType["CommitMessageBodies"] = "commit-message-bodies";
 })(ConditionPropertyType || (ConditionPropertyType = {}));
 
 /**
@@ -46156,13 +46271,13 @@ function toConditionPropertyEvaluator(evaluateTagInput) {
     };
 }
 
-const TYPE$d = ConditionPropertyType.Actor;
-const ALLOWED_EVENTS$8 = [EventType.Issue, EventType.PullRequest];
-const ALLOWED_TAGS$8 = [ConditionValueTagType.Regex, ConditionValueTagType.String];
+const TYPE$g = ConditionPropertyType.Actor;
+const ALLOWED_EVENTS$b = [EventType.Issue, EventType.PullRequest];
+const ALLOWED_TAGS$b = [ConditionValueTagType.Regex, ConditionValueTagType.String];
 const ActorProperty = defineConditionProperty({
-    type: TYPE$d,
-    allowedEvents: ALLOWED_EVENTS$8,
-    allowedTags: ALLOWED_TAGS$8,
+    type: TYPE$g,
+    allowedEvents: ALLOWED_EVENTS$b,
+    allowedTags: ALLOWED_TAGS$b,
     resolve: (context, _conditionResolveService) => actorResolver[context.eventType](context),
     evaluateTag: {
         [ConditionValueTagType.Regex]: (tag, resolved, expected) => tag.evaluate(resolved, expected),
@@ -46174,13 +46289,13 @@ const actorResolver = {
     [EventType.PullRequest]: (context) => context.actor
 };
 
-const TYPE$c = ConditionPropertyType.Author;
-const ALLOWED_EVENTS$7 = [EventType.Issue, EventType.PullRequest];
-const ALLOWED_TAGS$7 = [ConditionValueTagType.Regex, ConditionValueTagType.String];
+const TYPE$f = ConditionPropertyType.Author;
+const ALLOWED_EVENTS$a = [EventType.Issue, EventType.PullRequest];
+const ALLOWED_TAGS$a = [ConditionValueTagType.Regex, ConditionValueTagType.String];
 const AuthorProperty = defineConditionProperty({
-    type: TYPE$c,
-    allowedEvents: ALLOWED_EVENTS$7,
-    allowedTags: ALLOWED_TAGS$7,
+    type: TYPE$f,
+    allowedEvents: ALLOWED_EVENTS$a,
+    allowedTags: ALLOWED_TAGS$a,
     resolve: (context, _conditionResolveService) => authorResolver[context.eventType](context),
     evaluateTag: {
         [ConditionValueTagType.Regex]: (tag, resolved, expected) => tag.evaluate(resolved, expected),
@@ -46199,13 +46314,13 @@ function assertPullRequestContext(context) {
     throw new Error('Accessed PR-only data in a non-PR context.');
 }
 
-const TYPE$b = ConditionPropertyType.BaseBranch;
-const ALLOWED_EVENTS$6 = [EventType.PullRequest];
-const ALLOWED_TAGS$6 = [ConditionValueTagType.Regex, ConditionValueTagType.String];
+const TYPE$e = ConditionPropertyType.BaseBranch;
+const ALLOWED_EVENTS$9 = [EventType.PullRequest];
+const ALLOWED_TAGS$9 = [ConditionValueTagType.Regex, ConditionValueTagType.String];
 const BaseBranchProperty = defineConditionProperty({
-    type: TYPE$b,
-    allowedEvents: ALLOWED_EVENTS$6,
-    allowedTags: ALLOWED_TAGS$6,
+    type: TYPE$e,
+    allowedEvents: ALLOWED_EVENTS$9,
+    allowedTags: ALLOWED_TAGS$9,
     resolve(context, _conditionResolveService) {
         assertPullRequestContext(context);
         return context.pullRequest.baseBranch;
@@ -46216,13 +46331,13 @@ const BaseBranchProperty = defineConditionProperty({
     }
 });
 
-const TYPE$a = ConditionPropertyType.Body;
-const ALLOWED_EVENTS$5 = [EventType.Issue, EventType.PullRequest];
-const ALLOWED_TAGS$5 = [ConditionValueTagType.Regex];
+const TYPE$d = ConditionPropertyType.Body;
+const ALLOWED_EVENTS$8 = [EventType.Issue, EventType.PullRequest];
+const ALLOWED_TAGS$8 = [ConditionValueTagType.Regex];
 const BodyProperty = defineConditionProperty({
-    type: TYPE$a,
-    allowedEvents: ALLOWED_EVENTS$5,
-    allowedTags: ALLOWED_TAGS$5,
+    type: TYPE$d,
+    allowedEvents: ALLOWED_EVENTS$8,
+    allowedTags: ALLOWED_TAGS$8,
     resolve: (context, _conditionResolveService) => bodyResolver[context.eventType](context),
     evaluateTag: (tag, resolved, expected) => tag.evaluate(resolved, expected)
 });
@@ -46231,13 +46346,13 @@ const bodyResolver = {
     [EventType.PullRequest]: (context) => context.pullRequest.body ?? ''
 };
 
-const TYPE$9 = ConditionPropertyType.ChangedFiles;
-const ALLOWED_EVENTS$4 = [EventType.PullRequest];
-const ALLOWED_TAGS$4 = [ConditionValueTagType.GlobPattern, ConditionValueTagType.String];
+const TYPE$c = ConditionPropertyType.ChangedFiles;
+const ALLOWED_EVENTS$7 = [EventType.PullRequest];
+const ALLOWED_TAGS$7 = [ConditionValueTagType.GlobPattern, ConditionValueTagType.String];
 const ChangedFilesProperty = defineConditionProperty({
-    type: TYPE$9,
-    allowedEvents: ALLOWED_EVENTS$4,
-    allowedTags: ALLOWED_TAGS$4,
+    type: TYPE$c,
+    allowedEvents: ALLOWED_EVENTS$7,
+    allowedTags: ALLOWED_TAGS$7,
     async resolve(context, conditionResolveService) {
         assertPullRequestContext(context);
         return await conditionResolveService.resolveChangedFiles(context);
@@ -46248,18 +46363,60 @@ const ChangedFilesProperty = defineConditionProperty({
     }
 });
 
-const TYPE$8 = ConditionPropertyType.ChangedLines;
-const ALLOWED_EVENTS$3 = [EventType.PullRequest];
-const ALLOWED_TAGS$3 = [ConditionValueTagType.NumericComparison];
+const TYPE$b = ConditionPropertyType.ChangedLines;
+const ALLOWED_EVENTS$6 = [EventType.PullRequest];
+const ALLOWED_TAGS$6 = [ConditionValueTagType.NumericComparison];
 const ChangedLinesProperty = defineConditionProperty({
-    type: TYPE$8,
-    allowedEvents: ALLOWED_EVENTS$3,
-    allowedTags: ALLOWED_TAGS$3,
+    type: TYPE$b,
+    allowedEvents: ALLOWED_EVENTS$6,
+    allowedTags: ALLOWED_TAGS$6,
     resolve(context, _conditionResolveService) {
         assertPullRequestContext(context);
         return context.pullRequest.changedLines.additions + context.pullRequest.changedLines.deletions;
     },
     evaluateTag: (tag, resolved, expected) => tag.evaluate(resolved, expected)
+});
+
+const TYPE$a = ConditionPropertyType.CommitMessageBodies;
+const ALLOWED_EVENTS$5 = [EventType.PullRequest];
+const ALLOWED_TAGS$5 = [ConditionValueTagType.Regex];
+const CommitMessageBodiesProperty = defineConditionProperty({
+    type: TYPE$a,
+    allowedEvents: ALLOWED_EVENTS$5,
+    allowedTags: ALLOWED_TAGS$5,
+    async resolve(context, conditionResolveService) {
+        assertPullRequestContext(context);
+        return await conditionResolveService.resolveCommitMessageBodies(context);
+    },
+    evaluateTag: (tag, resolved, expected) => resolved.some((actual) => tag.evaluate(actual, expected))
+});
+
+const TYPE$9 = ConditionPropertyType.CommitMessageSubjects;
+const ALLOWED_EVENTS$4 = [EventType.PullRequest];
+const ALLOWED_TAGS$4 = [ConditionValueTagType.Regex];
+const CommitMessageSubjectsProperty = defineConditionProperty({
+    type: TYPE$9,
+    allowedEvents: ALLOWED_EVENTS$4,
+    allowedTags: ALLOWED_TAGS$4,
+    async resolve(context, conditionResolveService) {
+        assertPullRequestContext(context);
+        return await conditionResolveService.resolveCommitMessageSubjects(context);
+    },
+    evaluateTag: (tag, resolved, expected) => resolved.some((actual) => tag.evaluate(actual, expected))
+});
+
+const TYPE$8 = ConditionPropertyType.CommitMessages;
+const ALLOWED_EVENTS$3 = [EventType.PullRequest];
+const ALLOWED_TAGS$3 = [ConditionValueTagType.Regex];
+const CommitMessagesProperty = defineConditionProperty({
+    type: TYPE$8,
+    allowedEvents: ALLOWED_EVENTS$3,
+    allowedTags: ALLOWED_TAGS$3,
+    async resolve(context, conditionResolveService) {
+        assertPullRequestContext(context);
+        return await conditionResolveService.resolveCommitMessages(context);
+    },
+    evaluateTag: (tag, resolved, expected) => resolved.some((actual) => tag.evaluate(actual, expected))
 });
 
 const TYPE$7 = ConditionPropertyType.HeadBranch;
@@ -48778,7 +48935,10 @@ const CONDITION_PROPERTY_REGISTRY = createConditionPropertyRegistry({
     [ConditionPropertyType.HeadBranch]: HeadBranchProperty,
     [ConditionPropertyType.IsDraft]: IsDraftProperty,
     [ConditionPropertyType.ChangedLines]: ChangedLinesProperty,
-    [ConditionPropertyType.ChangedFiles]: ChangedFilesProperty
+    [ConditionPropertyType.ChangedFiles]: ChangedFilesProperty,
+    [ConditionPropertyType.CommitMessages]: CommitMessagesProperty,
+    [ConditionPropertyType.CommitMessageSubjects]: CommitMessageSubjectsProperty,
+    [ConditionPropertyType.CommitMessageBodies]: CommitMessageBodiesProperty
 });
 /**
  * Returns the {@link ConditionValueTag} registered for the given {@link ConditionValueTagType}.

@@ -1,0 +1,7 @@
+rules:
+  pr:
+    - label: default1
+      matches:
+        - operator: any
+          conditions:
+            - commit-messages: /Ticket:\sOPS-123/

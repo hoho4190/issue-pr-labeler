@@ -5,6 +5,7 @@ import { EventType } from '../../../src/types/common.js'
 const readFileSyncMock = jest.fn<(path: string, encoding: BufferEncoding) => string>()
 const issueDataSchemaParseMock = jest.fn<(input: unknown) => unknown>()
 const pullRequestDataSchemaParseMock = jest.fn<(input: unknown) => unknown>()
+const pullRequestCommitsDataSchemaParseMock = jest.fn<(input: unknown) => unknown>()
 
 jest.unstable_mockModule('fs', () => ({
   default: {
@@ -19,6 +20,9 @@ jest.unstable_mockModule('../../../src/types/github-api.schema.js', () => ({
   },
   GitHubPullRequestDataSchema: {
     parse: (input: unknown) => pullRequestDataSchemaParseMock(input)
+  },
+  GitHubPullRequestCommitsDataSchema: {
+    parse: (input: unknown) => pullRequestCommitsDataSchemaParseMock(input)
   }
 }))
 
@@ -33,6 +37,7 @@ const createRealGitHubServiceMock = (): jest.Mocked<IGitHubService> =>
     getContent: jest.fn(),
     listRepositoryLabels: jest.fn(),
     listPullRequestFiles: jest.fn(),
+    listPullRequestCommits: jest.fn(),
     listLabelsForIssueOrPr: jest.fn(),
     addLabels: jest.fn(),
     removeLabel: jest.fn()
@@ -67,10 +72,12 @@ describe('Unit | Services: github.service.local', () => {
     readFileSyncMock.mockReset()
     issueDataSchemaParseMock.mockReset()
     pullRequestDataSchemaParseMock.mockReset()
+    pullRequestCommitsDataSchemaParseMock.mockReset()
 
     readFileSyncMock.mockReturnValue('{}')
     issueDataSchemaParseMock.mockImplementation((input) => input)
     pullRequestDataSchemaParseMock.mockImplementation((input) => input)
+    pullRequestCommitsDataSchemaParseMock.mockImplementation((input) => input)
   })
 
   describe('getIssue()', () => {
@@ -295,6 +302,74 @@ describe('Unit | Services: github.service.local', () => {
         '/tmp/fixtures/listPullRequestFiles.json',
         'utf-8'
       )
+    })
+  })
+
+  describe('listPullRequestCommits()', () => {
+    // 실제 서비스 사용 옵션이면 PR 커밋 목록 조회를 realService에 위임하는지 확인
+    test('delegates to real service when useRealService.listPullRequestCommits is true', async () => {
+      // given
+      const { service, realGitHubService } = createService({
+        useRealService: { listPullRequestCommits: true }
+      })
+      realGitHubService.listPullRequestCommits.mockResolvedValue([
+        {
+          message: 'feat: add commit messages\n\nImplement support',
+          messageHeadline: 'feat: add commit messages',
+          messageBody: 'Implement support'
+        }
+      ])
+
+      // when
+      const result = await service.listPullRequestCommits('octo-org', 'octo-repo', 65)
+
+      // then
+      expect(result).toEqual([
+        {
+          message: 'feat: add commit messages\n\nImplement support',
+          messageHeadline: 'feat: add commit messages',
+          messageBody: 'Implement support'
+        }
+      ])
+      expect(realGitHubService.listPullRequestCommits).toHaveBeenCalledWith(
+        'octo-org',
+        'octo-repo',
+        65
+      )
+      expect(readFileSyncMock).not.toHaveBeenCalled()
+    })
+
+    // fixture 모드이면 PR 커밋 목록 fixture JSON을 파싱해 반환하는지 확인
+    test('parses pull request commits from fixture json', async () => {
+      // given
+      const { service } = createService()
+      const fixtureJson = [
+        {
+          message: 'test: add local fixtures for pull request commits',
+          messageHeadline: 'test: add local fixtures for pull request commits',
+          messageBody: ''
+        }
+      ]
+      const parsedCommits = [
+        {
+          message: 'test: add local fixtures for pull request commits',
+          messageHeadline: 'test: add local fixtures for pull request commits',
+          messageBody: undefined
+        }
+      ]
+      readFileSyncMock.mockReturnValue(JSON.stringify(fixtureJson))
+      pullRequestCommitsDataSchemaParseMock.mockReturnValue(parsedCommits)
+
+      // when
+      const result = await service.listPullRequestCommits('octo-org', 'octo-repo', 66)
+
+      // then
+      expect(result).toEqual(parsedCommits)
+      expect(readFileSyncMock).toHaveBeenCalledWith(
+        '/tmp/fixtures/listPullRequestCommits.json',
+        'utf-8'
+      )
+      expect(pullRequestCommitsDataSchemaParseMock).toHaveBeenCalledWith(fixtureJson)
     })
   })
 

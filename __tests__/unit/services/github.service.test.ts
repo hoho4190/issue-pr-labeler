@@ -363,6 +363,112 @@ describe('Unit | Services: github.service', () => {
     })
   })
 
+  describe('listPullRequestCommits()', () => {
+    // PR 커밋 목록을 페이지 단위로 누적하고 commit 객체를 그대로 반환하는지 확인
+    test('returns commits from all pages', async () => {
+      // given
+      const { service, octokit } = createService()
+      octokit.graphql
+        .mockResolvedValueOnce({
+          repository: {
+            pullRequest: {
+              commits: {
+                pageInfo: { hasNextPage: true, endCursor: 'cursor-3' },
+                nodes: [
+                  {
+                    commit: {
+                      message: 'feat: add commit messages\n\nImplement support',
+                      messageHeadline: 'feat: add commit messages',
+                      messageBody: 'Implement support'
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        })
+        .mockResolvedValueOnce({
+          repository: {
+            pullRequest: {
+              commits: {
+                pageInfo: { hasNextPage: false, endCursor: null },
+                nodes: [
+                  {
+                    commit: {
+                      message: 'test: add commit fixtures',
+                      messageHeadline: 'test: add commit fixtures',
+                      messageBody: undefined
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        })
+
+      // when
+      const commits = await service.listPullRequestCommits('octo-org', 'octo-repo', 102)
+
+      // then
+      expect(commits).toEqual([
+        {
+          message: 'feat: add commit messages\n\nImplement support',
+          messageHeadline: 'feat: add commit messages',
+          messageBody: 'Implement support'
+        },
+        {
+          message: 'test: add commit fixtures',
+          messageHeadline: 'test: add commit fixtures',
+          messageBody: undefined
+        }
+      ])
+      expect(octokit.graphql).toHaveBeenCalledTimes(2)
+      expect(octokit.graphql.mock.calls[0]![1]).toEqual({
+        owner: 'octo-org',
+        repo: 'octo-repo',
+        eventNumber: 102,
+        after: null
+      })
+      expect(octokit.graphql.mock.calls[1]![1]).toEqual({
+        owner: 'octo-org',
+        repo: 'octo-repo',
+        eventNumber: 102,
+        after: 'cursor-3'
+      })
+      expect(parseWithContextMock).toHaveBeenNthCalledWith(
+        1,
+        expect.anything(),
+        expect.anything(),
+        { message: 'Retrieving pull request commits' }
+      )
+    })
+
+    // 커밋 페이지네이션이 무한히 이어지면 보호 로직으로 실패하는지 확인
+    test('throws wrapped error when commit pagination exceeds max page limit', async () => {
+      // given
+      const { service, octokit } = createService()
+      octokit.graphql.mockResolvedValue({
+        repository: {
+          pullRequest: {
+            commits: {
+              pageInfo: { hasNextPage: true, endCursor: 'cursor-loop' },
+              nodes: []
+            }
+          }
+        }
+      })
+
+      // when
+      const act = service.listPullRequestCommits('octo-org', 'octo-repo', 12)
+
+      // then
+      await expect(act).rejects.toThrow(
+        '[GitHubService:listPullRequestCommits] Too many pages (> 50), possible infinite loop'
+      )
+      expect(octokit.graphql).toHaveBeenCalledTimes(50)
+    })
+  })
+
   describe('listLabelsForIssueOrPr()', () => {
     // 이슈 레이블 조회 시 시작 커서를 반영하고 다음 페이지 레이블을 병합하는지 확인
     test('returns merged labels for issue with explicit start cursor', async () => {
