@@ -74,7 +74,7 @@
     "@types/jest": "^30.0.0",
     "@types/node": "^24.11.0",
     "@types/picomatch": "^4.0.2",
-    "@typescript-eslint/eslint-plugin": "^8.56.1",
+    "@typescript-eslint/eslint-plugin": "^8.57.1",
     "@typescript-eslint/parser": "^8.56.1",
     "eslint": "^9.39.4",
     "eslint-config-prettier": "^10.1.8",
