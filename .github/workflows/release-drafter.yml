@@ -27,7 +27,7 @@ jobs:
         if: ${{ ! startsWith(github.head_ref, 'release/v') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: release-drafter/release-drafter@v6
+        uses: release-drafter/release-drafter@v7
         with:
           config-name: 'release-drafter-config.yml'
 
@@ -42,7 +42,7 @@ jobs:
         if: ${{ startsWith(github.head_ref, 'release/v') }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        uses: release-drafter/release-drafter@v6
+        uses: release-drafter/release-drafter@v7
         with:
           config-name: release-drafter-config.yml
           version: ${{ env.RELEASE_VERSION }}
