@@ -52,7 +52,10 @@
         },
 
         // timonwong.shellcheck: use shellcheck binary installed in the container
-        "shellcheck.executablePath": "/usr/local/bin/shellcheck"
+        "shellcheck.executablePath": "/usr/local/bin/shellcheck",
+
+        // gruntfuggly.todo-tree: use ripgrep binary installed in the container
+        "todo-tree.ripgrep.ripgrep": "/usr/local/bin/rg"
       }
     }
   },
@@ -63,6 +66,7 @@
   "features": {
     "ghcr.io/devcontainers/features/github-cli:1": {},
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
+    "ghcr.io/devcontainers-extra/features/ripgrep:1": {},
     "ghcr.io/devcontainers-extra/features/shfmt:1": {
       "version": "3.12.0" // shfmt version aligned with the Super-Linter image tag
     },
