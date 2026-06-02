@@ -25,8 +25,6 @@ jobs:
     steps:
       - name: Draft release notes - ${{ github.head_ref }}
         if: ${{ ! startsWith(github.head_ref, 'release/v') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: release-drafter/release-drafter@v7
         with:
           config-name: 'release-drafter-config.yml'
@@ -40,8 +38,6 @@ jobs:
 
       - name: Draft release notes(release branch) - ${{ github.head_ref }}
         if: ${{ startsWith(github.head_ref, 'release/v') }}
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         uses: release-drafter/release-drafter@v7
         with:
           config-name: release-drafter-config.yml
