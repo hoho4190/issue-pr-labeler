@@ -16,6 +16,9 @@ jobs:
     name: Build
 
     runs-on: ubuntu-latest
+    environment:
+      name: ci
+      deployment: false
 
     permissions:
       contents: write
