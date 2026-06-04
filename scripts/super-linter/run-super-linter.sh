@@ -10,7 +10,7 @@ readonly ENV_PATH="${ROOT_DIR}/.github/.super-linter.env"
 readonly RUN_TYPE="${1:-lint-all}"
 
 if [[ -z "${SUPER_LINTER_TAG:-}" ]]; then
-    echo "SUPER_LINTER_TAG environment variable is required (e.g., slim-v8.5.0)."
+    echo "SUPER_LINTER_TAG environment variable is required (e.g., slim-vX.X.X)."
     exit 1
 fi
 

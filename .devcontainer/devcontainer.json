@@ -60,7 +60,7 @@
     }
   },
   "containerEnv": {
-    "SUPER_LINTER_TAG": "slim-v8.5.0"
+    "SUPER_LINTER_TAG": "slim-v8.6.0"
   },
   "remoteEnv": {},
   "features": {
@@ -68,7 +68,7 @@
     "ghcr.io/devcontainers/features/docker-in-docker:2": {},
     "ghcr.io/devcontainers-extra/features/ripgrep:1": {},
     "ghcr.io/devcontainers-extra/features/shfmt:1": {
-      "version": "3.12.0" // shfmt version aligned with the Super-Linter image tag
+      "version": "3.13.0" // shfmt version aligned with the Super-Linter image tag
     },
     "ghcr.io/devcontainers-extra/features/shellcheck:1": {
       "version": "0.11.0" // ShellCheck version aligned with the Super-Linter image tag

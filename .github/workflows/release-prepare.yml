@@ -13,6 +13,7 @@ jobs:
     if: ${{ github.event.ref_type == 'branch' && startsWith(github.ref, 'refs/heads/release/v') }}
 
     runs-on: ubuntu-latest
+    environment: release
 
     permissions:
       contents: write
