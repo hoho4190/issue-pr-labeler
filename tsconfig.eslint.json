@@ -3,7 +3,10 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "allowJs": true,
-    "noEmit": true
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "noEmit": true,
+    "types": ["node", "jest"]
   },
   "include": ["__tests__", "src", "scripts", "eslint.config.ts", "jest.config.ts", "rollup.config.ts"]
 }
