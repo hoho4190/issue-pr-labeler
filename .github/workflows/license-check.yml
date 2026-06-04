@@ -35,7 +35,7 @@ jobs:
       LICENSED_CONFIG_PATH: .github/license-check-config.yml
 
     steps:
-      - uses: actions/checkout@v6 # → permissions: contents: read
+      - uses: actions/checkout@v6.0.2 # → permissions: contents: read
         with:
           persist-credentials: false
 
