@@ -16,6 +16,9 @@ jobs:
 
     if: ${{ github.ref_type == 'branch' && github.ref_name != 'main' }}
     runs-on: ubuntu-latest
+    environment:
+      name: ci
+      deployment: false
 
     steps:
       - name: Checkout selected branch
@@ -39,5 +42,5 @@ jobs:
       - name: Commit and push synced dist
         env:
           BRANCH_NAME: ${{ github.ref_name }}
-          GIT_PUSH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GIT_PUSH_TOKEN: ${{ secrets.DIST_SYNC_PAT }}
         run: bash .github/scripts/dist-sync/dist-sync.sh
