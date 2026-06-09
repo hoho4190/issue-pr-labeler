@@ -13,13 +13,16 @@ jobs:
     if: ${{ github.event.ref_type == 'branch' && startsWith(github.ref, 'refs/heads/release/v') }}
 
     runs-on: ubuntu-latest
+    environment:
+      name: release
+      deployment: false
 
     permissions:
       contents: write
       pull-requests: write
 
     steps:
-      - uses: actions/checkout@v6 # → permissions: contents: read
+      - uses: actions/checkout@v6.0.2 # → permissions: contents: read
         with:
           persist-credentials: false
           ref: ${{ github.ref }} # for `git push`

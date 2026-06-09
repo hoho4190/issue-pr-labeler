@@ -4,6 +4,7 @@
   "compilerOptions": {
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
+    "rootDir": "./src",
     "types": ["node"],
     "outDir": "./dist"
   },

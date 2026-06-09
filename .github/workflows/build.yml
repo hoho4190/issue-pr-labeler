@@ -16,13 +16,16 @@ jobs:
     name: Build
 
     runs-on: ubuntu-latest
+    environment:
+      name: ci
+      deployment: false
 
     permissions:
       contents: write
       pull-requests: read
 
     steps:
-      - uses: actions/checkout@v6 # → permissions: contents: read
+      - uses: actions/checkout@v6.0.2 # → permissions: contents: read
         with:
           persist-credentials: false
 
@@ -38,7 +41,7 @@ jobs:
         run: npm run test:ci
 
       - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v5
+        uses: codecov/codecov-action@v6
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 

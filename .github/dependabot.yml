@@ -9,6 +9,8 @@ updates:
     open-pull-requests-limit: 5
     assignees:
       - 'hoho4190'
+    ignore:
+      - dependency-name: 'super-linter/super-linter'
     groups:
       actions:
         update-types:
