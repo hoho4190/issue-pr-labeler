@@ -18,7 +18,7 @@ jobs:
       contents: write
 
     steps:
-      - uses: actions/checkout@v6.0.2 # → permissions: contents: read
+      - uses: actions/checkout@v6.0.3 # → permissions: contents: read
         with:
           persist-credentials: false
 

@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout selected branch
-        uses: actions/checkout@v6.0.2
+        uses: actions/checkout@v6.0.3
         with:
           ref: ${{ github.ref_name }}
           persist-credentials: false
