@@ -25,7 +25,7 @@ jobs:
     steps:
       - name: Draft release notes - ${{ github.head_ref }}
         if: ${{ ! startsWith(github.head_ref, 'release/v') }}
-        uses: release-drafter/release-drafter@v7
+        uses: release-drafter/release-drafter@v7.4.0
         with:
           config-name: 'release-drafter-config.yml'
 
@@ -38,7 +38,7 @@ jobs:
 
       - name: Draft release notes(release branch) - ${{ github.head_ref }}
         if: ${{ startsWith(github.head_ref, 'release/v') }}
-        uses: release-drafter/release-drafter@v7
+        uses: release-drafter/release-drafter@v7.4.0
         with:
           config-name: release-drafter-config.yml
           version: ${{ env.RELEASE_VERSION }}
