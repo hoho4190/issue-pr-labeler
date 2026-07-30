@@ -158,7 +158,9 @@ export type Condition = {
  * ```
  */
 type ConditionValueTagExpectedRawValueMap = Readonly<{
-  [TTagType in ConditionValueTagType]: ConditionValueTagFromRegistry<TTagType> extends ConditionValueTag<
+  [
+    TTagType in ConditionValueTagType
+  ]: ConditionValueTagFromRegistry<TTagType> extends ConditionValueTag<
     infer TExpectedRawValue,
     infer _TExpectedValue,
     infer _TActualValue
@@ -191,7 +193,9 @@ export type ConditionValueTagExpectedRawValue<TTagType extends ConditionValueTag
  * ```
  */
 type ConditionValueTagExpectedValueMap = Readonly<{
-  [TTagType in ConditionValueTagType]: ConditionValueTagFromRegistry<TTagType> extends ConditionValueTag<
+  [
+    TTagType in ConditionValueTagType
+  ]: ConditionValueTagFromRegistry<TTagType> extends ConditionValueTag<
     infer _TExpectedRawValue,
     infer TExpectedValue,
     infer _TActualValue
@@ -224,7 +228,9 @@ export type ConditionValueTagExpectedValue<TTagType extends ConditionValueTagTyp
  * ```
  */
 type ConditionValueTagActualValueMap = Readonly<{
-  [TTagType in ConditionValueTagType]: ConditionValueTagFromRegistry<TTagType> extends ConditionValueTag<
+  [
+    TTagType in ConditionValueTagType
+  ]: ConditionValueTagFromRegistry<TTagType> extends ConditionValueTag<
     infer _TExpectedRawValue,
     infer _TExpectedValue,
     infer TActualValue

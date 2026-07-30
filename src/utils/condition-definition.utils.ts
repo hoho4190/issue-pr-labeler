@@ -145,8 +145,7 @@ function toConditionPropertyEvaluator<
   ) => {
     const [tag, resolved, expected] = args
     const evaluator = evaluators[tag.type as TTagType] as
-      | ConditionPropertyTagEvaluatorFn<TTagType, TResolvedValue>
-      | undefined
+      ConditionPropertyTagEvaluatorFn<TTagType, TResolvedValue> | undefined
 
     if (!evaluator) {
       throw new Error(`Unsupported tag: ${String(tag.type)}`)
