@@ -54,12 +54,12 @@
   "dependencies": {
     "@actions/core": "^3.0.1",
     "@actions/github": "^9.1.1",
-    "@octokit/request-error": "^7.1.0",
-    "fastq": "^1.20.1",
+    "@octokit/request-error": "^7.1.2",
+    "fastq": "^1.20.3",
     "is-glob": "^4.0.3",
-    "picomatch": "^4.0.5",
+    "picomatch": "^4.0.7",
     "yaml": "^2.9.0",
-    "zod": "^4.4.3"
+    "zod": "^4.5.4"
   },
   "devDependencies": {
     "@eslint/compat": "^2.1.0",
